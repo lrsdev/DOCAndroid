@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Get references to needed views, fragment manager
         fm = getFragmentManager();
         mContentContainer = (FrameLayout) findViewById(R.id.content_container);
         mNavTitles = getResources().getStringArray(R.array.navigation_array);
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity
         setupDrawerList();
         setupDrawerToggle();
 
+        //
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
 
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         setContentFragment(new HomeFragment());
     }
 
+    // Set array adapter and click listeners for the navigation drawer's listview.
     private void setupDrawerList()
     {
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
+    // Setup navigation drawer toggle (Clicking hamburger icon), implement onDrawerOpened and
+    // onDrawerClosed callbacks. ToDo: Set titles correctly on Open/Close
     private void setupDrawerToggle()
     {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open,
@@ -75,11 +80,13 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
+        // Drawer indicator (Hamburger Icon)
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     @Override
+    // Synchronise navigation drawer icon (switched between arrow and hamburger icon)
     protected void onPostCreate(Bundle savedInstanceState)
     {
         super.onPostCreate(savedInstanceState);
@@ -123,6 +130,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    // Replace content fragment with fragment argument
     private void setContentFragment(Fragment f)
     {
         fm.beginTransaction()
@@ -130,6 +138,7 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
+    // Show a non implemented toast when user clicks unimplemented feature
     private void notImplemented()
     {
         Toast.makeText(this, "Not implemented", Toast.LENGTH_SHORT).show();
@@ -163,10 +172,9 @@ public class MainActivity extends AppCompatActivity
                             break;
                     }
 
+            // Set checked, close the drawer after selection. ToDo: Selected item styling
             mDrawerList.setItemChecked(position, true);
             mDrawerLayout.closeDrawer(mDrawerList);
-            // TODO: Add action bar title switching, encapsulate in method
-            //
         }
     }
 }
