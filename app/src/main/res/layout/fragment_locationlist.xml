@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <!-- THIS FILE WILL BE REPLACED BY A LIST ITEM LAYOUT FOR THE LOCATIONLIST FRAGMENT -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Place holder for location list fragment"/>
+
+</LinearLayout>

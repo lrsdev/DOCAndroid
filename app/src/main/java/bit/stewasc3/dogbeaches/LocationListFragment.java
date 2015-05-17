@@ -1,0 +1,29 @@
+package bit.stewasc3.dogbeaches;
+
+import android.app.Fragment;
+import android.app.ListFragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+/**
+ * Created by samuel on 17/05/15.
+ */
+
+// This class will extend ListFragment when implemented correctly
+public class LocationListFragment extends Fragment
+{
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.fragment_locationlist, container, false);
+        return view;
+    }
+}

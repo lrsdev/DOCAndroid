@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">DogBeaches</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Navigation drawer menu item strings -->
+    <string-array name="navigation_array">
+        <item>Home</item>
+        <item>Map</item>
+        <item>Locations</item>
+        <item>Wildlife</item>
+        <item>Report Wildlife</item>
+        <item>Donate</item>
+    </string-array>
+
+    <!-- Navigation drawer open/closed strings -->
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_closed">Drawer Closed</string>
+
+</resources>
+
