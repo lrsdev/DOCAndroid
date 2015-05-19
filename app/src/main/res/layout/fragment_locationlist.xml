@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <!-- THIS FILE WILL BE REPLACED BY A LIST ITEM LAYOUT FOR THE LOCATIONLIST FRAGMENT -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/containerDraw"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Place holder for location list fragment"/>
+        android:layout_height="wrap_content">
 
-</LinearLayout>
+        <!-- Page Heading -->
+    <TextView
+        android:id="@+id/locationDetails"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
+        android:text="Beach List"
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        android:textStyle="bold|italic"
+        android:typeface="serif" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/drawerList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/containerDraw">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+
+
+
+</RelativeLayout>

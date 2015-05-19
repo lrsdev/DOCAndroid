@@ -15,11 +15,11 @@
 
     <!-- The navigation drawer, modify background, divider values etc for styling -->
     <ListView android:id="@+id/nav_drawer"
-        android:layout_width="200dp"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:dividerHeight="0dp"
         android:choiceMode="singleChoice"
-        android:background="#ffe"/>
+        android:background="@color/navDrawer"/>
 
 </android.support.v4.widget.DrawerLayout>

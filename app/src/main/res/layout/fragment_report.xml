@@ -1,11 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <!-- Page Heading -->
     <TextView
+        android:id="@+id/textSightingDetails"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
+        android:text="Sighting Details"
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        android:textStyle="bold|italic"
+        android:typeface="serif" />
+
+    <!-- Location Label -->
+    <TextView
+        android:id="@+id/textLocationDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
+        android:layout_below="@id/textSightingDetails"
+        android:text="Location: "
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        />
+    <!-- Location Spinner -->
+    <Spinner
+        android:id="@+id/locationSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/textSightingDetails"
+        android:layout_toRightOf="@+id/textLocationDetails"
+        android:layout_toEndOf="@+id/textDateTime"
+        android:layout_marginRight="16dp">
+    </Spinner>
+
+    <!-- Wildlife Type Label -->
+    <TextView
+        android:id="@+id/textWildlife"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
+        android:layout_below="@id/textLocationDetails"
+        android:text="Wildlife Type: "
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        />
+
+    <!-- Wildlife Type Spinner -->
+    <Spinner
+        android:id="@+id/typeSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/locationSpinner"
+        android:layout_toRightOf="@+id/textWildlife"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp">
+        </Spinner>
+
+    <!-- Date Picker Label -->
+    <TextView
+        android:id="@+id/textDate"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
+        android:layout_below="@id/textWildlife"
+        android:text="Date: "
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        />
+
+    <!-- Calls Pick Date method when button clicked -->
+    <Button
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Place holder for report fragment"/>
-</LinearLayout>
+        android:layout_marginRight="16dp"
+        android:text="Pick Date"
+        android:id="@+id/btn_pickDate"
+        android:background="@drawable/buttonsmall"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:layout_below="@+id/textWildlife"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+    <!-- Time Picker Label -->
+    <TextView
+        android:id="@+id/textTime"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
+        android:layout_below="@id/textDate"
+        android:text="Time: "
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        />
+
+    <!-- Calls Pick Time method when button clicked -->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:text="Pick Time"
+        android:id="@+id/btn_pickTime"
+        android:background="@drawable/buttonsmall"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:layout_below="@+id/btn_pickDate"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <!-- Notes Label -->
+    <TextView
+        android:id="@+id/textNotes"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
+        android:layout_below="@id/textTime"
+        android:text="Notes : "
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:layout_marginRight="16dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:layout_below="@+id/textNotes"
+        android:layout_alignLeft="@+id/textNotes"
+        android:layout_alignStart="@+id/textNotes" />
+
+    <!-- Notes Label -->
+    <TextView
+        android:id="@+id/takePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
+        android:layout_below="@id/editText"
+        android:text="Photo ? : "
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        />
+<RadioGroup
+    android:layout_width="wrap_content"
+    android:layout_height="48dp"
+    android:layout_below="@+id/editText"
+    android:layout_alignRight="@+id/editText"
+    android:layout_alignEnd="@+id/editText"
+    android:orientation="horizontal"
+    android:layout_marginRight="16dp"
+    >
+    <!-- Photo Yes Radio Button -->
+    <RadioButton
+        android:id="@+id/rbYes"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Yes"
+        android:layout_below="@+id/editText"
+        android:layout_alignRight="@+id/editText"
+        android:layout_alignEnd="@+id/editText"
+        android:checked="false"
+        android:clickable="false" />
+
+    <!-- Photo No Radio Button -->
+    <RadioButton
+        android:id="@+id/rbNo"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="No"
+        android:layout_below="@+id/editText"
+        android:layout_toLeftOf="@+id/btn_pickDate"
+        android:layout_toStartOf="@+id/btn_pickDate" />
+</RadioGroup>
+    <!-- Submit Button -->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/button"
+        android:background="@drawable/buttonsmall"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp" />
+
+</RelativeLayout>
