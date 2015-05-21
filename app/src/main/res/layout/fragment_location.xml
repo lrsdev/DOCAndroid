@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackground">
+
+    <ImageView
+        android:id="@+id/locationImage"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/stclair"/>
+
+    <!-- Spacing -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_alignBottom="@+id/locationImage"
+        android:layout_toLeftOf="@+id/locationDetails"
+        android:layout_toStartOf="@+id/locationDetails"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <!-- Page Heading -->
+    <TextView
+        android:id="@+id/textLocationDetails"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="0dp"
+        android:text="St Clair Beach"
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        android:textStyle="bold|italic"
+        android:typeface="serif"
+        android:layout_below="@+id/locationImage"/>
+
+    <!-- Dogs Allowed Text -->
+    <TextView
+        android:id="@+id/textDogDetails"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="0dp"
+        android:text="Dogs Allowed? :"
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        android:textStyle="bold|italic"
+        android:typeface="serif"
+        android:layout_below="@+id/textLocationDetails"/>
+
+    <ImageView
+        android:id="@+id/dogStatus"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/textLocationDetails"
+        android:layout_alignEnd="@+id/textDogDetails"
+        android:src="@drawable/ic_dogonleash"
+        />
+
+    <!-- Spacing -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_alignBottom="@+id/dogStatus"
+        android:layout_toLeftOf="@+id/locationDetails"
+        android:layout_toStartOf="@+id/locationDetails"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <!-- Wildlife Sights Text -->
+    <TextView
+        android:id="@+id/textWildlife"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="0dp"
+        android:text="Last Wildlife Sighting :"
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        android:textStyle="bold|italic"
+        android:typeface="serif"
+        android:layout_below="@+id/textDogDetails"/>
+
+
+
+
+</RelativeLayout>

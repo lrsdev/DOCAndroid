@@ -4,21 +4,23 @@
     android:layout_height="48dp"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/listIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher"/>
-
     <TextView
         android:id="@+id/listText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="72dp"
+        android:layout_marginLeft="16dp"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:text="Dummy Beach"/>
+        android:text="Dummy Text"/>
+
+    <ImageView
+        android:id="@+id/dogStatus"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/listText"
+        android:src="@drawable/ic_launcher"
+        />
 
 </RelativeLayout>
