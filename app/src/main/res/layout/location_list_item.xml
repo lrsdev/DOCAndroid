@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/locationListThumbImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher"
+        android:scaleType="fitXY"
+        android:padding="5dp"
+        />
+
+    <TextView
+        android:id="@+id/locationListTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="Title"
+        android:textSize="16sp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/locationListThumbImageView"
+        android:layout_toEndOf="@+id/locationListThumbImageView"/>
+
+    <TextView
+        android:id="@+id/locationListStatusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Dog Status"
+        android:layout_below="@+id/locationListTitleTextView"
+        android:layout_toRightOf="@+id/locationListThumbImageView"
+        android:layout_toEndOf="@+id/locationListThumbImageView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="3.6 Km"
+        android:id="@+id/locationListDistance"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

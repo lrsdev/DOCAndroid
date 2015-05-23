@@ -17,6 +17,7 @@
     <!-- Navigation drawer open/closed strings -->
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_closed">Drawer Closed</string>
+    <string name="title_activity_location_pager">LocationPagerActivity</string>
 
 </resources>
 
