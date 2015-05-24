@@ -98,4 +98,10 @@ public class Location implements Serializable
     {
         this.dogStatus = dogStatus;
     }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }

@@ -7,7 +7,7 @@
 
     <!-- Page Heading -->
     <TextView
-        android:id="@+id/textSightingDetails"
+        android:id="@+id/reportHeaderTextView"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
@@ -20,35 +20,35 @@
 
     <!-- Location Label -->
     <TextView
-        android:id="@+id/textLocationDetails"
+        android:id="@+id/reportLocationTextView"
         android:layout_width="156dp"
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="0dp"
-        android:layout_below="@id/textSightingDetails"
+        android:layout_below="@id/reportHeaderTextView"
         android:text="Location: "
         android:textColor="#FFFFFF"
         android:gravity="center_vertical"
         />
     <!-- Location Spinner -->
     <Spinner
-        android:id="@+id/locationSpinner"
+        android:id="@+id/reportLocationSpinner"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/textSightingDetails"
-        android:layout_toRightOf="@+id/textLocationDetails"
+        android:layout_below="@+id/reportHeaderTextView"
+        android:layout_toRightOf="@+id/reportLocationTextView"
         android:layout_marginRight="16dp"
         >
     </Spinner>
 
     <!-- Wildlife Type Label -->
     <TextView
-        android:id="@+id/textWildlife"
+        android:id="@+id/reportWildlifeTextView"
         android:layout_width="156dp"
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="0dp"
-        android:layout_below="@id/textLocationDetails"
+        android:layout_below="@id/reportLocationTextView"
         android:text="Wildlife Type: "
         android:textColor="#FFFFFF"
         android:gravity="center_vertical"
@@ -56,11 +56,11 @@
 
     <!-- Wildlife Type Spinner -->
     <Spinner
-        android:id="@+id/typeSpinner"
+        android:id="@+id/reportWildlifeTypeSpinner"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/locationSpinner"
-        android:layout_toRightOf="@+id/textWildlife"
+        android:layout_below="@+id/reportLocationSpinner"
+        android:layout_toRightOf="@+id/reportWildlifeTextView"
         android:layout_marginRight="16dp">
         </Spinner>
 
@@ -69,36 +69,36 @@
 
     <!-- Notes Label -->
     <TextView
-        android:id="@+id/textNotes"
+        android:id="@+id/reportNotesTextView"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="0dp"
-        android:layout_below="@id/typeSpinner"
+        android:layout_below="@id/reportWildlifeTypeSpinner"
         android:text="Notes : "
         android:textColor="#FFFFFF"
         android:gravity="center_vertical"
         />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/reportNotesEditText"
         android:layout_width="match_parent"
         android:layout_height="128dp"
         android:layout_marginRight="16dp"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:layout_below="@+id/textNotes"
-        android:layout_alignLeft="@+id/textNotes"
-        android:layout_alignStart="@+id/textNotes" />
+        android:layout_below="@+id/reportNotesTextView"
+        android:layout_alignLeft="@+id/reportNotesTextView"
+        android:layout_alignStart="@+id/reportNotesTextView" />
 
     <!-- Notes Label -->
     <TextView
-        android:id="@+id/takePhoto"
+        android:id="@+id/reportPhotoLabel"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="0dp"
-        android:layout_below="@id/editText"
+        android:layout_below="@id/reportNotesEditText"
         android:text="Photo ? : "
         android:textColor="#FFFFFF"
         android:gravity="center_vertical"
@@ -108,12 +108,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Take Photo"
-        android:id="@+id/button"
+        android:id="@+id/reportPhotoButton"
         android:background="@drawable/buttonsmall"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"
-        android:layout_below="@id/editText"
+        android:layout_below="@id/reportNotesEditText"
         android:layout_centerHorizontal="true"
         />
 
@@ -123,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
-        android:id="@+id/button"
+        android:id="@+id/reportSubmitButton"
         android:background="@drawable/buttonsmall"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
@@ -131,5 +131,13 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp" />
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/reportImageView"
+        android:layout_alignBottom="@+id/reportSubmitButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

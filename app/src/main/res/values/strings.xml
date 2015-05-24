@@ -14,6 +14,13 @@
         <item>Donate</item>
     </string-array>
 
+    <string-array name="wildlife_array">
+        <item>Seal</item>
+        <item>Sea Lion</item>
+        <item>Penguin</item>
+        <item>Other</item>
+    </string-array>
+
     <!-- Navigation drawer open/closed strings -->
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_closed">Drawer Closed</string>
