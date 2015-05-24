@@ -2,6 +2,7 @@ package bit.stewasc3.dogbeaches;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -31,6 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import UserAPI.ImageAttachment;
+import UserAPI.ReportSubmit;
 import UserAPI.RestClient;
 import UserAPI.UserApi;
 import retrofit.Callback;
@@ -53,10 +57,9 @@ public class ReportFragment extends Fragment
 
     // Locations prefixed with UserAPI (Collision with android.location)
     private ArrayList<UserAPI.Location> mLocations;
-    private ArrayAdapter mLocationAdapter;
-    private ArrayAdapter mWildlifeAdapter;
     private ImageView mThumbImageView;
     private File mImage;
+    private ProgressDialog pd;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -73,14 +76,24 @@ public class ReportFragment extends Fragment
     {
         final View view = inflater.inflate(R.layout.fragment_report, container, false);
 
+        final ArrayAdapter locationAdapter = new ArrayAdapter(getActivity(),
+                android.R.layout.simple_spinner_item, new ArrayList<UserAPI.Location>());
+        final Spinner locationSpinner = (Spinner) view.findViewById(R.id.reportLocationSpinner);
+        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(locationAdapter);
+
         // Eventually, we will query the rest client for beaches close to current location, for now
-        // populate list box with all locations from server.
+        // populate list box with all locations from server. ToDo: refactor
         RestClient.get().getAllLocations(new Callback<ArrayList<UserAPI.Location>>()
         {
             @Override
             public void success(ArrayList<UserAPI.Location> locations, Response response)
             {
-                mLocations = locations;
+                for(UserAPI.Location l : locations)
+                {
+                    locationAdapter.add(l);
+                }
+                locationAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -92,19 +105,15 @@ public class ReportFragment extends Fragment
             }
         });
 
-        final Spinner locationSpinner = (Spinner) view.findViewById(R.id.reportLocationSpinner);
-        mLocationAdapter = new ArrayAdapter(getActivity(),
-                android.R.layout.simple_spinner_item, mLocations);
-        mLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locationSpinner.setAdapter(mLocationAdapter);
-
         // Wildlife type populated from resource string array for now.
         final Spinner wildlifeSpinner = (Spinner) view.findViewById(R.id.reportWildlifeTypeSpinner);
-        mWildlifeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.wildlife_array,
+        ArrayAdapter wildlifeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.wildlife_array,
                 android.R.layout.simple_spinner_item);
-        mWildlifeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        wildlifeSpinner.setAdapter(mWildlifeAdapter);
+        wildlifeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        wildlifeSpinner.setAdapter(wildlifeAdapter);
 
+        // User entered notes/ blurb
+        final EditText blurbEditText = (EditText) view.findViewById(R.id.reportNotesEditText);
 
         // Camera image button
         Button photoButton = (Button) view.findViewById(R.id.reportPhotoButton);
@@ -117,6 +126,7 @@ public class ReportFragment extends Fragment
             }
         });
 
+        // Thumbnail displaying image after being taken
         mThumbImageView = (ImageView) view.findViewById(R.id.reportImageView);
 
         Button submitButton = (Button) view.findViewById(R.id.reportSubmitButton);
@@ -127,7 +137,8 @@ public class ReportFragment extends Fragment
             {
                 UserAPI.Location l = (UserAPI.Location)locationSpinner.getSelectedItem();
                 String animal = (String)wildlifeSpinner.getSelectedItem();
-                submitReport(l, animal);
+                String blurb = blurbEditText.getText().toString();
+                submitReport(l, animal, blurb);
             }
         });
 
@@ -152,24 +163,66 @@ public class ReportFragment extends Fragment
     }
 
     // Encode image to base64, get user entered details, encode JSON, send.
-    private void submitReport(UserAPI.Location l, String animal)
+    private void submitReport(UserAPI.Location l, String animal, String blurb)
     {
+        ReportSubmit report = new ReportSubmit();
+
         if (mImage != null)
         {
-            // Get a base64 string
+            ImageAttachment img = new ImageAttachment();
+            img.setImageData(getBase64(mImage));
+            img.setImageContentType("image/jpeg");
+            img.setImageFilename(mImage.getName());
+            report.setImage(img);
         }
 
         // We'll use item ID's for now from locations, but this will need changing for considering
         // offline operation.
-
-        int location_id = l.getId();
         Location lastKnown = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        report.setLocationId(l.getId());
+        report.setBlurb(blurb);
+        report.setUserId(1);
+        report.setAnimalId(2);
+
+        // Create a POINT for PostGIS datatype TODO: Tidy, embed in ReportSubmit class perhaps
+        //String point = "POINT (" + Double.toString(lastKnown.getLatitude()) +
+        //        " " + Double.toString(lastKnown.getLongitude()) + ")";
+        report.setGeolocation("POINT(-45.3423 105.344323");
+
+        // Progress spinner while report uploads
+        pd = new ProgressDialog(getActivity());
+        pd.setTitle("Submitting...");
+        pd.setMessage("Please wait.");
+        pd.setCancelable(false);
+        pd.setIndeterminate(true);
+        pd.show();
+
+        RestClient.get().createReport(report, new Callback<ReportSubmit>()
+        {
+            @Override
+            public void success(ReportSubmit reportSubmit, Response response)
+            {
+                Toast.makeText(getActivity(), "Report uploaded!", Toast.LENGTH_LONG).show();
+                pd.dismiss();
+                getFragmentManager().popBackStackImmediate();
+            }
+
+            @Override
+            public void failure(RetrofitError error)
+            {
+                Toast.makeText(getActivity(), "Report upload failed", Toast.LENGTH_LONG).show();
+            }
+        });
+        // Progress spinner
     }
 
+    // SDK 8 + Only
     private String getBase64(File image)
     {
         Bitmap bm = BitmapFactory.decodeFile(image.getPath());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // Todo: Quality constant (80)
         bm.compress(Bitmap.CompressFormat.JPEG, 80, baos);
         return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
     }

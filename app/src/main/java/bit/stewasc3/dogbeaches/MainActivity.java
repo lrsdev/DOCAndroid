@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity
     {
         fm.beginTransaction()
                 .replace(R.id.content_container, f)
+                .addToBackStack("")
                 .commit();
     }
 
