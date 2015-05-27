@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -116,7 +117,7 @@ public class ReportFragment extends Fragment
         final EditText blurbEditText = (EditText) view.findViewById(R.id.reportNotesEditText);
 
         // Camera image button
-        Button photoButton = (Button) view.findViewById(R.id.reportPhotoButton);
+        ImageButton photoButton = (ImageButton) view.findViewById(R.id.reportPhotoButton);
         photoButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -129,7 +130,7 @@ public class ReportFragment extends Fragment
         // Thumbnail displaying image after being taken
         mThumbImageView = (ImageView) view.findViewById(R.id.reportImageView);
 
-        Button submitButton = (Button) view.findViewById(R.id.reportSubmitButton);
+        ImageButton submitButton = (ImageButton) view.findViewById(R.id.reportSubmitButton);
         submitButton.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -4,7 +4,6 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-
     <!-- Page Heading -->
     <TextView
         android:id="@+id/reportHeaderTextView"
@@ -18,6 +17,16 @@
         android:textStyle="bold|italic"
         android:typeface="serif" />
 
+    <!-- Image taken -->
+    <ImageView
+        android:layout_below="@+id/reportHeaderTextView"
+        android:layout_width="240dp"
+        android:layout_height="180dp"
+        android:layout_marginLeft="16dp"
+        android:id="@+id/reportImageView"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/stclair"/>
+
     <!-- Location Label -->
     <TextView
         android:id="@+id/reportLocationTextView"
@@ -25,7 +34,8 @@
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="0dp"
-        android:layout_below="@id/reportHeaderTextView"
+        android:layout_below="@id/reportImageView"
+        android:textStyle="bold|italic"
         android:text="Location: "
         android:textColor="#FFFFFF"
         android:gravity="center_vertical"
@@ -35,7 +45,7 @@
         android:id="@+id/reportLocationSpinner"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/reportHeaderTextView"
+        android:layout_below="@+id/reportImageView"
         android:layout_toRightOf="@+id/reportLocationTextView"
         android:layout_marginRight="16dp"
         >
@@ -49,6 +59,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="0dp"
         android:layout_below="@id/reportLocationTextView"
+        android:textStyle="bold|italic"
         android:text="Wildlife Type: "
         android:textColor="#FFFFFF"
         android:gravity="center_vertical"
@@ -64,80 +75,66 @@
         android:layout_marginRight="16dp">
         </Spinner>
 
-
-
-
     <!-- Notes Label -->
     <TextView
         android:id="@+id/reportNotesTextView"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="24dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="0dp"
         android:layout_below="@id/reportWildlifeTypeSpinner"
+        android:textStyle="bold|italic"
         android:text="Notes : "
         android:textColor="#FFFFFF"
         android:gravity="center_vertical"
         />
 
+    <!-- Notes Label -->
     <EditText
         android:id="@+id/reportNotesEditText"
-        android:layout_width="match_parent"
-        android:layout_height="128dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
-        android:inputType="textMultiLine"
-        android:ems="10"
+        android:inputType="textWebEmailAddress"
+        android:ems="8"
         android:layout_below="@+id/reportNotesTextView"
         android:layout_alignLeft="@+id/reportNotesTextView"
         android:layout_alignStart="@+id/reportNotesTextView" />
 
-    <!-- Notes Label -->
-    <TextView
-        android:id="@+id/reportPhotoLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="0dp"
-        android:layout_below="@id/reportNotesEditText"
-        android:text="Photo ? : "
-        android:textColor="#FFFFFF"
-        android:gravity="center_vertical"
-        />
-    <!-- Submit Button -->
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Take Photo"
+    <!-- Camera Button -->
+    <ImageButton
         android:id="@+id/reportPhotoButton"
-        android:background="@drawable/buttonsmall"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:layout_below="@id/reportNotesEditText"
-        android:layout_centerHorizontal="true"
-        />
-
-
-    <!-- Submit Button -->
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:id="@+id/reportSubmitButton"
-        android:background="@drawable/buttonsmall"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@color/windowBackground"
+        android:src="@drawable/camera"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:id="@+id/reportImageView"
-        android:layout_alignBottom="@+id/reportSubmitButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+    <!-- Submit/Upload Button -->
+    <ImageButton
+        android:id="@+id/reportSubmitButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@color/windowBackground"
+        android:src="@drawable/upload"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_alignLeft="@+id/reportNotesEditText"
+        android:layout_alignStart="@+id/reportNotesEditText" />
+
+    <!-- Delete / Reset Button -->
+
+    <ImageButton
+        android:id="@+id/reportClearButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@color/windowBackground"
+        android:src="@drawable/trash"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_alignRight="@+id/reportWildlifeTypeSpinner"
+        android:layout_alignEnd="@+id/reportWildlifeTypeSpinner" />
 
 </RelativeLayout>

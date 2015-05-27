@@ -5,9 +5,10 @@
               android:layout_height="match_parent"
               android:background="@drawable/stclair">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Place holder text for home fragment"/>
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/welcome"/>
 
 </LinearLayout>
