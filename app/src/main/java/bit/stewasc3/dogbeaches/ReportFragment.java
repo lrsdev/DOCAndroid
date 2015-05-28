@@ -69,7 +69,9 @@ public class ReportFragment extends Fragment
 
         // Start listening for location updates while user completes report
         lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15, 0, new ReportLocationListener());
+        LocationListener listener = new ReportLocationListener();
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
+        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
     }
 
     @Override
@@ -136,10 +138,17 @@ public class ReportFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                UserAPI.Location l = (UserAPI.Location)locationSpinner.getSelectedItem();
-                String animal = (String)wildlifeSpinner.getSelectedItem();
-                String blurb = blurbEditText.getText().toString();
-                submitReport(l, animal, blurb);
+                if(mImage == null)
+                {
+                    Toast.makeText(getActivity(), "Please take a photo", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    UserAPI.Location l = (UserAPI.Location) locationSpinner.getSelectedItem();
+                    String animal = (String) wildlifeSpinner.getSelectedItem();
+                    String blurb = blurbEditText.getText().toString();
+                    submitReport(l, animal, blurb);
+                }
             }
         });
 
@@ -179,17 +188,18 @@ public class ReportFragment extends Fragment
 
         // We'll use item ID's for now from locations, but this will need changing for considering
         // offline operation.
-        Location lastKnown = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location lastKnown = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         report.setLocationId(l.getId());
         report.setBlurb(blurb);
         report.setUserId(1);
-        report.setAnimalId(2);
+        //report.setAnimalId(2);  // Not implemented server side
 
         // Create a POINT for PostGIS datatype TODO: Tidy, embed in ReportSubmit class perhaps
-        //String point = "POINT (" + Double.toString(lastKnown.getLatitude()) +
-        //        " " + Double.toString(lastKnown.getLongitude()) + ")";
-        report.setGeolocation("POINT(-45.3423 105.344323");
+        // Change api interface to accept seperate lat long values.
+        String point = "POINT (" + Double.toString(lastKnown.getLatitude()) +
+                " " + Double.toString(lastKnown.getLongitude()) + ")";
+        report.setGeolocation(point);
 
         // Progress spinner while report uploads
         pd = new ProgressDialog(getActivity());
@@ -213,6 +223,7 @@ public class ReportFragment extends Fragment
             public void failure(RetrofitError error)
             {
                 Toast.makeText(getActivity(), "Report upload failed", Toast.LENGTH_LONG).show();
+                pd.dismiss();
             }
         });
         // Progress spinner

@@ -27,7 +27,10 @@ public class LocationPagerActivity extends AppCompatActivity
         mViewPager.setId(R.id.locationViewPager);
         setContentView(mViewPager);
 
-        // Get passed array
+        // Provide up navigation
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Get passed array, Location type implements SERIALIZABLE. Or use singleton?
         mLocations = (ArrayList<Location>)
                 getIntent().getSerializableExtra(LocationListFragment.KEY_LOCATION_ARRAY);
 
@@ -51,6 +54,25 @@ public class LocationPagerActivity extends AppCompatActivity
         });
 
         mViewPager.setCurrentItem(index);
+        setTitle(mLocations.get(index).getName());
+
+
+        // Set title
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) { }
+
+            @Override
+            public void onPageSelected(int i)
+            {
+                Location l = mLocations.get(i);
+                setTitle(l.getName());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) { }
+        });
     }
 
     @Override

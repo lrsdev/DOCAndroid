@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     android:background="@color/windowBackground">
 
     <ImageView
@@ -73,15 +73,37 @@
         android:id="@+id/locationWildlifeTextView"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:text="Last Wildlife Sighting :"
+        android:text="Recent Wildlife Sightings:"
         android:textColor="#FFFFFF"
         android:gravity="center_vertical"
         android:textStyle="bold|italic"
         android:typeface="serif"
         android:layout_below="@+id/locationDogStatusTextView"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_alignLeft="@+id/locationDogStatusTextView"
+        android:layout_alignStart="@+id/locationDogStatusTextView"
+        android:layout_marginTop="44dp"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Dog Guidelines: "
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        android:textStyle="bold|italic"
+        android:typeface="serif"
+        android:layout_below="@+id/locationDogStatusTextView"
+        android:layout_alignLeft="@+id/locationWildlifeTextView"
+        android:layout_alignStart="@+id/locationWildlifeTextView"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/locationReportListView"
+        android:layout_below="@+id/locationWildlifeTextView"
+        android:layout_alignLeft="@+id/locationWildlifeTextView"
+        android:layout_alignStart="@+id/locationWildlifeTextView"
+        android:layout_alignRight="@+id/locationDogStatusTextView"
+        android:layout_alignEnd="@+id/locationDogStatusTextView"/>
 
 </RelativeLayout>

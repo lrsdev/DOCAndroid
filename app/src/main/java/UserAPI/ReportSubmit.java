@@ -5,6 +5,7 @@ package UserAPI;
  */
 public class ReportSubmit
 {
+    private int id;
     private int locationId;
     private int userId;
     private int animalId;

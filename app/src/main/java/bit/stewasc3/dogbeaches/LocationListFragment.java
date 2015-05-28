@@ -35,7 +35,6 @@ public class LocationListFragment extends ListFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle("Location List");
 
         // TODO: Refine later to get locations close to user
         RestClient.get().getAllLocations(new Callback<ArrayList<Location>>()

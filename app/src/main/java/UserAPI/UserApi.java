@@ -6,11 +6,15 @@ import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Query;
 
 public interface UserApi
 {
     @GET("/locations/")
     public void getAllLocations(Callback<ArrayList<Location>> db);
+
+    @GET("/reports/")
+    public void getReports(@Query("location_id") Integer location_id, Callback<ArrayList<Report>> cb);
 
     @POST("/reports")
     public void createReport(@Body ReportSubmit reportSubmit, Callback<ReportSubmit> cb);

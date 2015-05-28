@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity
             public void onDrawerOpened(View drawerView)
             {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation");
                 invalidateOptionsMenu();
             }
 
@@ -140,7 +139,8 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    // Replace content fragment with fragment argument
+    // Replace content fragment with fragment argument, add to back stack so we can manually
+    // pop them off if required
     private void setContentFragment(Fragment f)
     {
         fm.beginTransaction()
@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity
             switch (position)
                     {
                         case 0: // Home was clicked
+                            getSupportActionBar().setTitle("Home");
                             setContentFragment(new HomeFragment());
                             break;
                         case 1: // Map was clicked
@@ -171,12 +172,14 @@ public class MainActivity extends AppCompatActivity
                             break;
                         case 2: // Locations was clicked
                             setContentFragment(new LocationListFragment());
+                            getSupportActionBar().setTitle("Location List");
                             break;
                         case 3: // Wildlife was clicked
                             notImplemented();
                             break;
                         case 4: // Report was clicked
                             setContentFragment(new ReportFragment());
+                            getSupportActionBar().setTitle("Wildlife Report");
                             break;
                         case 5: // Donate was clicked
                             notImplemented();

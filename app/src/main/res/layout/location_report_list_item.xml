@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
-
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
     <!-- Spacing -->
-
     <ImageView
-        android:id="@+id/locationListThumbImageView"
+        android:id="@+id/reportListThumbImageView"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:src="@drawable/ic_launcher"
@@ -17,38 +14,39 @@
         />
 
     <TextView
-        android:id="@+id/locationListTitleTextView"
+        android:id="@+id/reportListTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:text="Title"
         android:textSize="16sp"
-        android:layout_alignTop="@+id/locationListThumbImageView"
-        android:layout_toRightOf="@+id/locationListThumbImageView"
-        android:layout_toEndOf="@+id/locationListThumbImageView"/>
+        android:layout_alignTop="@+id/reportListThumbImageView"
+        android:layout_toRightOf="@+id/reportListThumbImageView"
+        android:layout_toEndOf="@+id/reportListThumbImageView"/>
 
     <TextView
-        android:id="@+id/locationListStatusTextView"
+        android:id="@+id/reportListAnimalTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Dog Status"
-        android:layout_below="@+id/locationListTitleTextView"
-        android:layout_alignLeft="@+id/locationListTitleTextView"
-        android:layout_alignStart="@+id/locationListTitleTextView"/>
+        android:text="Blurb"
+        android:layout_below="@+id/reportListTitleTextView"
+        android:layout_toRightOf="@+id/reportListThumbImageView"
+        android:layout_toEndOf="@+id/reportListThumbImageView"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="3.6 Km"
-        android:id="@+id/locationListDistance"
+        android:text="13/04/2015"
+        android:id="@+id/reportListDate"
         android:layout_gravity="center_vertical"
-        android:layout_alignTop="@+id/locationListTitleTextView"
+        android:layout_marginRight="34dp"
+        android:layout_alignTop="@+id/reportListTitleTextView"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="34dp"/>
 
     <!-- Dog Status icon -->
-
 
 </RelativeLayout>
