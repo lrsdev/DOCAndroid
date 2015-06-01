@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import com.viewpagerindicator.CirclePageIndicator;
 import java.util.ArrayList;
 
 import UserAPI.Location;
@@ -18,14 +18,14 @@ public class LocationPagerActivity extends AppCompatActivity
 {
     private ViewPager mViewPager;
     private ArrayList<Location> mLocations;
+    private CirclePageIndicator mCircleIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mViewPager = new ViewPager(this);
-        mViewPager.setId(R.id.locationViewPager);
-        setContentView(mViewPager);
+        setContentView(R.layout.activity_locationpager);
+        mViewPager = (ViewPager) findViewById(R.id.locationViewPager);
 
         // Provide up navigation
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -34,6 +34,7 @@ public class LocationPagerActivity extends AppCompatActivity
         mLocations = (ArrayList<Location>)
                 getIntent().getSerializableExtra(LocationListFragment.KEY_LOCATION_ARRAY);
 
+        // Index which was selected from location list ( Used to start ViewPager on correct fragment )
         Integer index = getIntent().getIntExtra(LocationListFragment.KEY_LOCATION_ARRAY_INDEX, 0);
 
         FragmentManager fm = getSupportFragmentManager();
@@ -53,12 +54,14 @@ public class LocationPagerActivity extends AppCompatActivity
             }
         });
 
+        mCircleIndicator = (CirclePageIndicator)findViewById(R.id.locationViewPagerIndicator);
+        mCircleIndicator.setViewPager(mViewPager);
+
         mViewPager.setCurrentItem(index);
         setTitle(mLocations.get(index).getName());
 
-
-        // Set title
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        // Set title, set on indicator to enable it to cycle.
+        mCircleIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
             @Override
             public void onPageScrolled(int i, float v, int i2) { }
