@@ -5,4 +5,5 @@
     <color name="accentColor">#99B911</color>
     <color name="windowBackground">#008CB2</color>
     <color name="navDrawer">#EbE5DA</color>
+    <color name="navigationBar">#008CB2</color>
 </resources>
