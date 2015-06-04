@@ -36,12 +36,17 @@ public class MainActivity extends AppCompatActivity
     private FrameLayout mContentContainer;
     private FragmentManager fm;
     private ActionBarDrawerToggle mDrawerToggle;
+    private CustomLocationService mCustomLocationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Start location service
+        mCustomLocationService = mCustomLocationService.get(getApplicationContext());
+        mCustomLocationService.startUpdates();
 
         // Get references to needed views, fragment manager
         fm = getFragmentManager();
