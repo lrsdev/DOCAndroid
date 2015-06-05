@@ -3,6 +3,7 @@ package bit.stewasc3.dogbeaches;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -42,12 +43,9 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class ReportFragment extends Fragment
+public class LodgeReportFragment extends Fragment
 {
     private static final int REQUEST_IMAGE_CODE = 100;
-
-    private LocationManager lm;
-
 
     /* Start obtaining users location when fragment instantiates. Populate Location list with
         locations close to the user. At the moment, this will jsut pull in the entire location list
@@ -61,17 +59,26 @@ public class ReportFragment extends Fragment
     private ImageView mThumbImageView;
     private File mImage;
     private ProgressDialog pd;
+    private Location mLastLocation;
+    private BroadcastReceiver mLocationReceiver = new LocationReceiver()
+    {
+        @Override
+        protected void onLocationReceived(Context context, Location loc)
+        {
+            mLastLocation = loc;
+        }
+
+        @Override
+        protected void onProviderEnabledChanged(boolean enabled)
+        {
+           //
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        // Start listening for location updates while user completes report
-        lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        LocationListener listener = new ReportLocationListener();
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
-        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, listener);
     }
 
     @Override
@@ -177,29 +184,30 @@ public class ReportFragment extends Fragment
     {
         ReportSubmit report = new ReportSubmit();
 
-        if (mImage != null)
+        if(mLastLocation == null)
         {
-            ImageAttachment img = new ImageAttachment();
-            img.setImageData(getBase64(mImage));
-            img.setImageContentType("image/jpeg");
-            img.setImageFilename(mImage.getName());
-            report.setImage(img);
+            Toast.makeText(getActivity(), "Cannot obtain GPS Location at this time.", Toast.LENGTH_SHORT)
+                .show();
+        }
+        else
+        {
+            // TODO: Tidy the point interface. Change User API to accept lat/long in JSON payload, rather than POINT() string
+            String point = "POINT (" + Double.toString(mLastLocation.getLatitude()) +
+                    " " + Double.toString(mLastLocation.getLongitude()) + ")";
+            report.setGeolocation(point);
         }
 
-        // We'll use item ID's for now from locations, but this will need changing for considering
-        // offline operation.
-        Location lastKnown = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        ImageAttachment img = new ImageAttachment();
+        img.setImageData(getBase64(mImage));
+        img.setImageContentType("image/jpeg");
+        img.setImageFilename(mImage.getName());
+        report.setImage(img);
 
         report.setLocationId(l.getId());
         report.setBlurb(blurb);
-        report.setUserId(1);
+        report.setUserId(1); // No user registration avaiable yet, set to 1.
         //report.setAnimalId(2);  // Not implemented server side
 
-        // Create a POINT for PostGIS datatype TODO: Tidy, embed in ReportSubmit class perhaps
-        // Change api interface to accept seperate lat long values.
-        String point = "POINT (" + Double.toString(lastKnown.getLatitude()) +
-                " " + Double.toString(lastKnown.getLongitude()) + ")";
-        report.setGeolocation(point);
 
         // Progress spinner while report uploads
         pd = new ProgressDialog(getActivity());
@@ -226,15 +234,14 @@ public class ReportFragment extends Fragment
                 pd.dismiss();
             }
         });
-        // Progress spinner
     }
 
-    // SDK 8 + Only
+    // Base64 available for SDK 8 + Only
+    // ToDo: Look into multipart post, quality constant
     private String getBase64(File image)
     {
         Bitmap bm = BitmapFactory.decodeFile(image.getPath());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        // Todo: Quality constant (80)
         bm.compress(Bitmap.CompressFormat.JPEG, 80, baos);
         return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
     }

@@ -1,15 +1,12 @@
 package bit.stewasc3.dogbeaches;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
-import android.os.Debug;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,14 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-
-import UserAPI.Location;
-import UserAPI.RestClient;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class MainActivity extends AppCompatActivity
@@ -183,7 +172,7 @@ public class MainActivity extends AppCompatActivity
                             notImplemented();
                             break;
                         case 4: // Report was clicked
-                            setContentFragment(new ReportFragment());
+                            setContentFragment(new LodgeReportFragment());
                             getSupportActionBar().setTitle("Wildlife Report");
                             break;
                         case 5: // Donate was clicked
