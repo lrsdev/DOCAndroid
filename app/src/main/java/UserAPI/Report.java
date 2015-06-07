@@ -1,30 +1,18 @@
 package UserAPI;
 
-import java.io.Serializable;
-import java.util.Date;
-
 /**
- * Created by samuel on 28/05/15.
+ * Created by samuel on 24/05/15.
  */
-public class Report implements Serializable
+public class Report
 {
     private int id;
+    private int locationId;
     private int userId;
     private int animalId;
     private String blurb;
-    private String imageThumb;
-    private String imageMedium;
-    private Date submittedAt;
-
-    public Date getSubmittedAt()
-    {
-        return submittedAt;
-    }
-
-    public void setSubmittedAt(Date submittedAt)
-    {
-        this.submittedAt = submittedAt;
-    }
+    private String geolocation;
+    private ImageAttachment image;
+    private String submittedAt;
 
     public int getId()
     {
@@ -36,14 +24,24 @@ public class Report implements Serializable
         this.id = id;
     }
 
-    public String getBlurb()
+    public String getSubmittedAt()
     {
-        return blurb;
+        return submittedAt;
     }
 
-    public void setBlurb(String blurb)
+    public void setSubmittedAt(String submittedAt)
     {
-        this.blurb = blurb;
+        this.submittedAt = submittedAt;
+    }
+
+    public int getLocationId()
+    {
+        return locationId;
+    }
+
+    public void setLocationId(int locationId)
+    {
+        this.locationId = locationId;
     }
 
     public int getUserId()
@@ -66,23 +64,33 @@ public class Report implements Serializable
         this.animalId = animalId;
     }
 
-    public String getImageThumb()
+    public String getBlurb()
     {
-        return imageThumb;
+        return blurb;
     }
 
-    public void setImageThumb(String imageThumb)
+    public void setBlurb(String blurb)
     {
-        this.imageThumb = imageThumb;
+        this.blurb = blurb;
     }
 
-    public String getImageMedium()
+    public String getGeolocation()
     {
-        return imageMedium;
+        return geolocation;
     }
 
-    public void setImageMedium(String imageMedium)
+    public void setGeolocation(String geolocation)
     {
-        this.imageMedium = imageMedium;
+        this.geolocation = geolocation;
+    }
+
+    public ImageAttachment getImage()
+    {
+        return image;
+    }
+
+    public void setImage(ImageAttachment image)
+    {
+        this.image = image;
     }
 }

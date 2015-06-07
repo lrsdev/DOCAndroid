@@ -10,15 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.viewpagerindicator.CirclePageIndicator;
 import java.util.ArrayList;
-import UserAPI.Report;
+import UserAPI.Sighting;
 
 public class SightingPagerActivity extends AppCompatActivity
 {
-    public static final String KEY_REPORT_ARRAY = "dogapp.report_array";
-    public static final String KEY_REPORT_INDEX = "dogapp.report_index";
+    public static final String KEY_SIGHTING_ARRAY = "dogapp.report_array";
+    public static final String KEY_SIGHTING_INDEX = "dogapp.report_index";
 
     private ViewPager mViewPager;
-    private ArrayList<Report> mReports;
+    private ArrayList<Sighting> mSightings;
     private CirclePageIndicator mCircleIndicator;
 
     @Override
@@ -30,9 +30,9 @@ public class SightingPagerActivity extends AppCompatActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mReports = (ArrayList<Report>)getIntent().getSerializableExtra(KEY_REPORT_ARRAY);
+        mSightings = (ArrayList<Sighting>)getIntent().getSerializableExtra(KEY_SIGHTING_ARRAY);
 
-        Integer index = getIntent().getIntExtra(KEY_REPORT_INDEX, 0);
+        Integer index = getIntent().getIntExtra(KEY_SIGHTING_INDEX, 0);
         FragmentManager fm = getSupportFragmentManager();
 
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fm)
@@ -40,14 +40,14 @@ public class SightingPagerActivity extends AppCompatActivity
             @Override
             public Fragment getItem(int position)
             {
-                Report r = mReports.get(position);
-                return SightingFragment.newInstance(r);
+                Sighting s = mSightings.get(position);
+                return SightingFragment.newInstance(s);
             }
 
             @Override
             public int getCount()
             {
-                return mReports.size();
+                return mSightings.size();
             }
         });
 
@@ -55,7 +55,7 @@ public class SightingPagerActivity extends AppCompatActivity
         mCircleIndicator.setViewPager(mViewPager);
 
         mViewPager.setCurrentItem(index);
-        setTitle("Report");
+        setTitle("Sighting");
 
         // Set title, set on indicator to enable it to cycle.
         mCircleIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
@@ -68,8 +68,8 @@ public class SightingPagerActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int i)
             {
-                Report r = mReports.get(i);
-                setTitle("Report");
+                Sighting r = mSightings.get(i);
+                setTitle("Sighting");
             }
 
             @Override

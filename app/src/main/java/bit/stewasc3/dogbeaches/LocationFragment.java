@@ -1,6 +1,5 @@
 package bit.stewasc3.dogbeaches;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,14 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import UserAPI.Location;
-import UserAPI.Report;
+import UserAPI.Sighting;
 import UserAPI.RestClient;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -36,7 +34,7 @@ public class LocationFragment extends Fragment
     public static final String KEY_LOCATION = "dogapp.location";
     Location mLocation;
     ListView mReportListView;
-    ArrayList<Report> mReports;
+    ArrayList<Sighting> mSightings;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -45,13 +43,13 @@ public class LocationFragment extends Fragment
         Bundle args = getArguments();
         mLocation = (Location) args.getSerializable(KEY_LOCATION);
 
-        RestClient.get().getReports(mLocation.getId(), new Callback<ArrayList<Report>>()
+        RestClient.get().getReports(mLocation.getId(), new Callback<ArrayList<Sighting>>()
         {
             @Override
-            public void success(ArrayList<Report> reports, Response response)
+            public void success(ArrayList<Sighting> sightings, Response response)
             {
-                mReports = reports;
-                mReportListView.setAdapter(new ReportListAdapter(mReports));
+                mSightings = sightings;
+                mReportListView.setAdapter(new ReportListAdapter(mSightings));
             }
 
             @Override
@@ -93,7 +91,7 @@ public class LocationFragment extends Fragment
 
     public class ReportListAdapter extends ArrayAdapter
     {
-        public ReportListAdapter(ArrayList<Report>reports) { super(getActivity(), 0,reports);}
+        public ReportListAdapter(ArrayList<Sighting> sightings) { super(getActivity(), 0, sightings);}
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
@@ -103,13 +101,16 @@ public class LocationFragment extends Fragment
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.location_report_list_item, null);
             }
 
-            Report r = (Report) getItem(position);
+            Sighting r = (Sighting) getItem(position);
 
             TextView reportTitle = (TextView) convertView.findViewById(R.id.reportListTitleTextView);
             reportTitle.setText("Report #" + r.getId());
 
             TextView reportBlurb = (TextView) convertView.findViewById(R.id.reportListAnimalTextView);
             reportBlurb.setText(r.getBlurb());
+
+            TextView reportDate = (TextView) convertView.findViewById(R.id.reportListDate);
+            reportDate.setText(r.getSubmittedAt().toString());
 
             ImageView reportThumb = (ImageView) convertView.findViewById(R.id.reportListThumbImageView);
             Picasso.with(getActivity()).load(r.getImageThumb()).into(reportThumb);
@@ -124,8 +125,8 @@ public class LocationFragment extends Fragment
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
             Intent i = new Intent(getActivity(), SightingPagerActivity.class);
-            i.putExtra(SightingPagerActivity.KEY_REPORT_ARRAY, mReports);
-            i.putExtra(SightingPagerActivity.KEY_REPORT_INDEX, position);
+            i.putExtra(SightingPagerActivity.KEY_SIGHTING_ARRAY, mSightings);
+            i.putExtra(SightingPagerActivity.KEY_SIGHTING_INDEX, position);
             startActivity(i);
         }
     }

@@ -7,32 +7,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import UserAPI.Report;
+import UserAPI.Sighting;
 
 /**
  * Created by samuel on 5/06/15.
  */
 public class SightingFragment extends Fragment
 {
-    public static final String KEY_REPORT = "dogapp.report";
-    private Report mReport;
+    public static final String KEY_SIGHTING = "dogapp.report";
+    private Sighting mSighting;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mReport = (Report)getArguments().getSerializable(KEY_REPORT);
+        mSighting = (Sighting)getArguments().getSerializable(KEY_SIGHTING);
     }
 
-    public static Fragment newInstance(Report r)
+    public static Fragment newInstance(Sighting s)
     {
         Bundle args = new Bundle();
-        args.putSerializable(KEY_REPORT, r);
+        args.putSerializable(KEY_SIGHTING, s);
         Fragment f = new SightingFragment();
         f.setArguments(args);
         return f;
@@ -44,15 +43,20 @@ public class SightingFragment extends Fragment
     {
         View v = inflater.inflate(R.layout.fragment_sighting, container, false);
 
-        TextView mLocationTextView = (TextView)v.findViewById(R.id.sightingLocationTextView);
+        TextView locationTextView = (TextView)v.findViewById(R.id.sightingLocationTextView);
+        locationTextView.setText("Location: " + mSighting.getLocationName());
 
-        TextView mTypeTextView = (TextView)v.findViewById(R.id.sightingTypeTextView);
+        TextView typeTextView = (TextView)v.findViewById(R.id.sightingTypeTextView);
+        typeTextView.setText("Type: " + "Not yet implemented server side");
 
-        TextView mDateTextView = (TextView)v.findViewById(R.id.sightingDateTextView);
-        mDateTextView.setText("Date: " + mReport.getSubmittedAt().toString());
+        TextView blurbTextView = (TextView)v.findViewById(R.id.sightingBlurbTextView);
+        blurbTextView.setText("Blurb " + mSighting.getBlurb());
 
-        ImageView mSightingImageView = (ImageView)v.findViewById(R.id.sightingImageView);
-        Picasso.with(getActivity()).load(mReport.getImageMedium()).into(mSightingImageView);
+        TextView dateTextView = (TextView)v.findViewById(R.id.sightingDateTextView);
+        dateTextView.setText("Date: " + mSighting.getSubmittedAt().toString());
+
+        ImageView sightingImageView = (ImageView)v.findViewById(R.id.sightingImageView);
+        Picasso.with(getActivity()).load(mSighting.getImageMedium()).into(sightingImageView);
 
         return v;
     }

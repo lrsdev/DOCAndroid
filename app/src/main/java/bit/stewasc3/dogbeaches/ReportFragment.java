@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -34,13 +35,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import UserAPI.ImageAttachment;
-import UserAPI.ReportSubmit;
+import UserAPI.Report;
 import UserAPI.RestClient;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class LodgeReportFragment extends Fragment
+public class ReportFragment extends Fragment
 {
     private static final int REQUEST_IMAGE_CODE = 100;
 
@@ -57,18 +58,13 @@ public class LodgeReportFragment extends Fragment
     private File mImage;
     private ProgressDialog pd;
     private Location mLastLocation;
+    private CustomLocationService mLocationService;
     private BroadcastReceiver mLocationReceiver = new LocationReceiver()
     {
         @Override
-        protected void onLocationReceived(Context context, Location loc)
+        protected void onLocationReceived(Context context, Location l)
         {
-            mLastLocation = loc;
-        }
-
-        @Override
-        protected void onProviderEnabledChanged(boolean enabled)
-        {
-           //
+            mLastLocation = l;
         }
     };
 
@@ -76,6 +72,10 @@ public class LodgeReportFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getActivity().registerReceiver(mLocationReceiver,
+                new IntentFilter(CustomLocationService.ACTION_LOCATION));
+        mLocationService = CustomLocationService.get(getActivity());
+        mLocationService.startUpdates();
     }
 
     @Override
@@ -146,6 +146,11 @@ public class LodgeReportFragment extends Fragment
                 {
                     Toast.makeText(getActivity(), "Please take a photo", Toast.LENGTH_SHORT).show();
                 }
+                else if(mLastLocation == null)
+                {
+                    Toast.makeText(getActivity(), "Location could not be obtained", Toast.LENGTH_SHORT)
+                            .show();
+                }
                 else
                 {
                     UserAPI.Location l = (UserAPI.Location) locationSpinner.getSelectedItem();
@@ -179,7 +184,7 @@ public class LodgeReportFragment extends Fragment
     // Encode image to base64, get user entered details, encode JSON, send.
     private void submitReport(UserAPI.Location l, String animal, String blurb)
     {
-        ReportSubmit report = new ReportSubmit();
+        Report report = new Report();
 
         if(mLastLocation == null)
         {
@@ -188,7 +193,7 @@ public class LodgeReportFragment extends Fragment
         }
         else
         {
-            // TODO: Tidy the point interface. Change User API to accept lat/long in JSON payload, rather than POINT() string
+            // TODO: Change User API to accept lat/long in JSON payload, rather than POINT() string
             String point = "POINT (" + Double.toString(mLastLocation.getLatitude()) +
                     " " + Double.toString(mLastLocation.getLongitude()) + ")";
             report.setGeolocation(point);
@@ -217,10 +222,10 @@ public class LodgeReportFragment extends Fragment
         pd.setIndeterminate(true);
         pd.show();
 
-        RestClient.get().createReport(report, new Callback<ReportSubmit>()
+        RestClient.get().createReport(report, new Callback<Report>()
         {
             @Override
-            public void success(ReportSubmit reportSubmit, Response response)
+            public void success(Report report, Response response)
             {
                 Toast.makeText(getActivity(), "Report uploaded!", Toast.LENGTH_LONG).show();
                 pd.dismiss();
@@ -276,31 +281,10 @@ public class LodgeReportFragment extends Fragment
         return image;
     }
 
-
-    private class ReportLocationListener implements LocationListener
+    @Override
+    public void onDestroy()
     {
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras)
-        {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider)
-        {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider)
-        {
-
-        }
-
-        @Override
-        public void onLocationChanged(Location location)
-        {
-
-        }
+        super.onDestroy();
+        getActivity().unregisterReceiver(mLocationReceiver);
     }
 }

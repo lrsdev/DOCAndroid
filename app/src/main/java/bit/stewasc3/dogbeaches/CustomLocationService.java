@@ -3,6 +3,7 @@ package bit.stewasc3.dogbeaches;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.location.LocationManager;
 
 /**
@@ -39,9 +40,19 @@ public class CustomLocationService
         return PendingIntent.getBroadcast(mAppContext, 0, broadcast, flags);
     }
 
+    // Start requesting updates from location manager. If last known location known when started,
+    // broadcast this.
     public void startUpdates()
     {
         String provider = LocationManager.GPS_PROVIDER;
+
+        Location lastKnown = mLocationManager.getLastKnownLocation(provider);
+
+        if(lastKnown != null)
+        {
+            lastKnown.setTime(System.currentTimeMillis());
+            broadcastLocation(lastKnown);
+        }
         PendingIntent pi = getLocationPendingIntent(true);
         mLocationManager.requestLocationUpdates(provider, 0, 0, pi);
     }
@@ -54,6 +65,13 @@ public class CustomLocationService
             mLocationManager.removeUpdates(pi);
             pi.cancel();
         }
+    }
+
+    private void broadcastLocation(Location l)
+    {
+        Intent broadcast = new Intent(ACTION_LOCATION);
+        broadcast.putExtra(LocationManager.KEY_LOCATION_CHANGED, l);
+        mAppContext.sendBroadcast(broadcast);
     }
 
     public boolean isTracking()

@@ -14,8 +14,8 @@ public interface UserApi
     public void getAllLocations(Callback<ArrayList<Location>> db);
 
     @GET("/reports/")
-    public void getReports(@Query("location_id") Integer location_id, Callback<ArrayList<Report>> cb);
+    public void getReports(@Query("location_id") Integer location_id, Callback<ArrayList<Sighting>> cb);
 
     @POST("/reports")
-    public void createReport(@Body ReportSubmit reportSubmit, Callback<ReportSubmit> cb);
+    public void createReport(@Body Report report, Callback<Report> cb);
 }
