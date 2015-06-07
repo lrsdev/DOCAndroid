@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -38,7 +36,6 @@ import java.util.Date;
 import UserAPI.ImageAttachment;
 import UserAPI.ReportSubmit;
 import UserAPI.RestClient;
-import UserAPI.UserApi;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -84,7 +81,7 @@ public class LodgeReportFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        final View view = inflater.inflate(R.layout.fragment_report, container, false);
+        final View view = inflater.inflate(R.layout.fragment_lodge_report, container, false);
 
         final ArrayAdapter locationAdapter = new ArrayAdapter(getActivity(),
                 android.R.layout.simple_spinner_item, new ArrayList<UserAPI.Location>());
@@ -208,6 +205,9 @@ public class LodgeReportFragment extends Fragment
         report.setUserId(1); // No user registration avaiable yet, set to 1.
         //report.setAnimalId(2);  // Not implemented server side
 
+        // Send UTC value to API
+        Date d = new Date();
+        report.setSubmittedAt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").format(new Date()));
 
         // Progress spinner while report uploads
         pd = new ProgressDialog(getActivity());

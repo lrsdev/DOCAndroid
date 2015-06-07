@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -20,26 +20,37 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LocationPagerActivity"
             android:label="@string/title_activity_location_pager"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity">
-             <!-- Add Meta Data here to suppoet android versions lower than 16 -->
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" >
+
+            <!-- Add Meta Data here to suppoet android versions lower than 16 -->
         </activity>
-        <receiver android:name=".LocationReceiver"
-                  android:exported="false">
-           <intent-filter>
-               <action android:name="nz.stewpot.dogbeaches.CUSTOM_LOCATION"/>
-           </intent-filter>
+
+        <receiver
+            android:name=".LocationReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="nz.stewpot.dogbeaches.CUSTOM_LOCATION" />
+            </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".SightingPagerActivity"
+            android:label="SightingPagerActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

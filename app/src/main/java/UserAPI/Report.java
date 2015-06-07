@@ -1,9 +1,12 @@
 package UserAPI;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * Created by samuel on 28/05/15.
  */
-public class Report
+public class Report implements Serializable
 {
     private int id;
     private int userId;
@@ -11,6 +14,17 @@ public class Report
     private String blurb;
     private String imageThumb;
     private String imageMedium;
+    private Date submittedAt;
+
+    public Date getSubmittedAt()
+    {
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(Date submittedAt)
+    {
+        this.submittedAt = submittedAt;
+    }
 
     public int getId()
     {

@@ -10,70 +10,72 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.viewpagerindicator.CirclePageIndicator;
 import java.util.ArrayList;
-import UserAPI.Location;
+import UserAPI.Report;
 
-
-public class LocationPagerActivity extends AppCompatActivity
+public class SightingPagerActivity extends AppCompatActivity
 {
+    public static final String KEY_REPORT_ARRAY = "dogapp.report_array";
+    public static final String KEY_REPORT_INDEX = "dogapp.report_index";
+
     private ViewPager mViewPager;
-    private ArrayList<Location> mLocations;
+    private ArrayList<Report> mReports;
     private CirclePageIndicator mCircleIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_locationpager);
-        mViewPager = (ViewPager) findViewById(R.id.locationViewPager);
+        setContentView(R.layout.activity_sighting_pager);
+        mViewPager = (ViewPager)findViewById(R.id.sightingViewPager);
 
-        // Provide up navigation
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Get passed array, Location type implements SERIALIZABLE. Or use singleton?
-        mLocations = (ArrayList<Location>)
-                getIntent().getSerializableExtra(LocationListFragment.KEY_LOCATION_ARRAY);
+        mReports = (ArrayList<Report>)getIntent().getSerializableExtra(KEY_REPORT_ARRAY);
 
-        // Index which was selected from location list ( Used to start ViewPager on correct fragment )
-        Integer index = getIntent().getIntExtra(LocationListFragment.KEY_LOCATION_ARRAY_INDEX, 0);
-
+        Integer index = getIntent().getIntExtra(KEY_REPORT_INDEX, 0);
         FragmentManager fm = getSupportFragmentManager();
+
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fm)
         {
             @Override
             public Fragment getItem(int position)
             {
-                Location l = mLocations.get(position);
-                return LocationFragment.newInstance(l);
+                Report r = mReports.get(position);
+                return SightingFragment.newInstance(r);
             }
 
             @Override
             public int getCount()
             {
-                return mLocations.size();
+                return mReports.size();
             }
         });
 
-        mCircleIndicator = (CirclePageIndicator)findViewById(R.id.locationViewPagerIndicator);
+        mCircleIndicator = (CirclePageIndicator)findViewById(R.id.sightingViewPagerIndicator);
         mCircleIndicator.setViewPager(mViewPager);
 
         mViewPager.setCurrentItem(index);
-        setTitle(mLocations.get(index).getName());
+        setTitle("Report");
 
         // Set title, set on indicator to enable it to cycle.
         mCircleIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
             @Override
-            public void onPageScrolled(int i, float v, int i2) { }
+            public void onPageScrolled(int i, float v, int i2)
+            {
+            }
 
             @Override
             public void onPageSelected(int i)
             {
-                Location l = mLocations.get(i);
-                setTitle(l.getName());
+                Report r = mReports.get(i);
+                setTitle("Report");
             }
 
             @Override
-            public void onPageScrollStateChanged(int i) { }
+            public void onPageScrollStateChanged(int i)
+            {
+            }
         });
     }
 
@@ -81,7 +83,7 @@ public class LocationPagerActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_location_pager, menu);
+        getMenuInflater().inflate(R.menu.menu_sighting_pager, menu);
         return true;
     }
 

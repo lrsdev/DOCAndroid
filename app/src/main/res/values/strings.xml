@@ -25,6 +25,7 @@
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_closed">Drawer Closed</string>
     <string name="title_activity_location_pager">LocationPagerActivity</string>
+    <string name="title_activity_sighting_pager">SightingPagerActivity</string>
 
 </resources>
 

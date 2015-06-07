@@ -12,6 +12,17 @@ public class ReportSubmit
     private String blurb;
     private String geolocation;
     private ImageAttachment image;
+    private String submittedAt;
+
+    public String getSubmittedAt()
+    {
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(String submittedAt)
+    {
+        this.submittedAt = submittedAt;
+    }
 
     public int getLocationId()
     {

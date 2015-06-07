@@ -1,11 +1,13 @@
 package bit.stewasc3.dogbeaches;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -84,6 +86,7 @@ public class LocationFragment extends Fragment
         dogStatusTextView.setText(dogStatusTextView.getText() + mLocation.getDogStatus());
 
         mReportListView = (ListView)v.findViewById(R.id.locationReportListView);
+        mReportListView.setOnItemClickListener(new ReportListItemClick());
 
         return v;
     }
@@ -112,6 +115,18 @@ public class LocationFragment extends Fragment
             Picasso.with(getActivity()).load(r.getImageThumb()).into(reportThumb);
 
             return convertView;
+        }
+    }
+
+    public class ReportListItemClick implements AdapterView.OnItemClickListener
+    {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            Intent i = new Intent(getActivity(), SightingPagerActivity.class);
+            i.putExtra(SightingPagerActivity.KEY_REPORT_ARRAY, mReports);
+            i.putExtra(SightingPagerActivity.KEY_REPORT_INDEX, position);
+            startActivity(i);
         }
     }
 }
