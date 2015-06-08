@@ -17,6 +17,18 @@ public class Sighting implements Serializable
     private Date submittedAt;
     private String locationName;
 
+    public ApiGeoLocation getGeoLocation()
+    {
+        return geoLocation;
+    }
+
+    public void setGeoLocation(ApiGeoLocation geoLocation)
+    {
+        this.geoLocation = geoLocation;
+    }
+
+    private ApiGeoLocation geoLocation;
+
     public String getLocationName()
     {
         return locationName;
@@ -26,7 +38,6 @@ public class Sighting implements Serializable
     {
         this.locationName = locationName;
     }
-
 
     public Date getSubmittedAt()
     {

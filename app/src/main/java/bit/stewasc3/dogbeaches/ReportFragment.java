@@ -10,7 +10,6 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -37,6 +36,7 @@ import java.util.Date;
 import UserAPI.ImageAttachment;
 import UserAPI.Report;
 import UserAPI.RestClient;
+import UserAPI.UserApi;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -52,13 +52,17 @@ public class ReportFragment extends Fragment
         ToDo: Backup plan if user location not available
      */
 
-    // Locations prefixed with UserAPI (Collision with android.location)
     private ArrayList<UserAPI.Location> mLocations;
     private ImageView mThumbImageView;
     private File mImage;
     private ProgressDialog pd;
+    private ArrayAdapter mLocationAdapter;
+    private ArrayAdapter mWildlifeAdapter;
     private Location mLastLocation;
     private CustomLocationService mLocationService;
+    private Spinner mLocationSpinner;
+    private Spinner mWildlifeSpinner;
+    private EditText mBlurbEditText;
     private BroadcastReceiver mLocationReceiver = new LocationReceiver()
     {
         @Override
@@ -76,6 +80,7 @@ public class ReportFragment extends Fragment
                 new IntentFilter(CustomLocationService.ACTION_LOCATION));
         mLocationService = CustomLocationService.get(getActivity());
         mLocationService.startUpdates();
+        mLocations = new ArrayList<>();
     }
 
     @Override
@@ -83,83 +88,32 @@ public class ReportFragment extends Fragment
     {
         final View view = inflater.inflate(R.layout.fragment_lodge_report, container, false);
 
-        final ArrayAdapter locationAdapter = new ArrayAdapter(getActivity(),
-                android.R.layout.simple_spinner_item, new ArrayList<UserAPI.Location>());
-        final Spinner locationSpinner = (Spinner) view.findViewById(R.id.reportLocationSpinner);
-        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        locationSpinner.setAdapter(locationAdapter);
-
-        // Eventually, we will query the rest client for beaches close to current location, for now
-        // populate list box with all locations from server. ToDo: refactor
-        RestClient.get().getAllLocations(new Callback<ArrayList<UserAPI.Location>>()
-        {
-            @Override
-            public void success(ArrayList<UserAPI.Location> locations, Response response)
-            {
-                for(UserAPI.Location l : locations)
-                {
-                    locationAdapter.add(l);
-                }
-                locationAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void failure(RetrofitError error)
-            {
-                mLocations = new ArrayList<UserAPI.Location>();  // <-- create empty on failure for now
-                Toast.makeText(getActivity(), "Couldn't obtain locations",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+        mLocationAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, mLocations);
+        mLocationSpinner = (Spinner) view.findViewById(R.id.reportLocationSpinner);
+        mLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mLocationSpinner.setAdapter(mLocationAdapter);
 
         // Wildlife type populated from resource string array for now.
-        final Spinner wildlifeSpinner = (Spinner) view.findViewById(R.id.reportWildlifeTypeSpinner);
-        ArrayAdapter wildlifeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.wildlife_array,
+        // ToDo: Implement server side wildlife model, store locally for selection.
+        mWildlifeSpinner = (Spinner) view.findViewById(R.id.reportWildlifeTypeSpinner);
+        mWildlifeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.wildlife_array,
                 android.R.layout.simple_spinner_item);
-        wildlifeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        wildlifeSpinner.setAdapter(wildlifeAdapter);
+        mWildlifeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mWildlifeSpinner.setAdapter(mWildlifeAdapter);
 
         // User entered notes/ blurb
-        final EditText blurbEditText = (EditText) view.findViewById(R.id.reportNotesEditText);
-
-        // Camera image button
-        ImageButton photoButton = (ImageButton) view.findViewById(R.id.reportPhotoButton);
-        photoButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                takeAPhoto();
-            }
-        });
-
+        mBlurbEditText = (EditText) view.findViewById(R.id.reportNotesEditText);
         // Thumbnail displaying image after being taken
         mThumbImageView = (ImageView) view.findViewById(R.id.reportImageView);
 
+        // Camera image button
+        ImageButton photoButton = (ImageButton) view.findViewById(R.id.reportPhotoButton);
+        photoButton.setOnClickListener(new CameraButtonClick());
+
         ImageButton submitButton = (ImageButton) view.findViewById(R.id.reportSubmitButton);
-        submitButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if(mImage == null)
-                {
-                    Toast.makeText(getActivity(), "Please take a photo", Toast.LENGTH_SHORT).show();
-                }
-                else if(mLastLocation == null)
-                {
-                    Toast.makeText(getActivity(), "Location could not be obtained", Toast.LENGTH_SHORT)
-                            .show();
-                }
-                else
-                {
-                    UserAPI.Location l = (UserAPI.Location) locationSpinner.getSelectedItem();
-                    String animal = (String) wildlifeSpinner.getSelectedItem();
-                    String blurb = blurbEditText.getText().toString();
-                    submitReport(l, animal, blurb);
-                }
-            }
-        });
+        submitButton.setOnClickListener(new SubmitButtonClick());
+
+        getLocations();
 
         return view;
     }
@@ -171,33 +125,21 @@ public class ReportFragment extends Fragment
         {
             if (resultCode == Activity.RESULT_OK)
             {
-                // Set the thumnbail
                 mThumbImageView.setImageBitmap(BitmapFactory.decodeFile(mImage.getPath()));
             }
-        }
-        else
-        {
-            // ToDo: Handle this
         }
     }
 
     // Encode image to base64, get user entered details, encode JSON, send.
-    private void submitReport(UserAPI.Location l, String animal, String blurb)
+    private void submitReport()
     {
         Report report = new Report();
+        UserAPI.Location l = (UserAPI.Location) mLocationSpinner.getSelectedItem();
 
-        if(mLastLocation == null)
-        {
-            Toast.makeText(getActivity(), "Cannot obtain GPS Location at this time.", Toast.LENGTH_SHORT)
-                .show();
-        }
-        else
-        {
-            // TODO: Change User API to accept lat/long in JSON payload, rather than POINT() string
-            String point = "POINT (" + Double.toString(mLastLocation.getLatitude()) +
-                    " " + Double.toString(mLastLocation.getLongitude()) + ")";
-            report.setGeolocation(point);
-        }
+        // TODO: Change User API to accept lat/long in JSON payload, rather than POINT() string
+        String point = "POINT (" + Double.toString(mLastLocation.getLatitude()) +
+                " " + Double.toString(mLastLocation.getLongitude()) + ")";
+        report.setGeolocation(point);
 
         ImageAttachment img = new ImageAttachment();
         img.setImageData(getBase64(mImage));
@@ -206,12 +148,11 @@ public class ReportFragment extends Fragment
         report.setImage(img);
 
         report.setLocationId(l.getId());
-        report.setBlurb(blurb);
+        report.setBlurb(mBlurbEditText.getText().toString());
         report.setUserId(1); // No user registration avaiable yet, set to 1.
         //report.setAnimalId(2);  // Not implemented server side
 
-        // Send UTC value to API
-        Date d = new Date();
+        // Format date to API specification. Includes TimeZone so API knows how to store in UTC.
         report.setSubmittedAt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").format(new Date()));
 
         // Progress spinner while report uploads
@@ -242,7 +183,7 @@ public class ReportFragment extends Fragment
     }
 
     // Base64 available for SDK 8 + Only
-    // ToDo: Look into multipart post, quality constant
+    // ToDo: Look into multipart post later
     private String getBase64(File image)
     {
         Bitmap bm = BitmapFactory.decodeFile(image.getPath());
@@ -265,7 +206,6 @@ public class ReportFragment extends Fragment
 
         if (mImage != null)
         {
-            // Saves to mImage
             i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mImage));
             startActivityForResult(i, REQUEST_IMAGE_CODE);
         }
@@ -281,10 +221,57 @@ public class ReportFragment extends Fragment
         return image;
     }
 
+    // Get locations to populate location list. This will be refined later to locations close to
+    // user. If request is successful, add items to location array and notify the adapter.
+    private void getLocations()
+    {
+        RestClient.get().getAllLocations(new Callback<ArrayList<UserAPI.Location>>()
+        {
+            @Override
+            public void success(ArrayList<UserAPI.Location> locations, Response response)
+            {
+                mLocations.addAll(locations);
+                mLocationAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void failure(RetrofitError error)
+            {
+                mLocations = new ArrayList<UserAPI.Location>();  // <-- create empty on failure for now
+                Toast.makeText(getActivity(), "Couldn't obtain locations",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     @Override
     public void onDestroy()
     {
         super.onDestroy();
         getActivity().unregisterReceiver(mLocationReceiver);
+    }
+
+    private class SubmitButtonClick implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            if(mImage == null)
+                Toast.makeText(getActivity(), "Please take a photo", Toast.LENGTH_SHORT).show();
+            else if(mLastLocation == null)
+                Toast.makeText(getActivity(), "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)
+                        .show();
+            else
+                submitReport();
+        }
+    }
+
+    private class CameraButtonClick implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            takeAPhoto();
+        }
     }
 }

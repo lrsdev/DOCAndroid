@@ -28,6 +28,7 @@ import retrofit.client.Response;
 public class LocationListFragment extends ListFragment
 {
     private ArrayList<Location> mLocations;
+    private LocationAdapter mAdapter;
     public static final String KEY_LOCATION_ARRAY = "dogapp.location_array";
     public static final String KEY_LOCATION_ARRAY_INDEX = "dogapp.location_array_index";
 
@@ -35,15 +36,23 @@ public class LocationListFragment extends ListFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        mLocations = new ArrayList<>();
+        mAdapter = new LocationAdapter(mLocations);
+        setListAdapter(mAdapter);
+        getLocations();
+    }
 
-        // TODO: Refine later to get locations close to user
+    // Call RestClient to get locations.
+    public void getLocations()
+    {
+        // TODO: Refine later to get locations close to user, other filtering options
         RestClient.get().getAllLocations(new Callback<ArrayList<Location>>()
         {
             @Override
             public void success(ArrayList<Location> locations, Response response)
             {
-                mLocations = locations;
-                setListAdapter(new LocationAdapter(mLocations));
+                mLocations.addAll(locations);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override

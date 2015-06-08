@@ -3,6 +3,7 @@ package bit.stewasc3.dogbeaches;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import UserAPI.Location;
@@ -43,20 +45,8 @@ public class LocationFragment extends Fragment
         Bundle args = getArguments();
         mLocation = (Location) args.getSerializable(KEY_LOCATION);
 
-        RestClient.get().getReports(mLocation.getId(), new Callback<ArrayList<Sighting>>()
-        {
-            @Override
-            public void success(ArrayList<Sighting> sightings, Response response)
-            {
-                mSightings = sightings;
-                mReportListView.setAdapter(new ReportListAdapter(mSightings));
-            }
-
-            @Override
-            public void failure(RetrofitError error)
-            {
-            }
-        });
+        // Debugging lifecycles
+        Log.d("LocationFragment", "onCreate called for " + Integer.toString(mLocation.getId()));
     }
 
     public static LocationFragment newInstance(Location l)
@@ -74,6 +64,9 @@ public class LocationFragment extends Fragment
         // TODO: Find out what false is really doing
         View v = inflater.inflate(R.layout.fragment_location, container, false);
 
+        mReportListView = (ListView)v.findViewById(R.id.locationReportListView);
+        mReportListView.setOnItemClickListener(new ReportListItemClick());
+
         ImageView iv = (ImageView)v.findViewById(R.id.locationImage);
         Picasso.with(getActivity()).load(mLocation.getImageMedium()).into(iv);
 
@@ -83,9 +76,20 @@ public class LocationFragment extends Fragment
         TextView dogStatusTextView = (TextView)v.findViewById(R.id.locationDogStatusTextView);
         dogStatusTextView.setText(dogStatusTextView.getText() + mLocation.getDogStatus());
 
-        mReportListView = (ListView)v.findViewById(R.id.locationReportListView);
-        mReportListView.setOnItemClickListener(new ReportListItemClick());
+        RestClient.get().getReports(mLocation.getId(), new Callback<ArrayList<Sighting>>()
+        {
+            @Override
+            public void success(ArrayList<Sighting> sightings, Response response)
+            {
+                mSightings = sightings;
+                mReportListView.setAdapter(new ReportListAdapter(sightings));
+            }
 
+            @Override
+            public void failure(RetrofitError error)
+            {
+            }
+        });
         return v;
     }
 
@@ -104,13 +108,14 @@ public class LocationFragment extends Fragment
             Sighting r = (Sighting) getItem(position);
 
             TextView reportTitle = (TextView) convertView.findViewById(R.id.reportListTitleTextView);
-            reportTitle.setText("Report #" + r.getId());
+            reportTitle.setText("Animal Name");
 
             TextView reportBlurb = (TextView) convertView.findViewById(R.id.reportListAnimalTextView);
             reportBlurb.setText(r.getBlurb());
 
             TextView reportDate = (TextView) convertView.findViewById(R.id.reportListDate);
-            reportDate.setText(r.getSubmittedAt().toString());
+            SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+            reportDate.setText(sf.format(r.getSubmittedAt()));
 
             ImageView reportThumb = (ImageView) convertView.findViewById(R.id.reportListThumbImageView);
             Picasso.with(getActivity()).load(r.getImageThumb()).into(reportThumb);

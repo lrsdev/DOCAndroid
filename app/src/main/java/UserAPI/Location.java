@@ -3,6 +3,7 @@ package UserAPI;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by samuel on 23/05/15.
@@ -17,6 +18,17 @@ public class Location implements Serializable
     private String dogStatus;
     private String imageThumb;
     private String imageMedium;
+    private ArrayList<ApiGeoLocation> accessPoints;
+
+    public ArrayList<ApiGeoLocation> getAccessPoints()
+    {
+        return accessPoints;
+    }
+
+    public void setAccessPoints(ArrayList<ApiGeoLocation> accessPoints)
+    {
+        this.accessPoints = accessPoints;
+    }
 
     public String getImageMedium()
     {
