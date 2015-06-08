@@ -35,21 +35,7 @@ public class SightingPagerActivity extends AppCompatActivity
         Integer index = getIntent().getIntExtra(KEY_SIGHTING_INDEX, 0);
         FragmentManager fm = getSupportFragmentManager();
 
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(fm)
-        {
-            @Override
-            public Fragment getItem(int position)
-            {
-                Sighting s = mSightings.get(position);
-                return SightingFragment.newInstance(s);
-            }
-
-            @Override
-            public int getCount()
-            {
-                return mSightings.size();
-            }
-        });
+        mViewPager.setAdapter(new SightingPagerAdapter(fm));
 
         mCircleIndicator = (CirclePageIndicator)findViewById(R.id.sightingViewPagerIndicator);
         mCircleIndicator.setViewPager(mViewPager);
@@ -58,25 +44,7 @@ public class SightingPagerActivity extends AppCompatActivity
         setTitle("Sighting");
 
         // Set title, set on indicator to enable it to cycle.
-        mCircleIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener()
-        {
-            @Override
-            public void onPageScrolled(int i, float v, int i2)
-            {
-            }
-
-            @Override
-            public void onPageSelected(int i)
-            {
-                Sighting r = mSightings.get(i);
-                setTitle("Sighting");
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i)
-            {
-            }
-        });
+        mCircleIndicator.setOnPageChangeListener(new SightingPageChangeListener());
     }
 
     @Override
@@ -90,17 +58,54 @@ public class SightingPagerActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        // Handle action bar item clicks here.
+        switch(item.getItemId())
         {
-            return true;
+            case R.id.action_settings:
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private class SightingPagerAdapter extends FragmentStatePagerAdapter
+    {
+        public SightingPagerAdapter(FragmentManager fm) { super(fm);}
+        @Override
+        public Fragment getItem(int position)
+        {
+            Sighting s = mSightings.get(position);
+            return SightingFragment.newInstance(s);
         }
 
-        return super.onOptionsItemSelected(item);
+        @Override
+        public int getCount()
+        {
+            return mSightings.size();
+        }
+    }
+
+    private class SightingPageChangeListener implements ViewPager.OnPageChangeListener
+    {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+        {
+
+        }
+
+        @Override
+        public void onPageSelected(int position)
+        {
+            Sighting r = mSightings.get(position);
+            setTitle("Sighting");
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state)
+        {
+
+        }
     }
 }

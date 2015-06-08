@@ -42,7 +42,8 @@ public class LocationListFragment extends ListFragment
         getLocations();
     }
 
-    // Call RestClient to get locations.
+    // Call RestClient to get locations. Implement filters, local storage and distance options
+    // later.
     public void getLocations()
     {
         // TODO: Refine later to get locations close to user, other filtering options

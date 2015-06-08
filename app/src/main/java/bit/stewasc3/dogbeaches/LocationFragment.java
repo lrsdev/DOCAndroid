@@ -76,6 +76,8 @@ public class LocationFragment extends Fragment
         TextView dogStatusTextView = (TextView)v.findViewById(R.id.locationDogStatusTextView);
         dogStatusTextView.setText(dogStatusTextView.getText() + mLocation.getDogStatus());
 
+        // ToDo: Consider loading this with location data in LocationListView, lazy loading here
+        // can potentially cause issues if user scrolls too fast between screens.
         RestClient.get().getReports(mLocation.getId(), new Callback<ArrayList<Sighting>>()
         {
             @Override
@@ -129,6 +131,7 @@ public class LocationFragment extends Fragment
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
+            // Pass sightings and clicked position to ViewPager, (So VP can display correct fragment first)
             Intent i = new Intent(getActivity(), SightingPagerActivity.class);
             i.putExtra(SightingPagerActivity.KEY_SIGHTING_ARRAY, mSightings);
             i.putExtra(SightingPagerActivity.KEY_SIGHTING_INDEX, position);

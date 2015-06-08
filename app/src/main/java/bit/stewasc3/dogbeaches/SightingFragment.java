@@ -1,7 +1,6 @@
 package bit.stewasc3.dogbeaches;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,6 @@ public class SightingFragment extends Fragment
         return f;
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -50,7 +48,7 @@ public class SightingFragment extends Fragment
         typeTextView.setText("Type: " + "Not yet implemented server side");
 
         TextView blurbTextView = (TextView)v.findViewById(R.id.sightingBlurbTextView);
-        blurbTextView.setText("Blurb " + mSighting.getBlurb());
+        blurbTextView.setText("Blurb: " + mSighting.getBlurb());
 
         TextView dateTextView = (TextView)v.findViewById(R.id.sightingDateTextView);
         dateTextView.setText("Date: " + mSighting.getSubmittedAt().toString());
