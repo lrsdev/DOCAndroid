@@ -20,7 +20,7 @@
         android:text="Beach List"
         android:textColor="#FFFFFF"
         android:gravity="center_vertical"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         android:typeface="serif" />
 
     </LinearLayout>

@@ -4,40 +4,45 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/windowBackground"
-                >
+              >
 
     <TextView
-        android:layout_width="72dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:text="Location:"
+        android:textColor="#FFFFFF"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="16dp"
         android:id="@+id/sightingLocationTextView"/>
 
     <TextView
-        android:layout_width="72dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
+        android:textColor="#FFFFFF"
         android:text="Type:"
         android:id="@+id/sightingTypeTextView"/>
 
     <TextView
-        android:layout_width="72dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
+        android:textColor="#FFFFFF"
         android:text="Date:"
         android:id="@+id/sightingDateTextView"/>
 
     <TextView
-        android:layout_width="72dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
+        android:textColor="#FFFFFF"
         android:text="Blurb:"
         android:id="@+id/sightingBlurbTextView"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:id="@+id/sightingImageView"/>
 
 </LinearLayout>

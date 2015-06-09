@@ -86,8 +86,6 @@ public class MapDisplayFragment extends MapFragment
 
     public void setupMap()
     {
-        mMap.setMyLocationEnabled(true);
-
         for(UserAPI.Location l : mLocations)
         {
             for(UserAPI.ApiGeoLocation g : l.getAccessPoints())
