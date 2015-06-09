@@ -6,17 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.ArrayList;
-
-import UserAPI.Location;
+import android.location.Location;
 import UserAPI.RestClient;
-import UserAPI.UserApi;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -36,6 +35,7 @@ public class MapDisplayFragment extends MapFragment
     }
 
     @Override
+    // Once map is ready, pull locations, set up the map once locations have been pulled.
     public void onCreate(Bundle savedInstanceState)
     {
         getMapAsync(new OnMapReadyCallback()
@@ -54,10 +54,10 @@ public class MapDisplayFragment extends MapFragment
     // Get all locations from remote DB for now, in future, restrict to user defined radius.
     public void getLocations()
     {
-        RestClient.get().getAllLocations(new Callback<ArrayList<Location>>()
+        RestClient.get().getAllLocations(new Callback<ArrayList<UserAPI.Location>>()
         {
             @Override
-            public void success(ArrayList<Location> locations, Response response)
+            public void success(ArrayList<UserAPI.Location> locations, Response response)
             {
                 mLocations = locations;
                 setupMap();
@@ -87,15 +87,17 @@ public class MapDisplayFragment extends MapFragment
     public void setupMap()
     {
         mMap.setMyLocationEnabled(true);
-
+        // Center map on Dunedin for now, User location later.
+        CameraUpdate c = CameraUpdateFactory.newLatLngZoom(new LatLng(
+                -45.873629, 170.503692), 10);
+        mMap.moveCamera(c);
         for(UserAPI.Location l : mLocations)
         {
             for(UserAPI.ApiGeoLocation g : l.getAccessPoints())
             {
                 mMap.addMarker(new MarkerOptions().position(new LatLng(g.getLatitude(),
-                        g.getLongitude())));
+                        g.getLongitude())).title(l.getName()));
             }
         }
-        mMap.addMarker(new MarkerOptions().position(new LatLng(-31.90, 115.86)).draggable(true));
     }
 }

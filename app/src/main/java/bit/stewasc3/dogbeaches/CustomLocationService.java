@@ -10,6 +10,7 @@ import android.location.LocationManager;
  * Created by samuel on 4/06/15.
  * A structure for delivering location updates to multiple parts of the UI.
  * Inspired by Android Nerd Ranch - Ch 33.
+ * ToDo: Update to: https://developer.android.com/training/location/retrieve-current.html
  */
 public class CustomLocationService
 {
