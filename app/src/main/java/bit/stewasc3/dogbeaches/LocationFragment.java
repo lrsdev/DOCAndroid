@@ -1,8 +1,10 @@
 package bit.stewasc3.dogbeaches;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +12,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,24 +66,43 @@ public class LocationFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // TODO: Find out what false is really doing
         View v = inflater.inflate(R.layout.fragment_location, container, false);
 
-        mReportListView = (ListView)v.findViewById(R.id.locationReportListView);
-        mReportListView.setOnItemClickListener(new ReportListItemClick());
+        //mReportListView = (ListView) v.findViewById(R.id.locationReportListView);
+        //mReportListView.setOnItemClickListener(new ReportListItemClick());
 
-        ImageView iv = (ImageView)v.findViewById(R.id.locationImage);
+        ImageView iv = (ImageView) v.findViewById(R.id.locationImage);
         Picasso.with(getActivity()).load(mLocation.getImageMedium()).into(iv);
 
-        TextView nameTextView = (TextView)v.findViewById(R.id.locationNameTextView);
+        TextView nameTextView = (TextView) v.findViewById(R.id.locationNameTextView);
         nameTextView.setText(mLocation.getName());
 
-        TextView dogStatusTextView = (TextView)v.findViewById(R.id.locationDogStatusTextView);
-        dogStatusTextView.setText(dogStatusTextView.getText() + mLocation.getDogStatus());
+        TextView guideLinesTextView = (TextView) v.findViewById(R.id.locationGuidelinesTextView);
+        guideLinesTextView.setText(mLocation.getDogGuidelines());
 
-        // ToDo: Consider loading this with location data in LocationListView, lazy loading here
+        ImageView dogIconImageView = (ImageView) v.findViewById(R.id.locationDogIconImageView);
+
+        // Move to a static helper method later
+        switch(mLocation.getDogStatus())
+        {
+            case "no dogs":
+                dogIconImageView.setImageResource(R.drawable.nodogs);
+                break;
+            case "on lead":
+                dogIconImageView.setImageResource(R.drawable.dogonlead);
+                break;
+            case "off lead":
+                dogIconImageView.setImageResource(R.drawable.dogofflead);
+                break;
+        }
+
+        final LinearLayout reportContainer = (LinearLayout) v.findViewById(R.id.locationReportContainer);
+
+
+        // ToDo: Consider loading this with location data in location container, lazy loading here
         // can potentially cause issues if user scrolls too fast between screens.
         RestClient.get().getReports(mLocation.getId(), new Callback<ArrayList<Sighting>>()
         {
@@ -84,7 +110,7 @@ public class LocationFragment extends Fragment
             public void success(ArrayList<Sighting> sightings, Response response)
             {
                 mSightings = sightings;
-                mReportListView.setAdapter(new ReportListAdapter(sightings));
+                populateReportContainer(reportContainer);
             }
 
             @Override
@@ -95,47 +121,42 @@ public class LocationFragment extends Fragment
         return v;
     }
 
-    public class ReportListAdapter extends ArrayAdapter
+    private void populateReportContainer(LinearLayout reportContainer)
     {
-        public ReportListAdapter(ArrayList<Sighting> sightings) { super(getActivity(), 0, sightings);}
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent)
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        for(int i = 0; i < mSightings.size(); i++)
         {
-            if(convertView == null)
-            {
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.location_report_list_item, null);
-            }
-
-            Sighting r = (Sighting) getItem(position);
+            Sighting s = mSightings.get(i);
+            View convertView = inflater.inflate(R.layout.location_report_list_item, null);
 
             TextView reportTitle = (TextView) convertView.findViewById(R.id.reportListTitleTextView);
             reportTitle.setText("Animal Name");
 
             TextView reportBlurb = (TextView) convertView.findViewById(R.id.reportListAnimalTextView);
-            reportBlurb.setText(r.getBlurb());
+            reportBlurb.setText(s.getBlurb());
 
             TextView reportDate = (TextView) convertView.findViewById(R.id.reportListDate);
             SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-            reportDate.setText(sf.format(r.getSubmittedAt()));
+            reportDate.setText(sf.format(s.getSubmittedAt()));
 
             ImageView reportThumb = (ImageView) convertView.findViewById(R.id.reportListThumbImageView);
-            Picasso.with(getActivity()).load(r.getImageThumb()).into(reportThumb);
+            Picasso.with(getActivity()).load(s.getImageThumb()).into(reportThumb);
 
-            return convertView;
-        }
-    }
+            // Hack so I can use the stupid value in inner class
+            final int index = i;
+            convertView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Intent intent = new Intent(getActivity(), SightingPagerActivity.class);
+                    intent.putExtra(SightingPagerActivity.KEY_SIGHTING_ARRAY, mSightings);
+                    intent.putExtra(SightingPagerActivity.KEY_SIGHTING_INDEX, index);
+                    startActivity(intent);
+                }
+            });
 
-    public class ReportListItemClick implements AdapterView.OnItemClickListener
-    {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-        {
-            // Pass sightings and clicked position to ViewPager, (So VP can display correct fragment first)
-            Intent i = new Intent(getActivity(), SightingPagerActivity.class);
-            i.putExtra(SightingPagerActivity.KEY_SIGHTING_ARRAY, mSightings);
-            i.putExtra(SightingPagerActivity.KEY_SIGHTING_INDEX, position);
-            startActivity(i);
+            reportContainer.addView(convertView);
         }
     }
 }
