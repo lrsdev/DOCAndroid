@@ -9,10 +9,31 @@ public class Report
     private int locationId;
     private int userId;
     private int animalId;
+    private double latitude;
+    private double longitude;
     private String blurb;
-    private String geolocation;
     private ImageAttachment image;
     private String submittedAt;
+
+    public double getLatitude()
+    {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude)
+    {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude()
+    {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude)
+    {
+        this.longitude = longitude;
+    }
 
     public int getId()
     {
@@ -72,16 +93,6 @@ public class Report
     public void setBlurb(String blurb)
     {
         this.blurb = blurb;
-    }
-
-    public String getGeolocation()
-    {
-        return geolocation;
-    }
-
-    public void setGeolocation(String geolocation)
-    {
-        this.geolocation = geolocation;
     }
 
     public ImageAttachment getImage()

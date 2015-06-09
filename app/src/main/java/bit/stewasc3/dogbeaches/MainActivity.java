@@ -157,7 +157,8 @@ public class MainActivity extends AppCompatActivity
                             setContentFragment(new HomeFragment());
                             break;
                         case 1: // Map was clicked
-                            notImplemented();
+                            getSupportActionBar().setTitle("Map");
+                            setContentFragment(new MapDisplayFragment());
                             break;
                         case 2: // Locations was clicked
                             setContentFragment(new LocationListFragment());

@@ -136,10 +136,8 @@ public class ReportFragment extends Fragment
         Report report = new Report();
         UserAPI.Location l = (UserAPI.Location) mLocationSpinner.getSelectedItem();
 
-        // TODO: Change User API to accept lat/long in JSON payload, rather than POINT() string
-        String point = "POINT (" + Double.toString(mLastLocation.getLatitude()) +
-                " " + Double.toString(mLastLocation.getLongitude()) + ")";
-        report.setGeolocation(point);
+        report.setLatitude(mLastLocation.getLatitude());
+        report.setLongitude(mLastLocation.getLongitude());
 
         ImageAttachment img = new ImageAttachment();
         img.setImageData(getBase64(mImage));
