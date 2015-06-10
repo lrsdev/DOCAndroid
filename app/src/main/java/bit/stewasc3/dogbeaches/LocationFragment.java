@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import UserAPI.Location;
+import UserAPI.Report;
 import UserAPI.Sighting;
 import UserAPI.RestClient;
 import retrofit.Callback;
@@ -42,8 +43,6 @@ public class LocationFragment extends Fragment
 
     public static final String KEY_LOCATION = "dogapp.location";
     Location mLocation;
-    ListView mReportListView;
-    ArrayList<Sighting> mSightings;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -70,9 +69,6 @@ public class LocationFragment extends Fragment
     {
         // TODO: Find out what false is really doing
         View v = inflater.inflate(R.layout.fragment_location, container, false);
-
-        //mReportListView = (ListView) v.findViewById(R.id.locationReportListView);
-        //mReportListView.setOnItemClickListener(new ReportListItemClick());
 
         ImageView iv = (ImageView) v.findViewById(R.id.locationImage);
         Picasso.with(getActivity()).load(mLocation.getImageMedium()).into(iv);
@@ -101,32 +97,22 @@ public class LocationFragment extends Fragment
 
         final LinearLayout reportContainer = (LinearLayout) v.findViewById(R.id.locationReportContainer);
 
+        // If Location has reports, populate the report container.
+        // Later, this will be limited to X amount of most recent reports.
+        if(mLocation.getSightings() != null)
+            populateReportContainer(reportContainer, mLocation.getSightings());
 
         // ToDo: Consider loading this with location data in location container, lazy loading here
         // can potentially cause issues if user scrolls too fast between screens.
-        RestClient.get().getReports(mLocation.getId(), new Callback<ArrayList<Sighting>>()
-        {
-            @Override
-            public void success(ArrayList<Sighting> sightings, Response response)
-            {
-                mSightings = sightings;
-                populateReportContainer(reportContainer);
-            }
-
-            @Override
-            public void failure(RetrofitError error)
-            {
-            }
-        });
         return v;
     }
 
-    private void populateReportContainer(LinearLayout reportContainer)
+    private void populateReportContainer(LinearLayout reportContainer, final ArrayList<Sighting> sightings)
     {
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        for(int i = 0; i < mSightings.size(); i++)
+        for(int i = 0; i < sightings.size(); i++)
         {
-            Sighting s = mSightings.get(i);
+            Sighting s = sightings.get(i);
             View convertView = inflater.inflate(R.layout.location_report_list_item, null);
 
             TextView reportTitle = (TextView) convertView.findViewById(R.id.reportListTitleTextView);
@@ -150,7 +136,7 @@ public class LocationFragment extends Fragment
                 public void onClick(View v)
                 {
                     Intent intent = new Intent(getActivity(), SightingPagerActivity.class);
-                    intent.putExtra(SightingPagerActivity.KEY_SIGHTING_ARRAY, mSightings);
+                    intent.putExtra(SightingPagerActivity.KEY_SIGHTING_ARRAY, sightings);
                     intent.putExtra(SightingPagerActivity.KEY_SIGHTING_INDEX, index);
                     startActivity(intent);
                 }
