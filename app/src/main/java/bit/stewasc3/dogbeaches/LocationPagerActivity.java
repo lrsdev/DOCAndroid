@@ -15,6 +15,9 @@ import UserAPI.Location;
 
 public class LocationPagerActivity extends AppCompatActivity
 {
+    public static final String KEY_LOCATION_ARRAY = "dogapp.location_array";
+    public static final String KEY_LOCATION_ARRAY_INDEX = "dogapp.location_array_index";
+
     private ViewPager mViewPager;
     private ArrayList<Location> mLocations;
     private CirclePageIndicator mCircleIndicator;
@@ -31,10 +34,10 @@ public class LocationPagerActivity extends AppCompatActivity
 
         // Get passed array, Location type implements SERIALIZABLE. Or use singleton?
         mLocations = (ArrayList<Location>)
-                getIntent().getSerializableExtra(LocationListFragment.KEY_LOCATION_ARRAY);
+                getIntent().getSerializableExtra(KEY_LOCATION_ARRAY);
 
         // Index which was selected from location list ( Used to start ViewPager on correct fragment )
-        Integer index = getIntent().getIntExtra(LocationListFragment.KEY_LOCATION_ARRAY_INDEX, 0);
+        Integer index = getIntent().getIntExtra(KEY_LOCATION_ARRAY_INDEX, 0);
 
         FragmentManager fm = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fm)

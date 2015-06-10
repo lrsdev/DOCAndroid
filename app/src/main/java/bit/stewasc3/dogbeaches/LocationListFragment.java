@@ -29,8 +29,6 @@ public class LocationListFragment extends ListFragment
 {
     private ArrayList<Location> mLocations;
     private LocationAdapter mAdapter;
-    public static final String KEY_LOCATION_ARRAY = "dogapp.location_array";
-    public static final String KEY_LOCATION_ARRAY_INDEX = "dogapp.location_array_index";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -70,8 +68,8 @@ public class LocationListFragment extends ListFragment
     {
         // Pass the array of locations, and current selected location to ViewPager.
         Intent i = new Intent(getActivity(), LocationPagerActivity.class);
-        i.putExtra(KEY_LOCATION_ARRAY, mLocations);
-        i.putExtra(KEY_LOCATION_ARRAY_INDEX, position);
+        i.putExtra(LocationPagerActivity.KEY_LOCATION_ARRAY, mLocations);
+        i.putExtra(LocationPagerActivity.KEY_LOCATION_ARRAY_INDEX, position);
         startActivity(i);
     }
 

@@ -19,6 +19,17 @@ public class Location implements Serializable
     private String imageThumb;
     private String imageMedium;
     private ArrayList<ApiGeoLocation> accessPoints;
+    private ArrayList<Report> reports;
+
+    public ArrayList<Report> getReports()
+    {
+        return reports;
+    }
+
+    public void setReports(ArrayList<Report> reports)
+    {
+        this.reports = reports;
+    }
 
     public ArrayList<ApiGeoLocation> getAccessPoints()
     {
