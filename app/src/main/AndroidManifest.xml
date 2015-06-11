@@ -4,8 +4,10 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -43,14 +45,6 @@
 
             <!-- Add Meta Data here to suppoet android versions lower than 16 -->
         </activity>
-
-        <receiver
-            android:name=".LocationReceiver"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="nz.stewpot.dogbeaches.CUSTOM_LOCATION" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".SightingPagerActivity"

@@ -19,14 +19,6 @@
         android:typeface="serif" />
 
     <!-- Image taken -->
-    <ImageView
-        android:layout_below="@+id/reportHeaderTextView"
-        android:layout_width="240dp"
-        android:layout_height="180dp"
-        android:layout_marginLeft="16dp"
-        android:id="@+id/reportImageView"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/stclair"/>
 
     <!-- Location Label -->
     <TextView
@@ -35,21 +27,19 @@
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="0dp"
-        android:layout_below="@id/reportImageView"
         android:textStyle="bold"
         android:text="Location: "
         android:textColor="#FFFFFF"
         android:gravity="center_vertical"
-        />
+        android:layout_below="@+id/reportHeaderTextView"/>
     <!-- Location Spinner -->
     <Spinner
         android:id="@+id/reportLocationSpinner"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/reportImageView"
         android:layout_toRightOf="@+id/reportLocationTextView"
         android:layout_marginRight="16dp"
-        >
+        android:layout_below="@+id/reportHeaderTextView">
     </Spinner>
 
     <!-- Wildlife Type Label -->
@@ -137,5 +127,15 @@
         android:layout_marginBottom="16dp"
         android:layout_alignRight="@+id/reportWildlifeTypeSpinner"
         android:layout_alignEnd="@+id/reportWildlifeTypeSpinner" />
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/image_placeholder"
+        android:id="@+id/reportThumbImageView"
+        android:layout_below="@+id/reportNotesEditText"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:layout_marginTop="81dp"/>
 
 </RelativeLayout>

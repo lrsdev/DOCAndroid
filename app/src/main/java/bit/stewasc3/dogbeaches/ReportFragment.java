@@ -3,10 +3,7 @@ package bit.stewasc3.dogbeaches;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -26,9 +23,16 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,12 +40,12 @@ import java.util.Date;
 import UserAPI.ImageAttachment;
 import UserAPI.Report;
 import UserAPI.RestClient;
-import UserAPI.UserApi;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class ReportFragment extends Fragment
+public class ReportFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener
 {
     private static final int REQUEST_IMAGE_CODE = 100;
 
@@ -54,39 +58,33 @@ public class ReportFragment extends Fragment
 
     private ArrayList<UserAPI.Location> mLocations;
     private ImageView mThumbImageView;
-    private File mImage;
     private ProgressDialog pd;
     private ArrayAdapter mLocationAdapter;
     private ArrayAdapter mWildlifeAdapter;
     private Location mLastLocation;
-    private CustomLocationService mLocationService;
     private Spinner mLocationSpinner;
     private Spinner mWildlifeSpinner;
     private EditText mBlurbEditText;
-    private BroadcastReceiver mLocationReceiver = new LocationReceiver()
-    {
-        @Override
-        protected void onLocationReceived(Context context, Location l)
-        {
-            mLastLocation = l;
-        }
-    };
+    private GoogleApiClient mGoogleApiClient;
+    private File mPhotoFile;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getActivity().registerReceiver(mLocationReceiver,
-                new IntentFilter(CustomLocationService.ACTION_LOCATION));
-        mLocationService = CustomLocationService.get(getActivity());
-        mLocationService.startUpdates();
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
         mLocations = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        final View view = inflater.inflate(R.layout.fragment_lodge_report, container, false);
+        final View view = inflater.inflate(R.layout.fragment_report, container, false);
 
         mLocationAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, mLocations);
         mLocationSpinner = (Spinner) view.findViewById(R.id.reportLocationSpinner);
@@ -104,7 +102,7 @@ public class ReportFragment extends Fragment
         // User entered notes/ blurb
         mBlurbEditText = (EditText) view.findViewById(R.id.reportNotesEditText);
         // Thumbnail displaying image after being taken
-        mThumbImageView = (ImageView) view.findViewById(R.id.reportImageView);
+        mThumbImageView = (ImageView) view.findViewById(R.id.reportThumbImageView);
 
         // Camera image button
         ImageButton photoButton = (ImageButton) view.findViewById(R.id.reportPhotoButton);
@@ -121,12 +119,11 @@ public class ReportFragment extends Fragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == REQUEST_IMAGE_CODE)
+        if(requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK)
         {
-            if (resultCode == Activity.RESULT_OK)
-            {
-                mThumbImageView.setImageBitmap(BitmapFactory.decodeFile(mImage.getPath()));
-            }
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mThumbImageView.setImageBitmap(imageBitmap);
         }
     }
 
@@ -140,9 +137,10 @@ public class ReportFragment extends Fragment
         report.setLongitude(mLastLocation.getLongitude());
 
         ImageAttachment img = new ImageAttachment();
-        img.setImageData(getBase64(mImage));
+
+        img.setImageData(getBase64());
         img.setImageContentType("image/jpeg");
-        img.setImageFilename(mImage.getName());
+        img.setImageFilename(mPhotoFile.getName());
         report.setImage(img);
 
         report.setLocationId(l.getId());
@@ -181,30 +179,52 @@ public class ReportFragment extends Fragment
     }
 
     // Base64 available for SDK 8 + Only
+    // Refactored into more efficient InputStream method, avoids loading whole bitmap into memory.
+    // quick fix
     // ToDo: Look into multipart post later
-    private String getBase64(File image)
+    private String getBase64()
     {
-        Bitmap bm = BitmapFactory.decodeFile(image.getPath());
+        byte [] bytes;
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try
+        {
+            InputStream is = new FileInputStream(mPhotoFile);
+            while ((bytesRead = is.read(buffer)) != -1)
+            {
+                output.write(buffer, 0, bytesRead);
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        bytes = output.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+
+        /*Bitmap bm = BitmapFactory.decodeFile(mPhotoFile.getPath());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 80, baos);
-        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);*/
     }
 
     private void takeAPhoto()
     {
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File imageFile = null;
         try
         {
-            mImage = createImageFile();
+            mPhotoFile = createImageFile();
         }
         catch (IOException e)
         {
             Log.d("Image File", e.toString());
         }
 
-        if (mImage != null)
+        if (mPhotoFile != null)
         {
-            i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mImage));
+            i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhotoFile));
             startActivityForResult(i, REQUEST_IMAGE_CODE);
         }
     }
@@ -212,10 +232,11 @@ public class ReportFragment extends Fragment
     private File createImageFile() throws IOException
     {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "REPORT_" + timeStamp + "_";
-        File folder = new File(Environment.getExternalStorageDirectory(), "DogAppImages");
-        folder.mkdir();
-        File image = File.createTempFile(imageFileName, ".jpg", folder);
+        String fileName = "REPORT_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        if (!storageDir.exists())
+            storageDir.mkdir();
+        File image = File.createTempFile(fileName, ".jpg", storageDir);
         return image;
     }
 
@@ -235,7 +256,7 @@ public class ReportFragment extends Fragment
             @Override
             public void failure(RetrofitError error)
             {
-                mLocations = new ArrayList<UserAPI.Location>();  // <-- create empty on failure for now
+                mLocations = new ArrayList<>();  // <-- create empty on failure for now
                 Toast.makeText(getActivity(), "Couldn't obtain locations",
                         Toast.LENGTH_LONG).show();
             }
@@ -246,7 +267,24 @@ public class ReportFragment extends Fragment
     public void onDestroy()
     {
         super.onDestroy();
-        getActivity().unregisterReceiver(mLocationReceiver);
+    }
+
+    @Override
+    public void onConnected(Bundle bundle)
+    {
+       mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult)
+    {
+
     }
 
     private class SubmitButtonClick implements View.OnClickListener
@@ -254,7 +292,7 @@ public class ReportFragment extends Fragment
         @Override
         public void onClick(View v)
         {
-            if(mImage == null)
+            if(mPhotoFile== null)
                 Toast.makeText(getActivity(), "Please take a photo", Toast.LENGTH_SHORT).show();
             else if(mLastLocation == null)
                 Toast.makeText(getActivity(), "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)

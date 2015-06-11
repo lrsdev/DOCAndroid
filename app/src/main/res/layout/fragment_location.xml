@@ -24,8 +24,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/stclair"/>
+                android:scaleType="fitXY"/>
 
             <!-- Spacing -->
             <Space
@@ -47,7 +46,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="0dp"
                 android:textSize="@dimen/abc_text_size_title_material"
-                android:text="St Clair Beach"
                 android:textColor="#FFFFFF"
                 android:gravity="center_vertical"
                 android:textStyle="bold"
@@ -72,7 +70,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginBottom="10dp"
                 android:layout_below="@id/locationNameTextView"
-                android:background="#559236"
+                android:background="#444444"
                 android:id="@+id/view"/>
 
             <TextView
@@ -92,6 +90,7 @@
                 android:id="@+id/locationGuidelinesTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/abc_text_size_body_1_material"
                 android:textColor="#000000"
                 android:typeface="serif"
                 android:layout_alignLeft="@id/locationGuidelinesTitleTextView"
