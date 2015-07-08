@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity
                             setContentFragment(new MapDisplayFragment());
                             break;
                         case 2: // Locations was clicked
-                            setContentFragment(new LocationListFragment());
+                            setContentFragment(new LocationRecyclerFragment());
                             getSupportActionBar().setTitle("Location List");
                             break;
                         case 3: // Wildlife was clicked

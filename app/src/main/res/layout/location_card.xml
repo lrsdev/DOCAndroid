@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    card_view:cardElevation="8dp"
+    card_view:contentPadding="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/locationCardHeaderContainer">
+
+            <ImageView
+                android:id="@+id/locationCardImageView"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_alignParentTop="true"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/locationCardTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#5000"
+                android:maxLines="1"
+                android:textColor="#FFF"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/locationCardBlurbTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/locationCardHeaderContainer"
+            android:maxLines="3"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/locationCardStatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/locationCardBlurbTextView"
+            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
