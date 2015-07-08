@@ -11,56 +11,15 @@ import java.util.ArrayList;
 public class Location implements Serializable
 {
     private int id;
-    private String locationType;
+    private String category;
     private String name;
     private String blurb;
-    private String dogGuidelines;
-    private String dogStatus;
-    private String imageThumb;
-    private String imageMedium;
-    private ArrayList<ApiGeoLocation> accessPoints;
+    private ApiGeoLocation geolocation;
+    private DogStatus dogStatus;
+    private Image image;
 
-    public ArrayList<Sighting> getSightings()
-    {
-        return sightings;
-    }
-
-    public void setSightings(ArrayList<Sighting> sightings)
-    {
-        this.sightings = sightings;
-    }
-
+    @SerializedName("reports")
     private ArrayList<Sighting> sightings;
-
-    public ArrayList<ApiGeoLocation> getAccessPoints()
-    {
-        return accessPoints;
-    }
-
-    public void setAccessPoints(ArrayList<ApiGeoLocation> accessPoints)
-    {
-        this.accessPoints = accessPoints;
-    }
-
-    public String getImageMedium()
-    {
-        return imageMedium;
-    }
-
-    public void setImageMedium(String imageMedium)
-    {
-        this.imageMedium = imageMedium;
-    }
-
-    public String getImageThumb()
-    {
-        return imageThumb;
-    }
-
-    public void setImageThumb(String imageThumb)
-    {
-        this.imageThumb = imageThumb;
-    }
 
     public int getId()
     {
@@ -72,15 +31,14 @@ public class Location implements Serializable
         this.id = id;
     }
 
-
-    public String getLocationType()
+    public String getCategory()
     {
-        return locationType;
+        return category;
     }
 
-    public void setLocationType(String locationType)
+    public void setCategory(String category)
     {
-        this.locationType = locationType;
+        this.category = category;
     }
 
     public String getName()
@@ -103,29 +61,49 @@ public class Location implements Serializable
         this.blurb = blurb;
     }
 
-    public String getDogGuidelines()
+    public ApiGeoLocation getGeolocation()
     {
-        return dogGuidelines;
+        return geolocation;
     }
 
-    public void setDogGuidelines(String dogGuidelines)
+    public void setGeolocation(ApiGeoLocation geolocation)
     {
-        this.dogGuidelines = dogGuidelines;
+        this.geolocation = geolocation;
     }
 
-    public String getDogStatus()
+    public DogStatus getDogStatus()
     {
         return dogStatus;
     }
 
-    public void setDogStatus(String dogStatus)
+    public void setDogStatus(DogStatus dogStatus)
     {
         this.dogStatus = dogStatus;
+    }
+
+    public Image getImage()
+    {
+        return image;
+    }
+
+    public void setImage(Image image)
+    {
+        this.image = image;
+    }
+
+    public ArrayList<Sighting> getSightings()
+    {
+        return sightings;
+    }
+
+    public void setSightings(ArrayList<Sighting> sightings)
+    {
+        this.sightings = sightings;
     }
 
     @Override
     public String toString()
     {
-        return getName();
+        return name;
     }
 }

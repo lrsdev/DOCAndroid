@@ -71,26 +71,26 @@ public class LocationFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_location, container, false);
 
         ImageView iv = (ImageView) v.findViewById(R.id.locationImage);
-        Picasso.with(getActivity()).load(mLocation.getImageMedium()).into(iv);
+        Picasso.with(getActivity()).load(mLocation.getImage().getMedium()).into(iv);
 
         TextView nameTextView = (TextView) v.findViewById(R.id.locationNameTextView);
         nameTextView.setText(mLocation.getName());
 
         TextView guideLinesTextView = (TextView) v.findViewById(R.id.locationGuidelinesTextView);
-        guideLinesTextView.setText(mLocation.getDogGuidelines());
+        guideLinesTextView.setText(mLocation.getDogStatus().getGuidelines());
 
         ImageView dogIconImageView = (ImageView) v.findViewById(R.id.locationDogIconImageView);
 
         // Move to a static helper method later
-        switch(mLocation.getDogStatus())
+        switch(mLocation.getDogStatus().getStatus())
         {
-            case "no dogs":
+            case "no_dogs":
                 dogIconImageView.setImageResource(R.drawable.nodogs);
                 break;
-            case "on lead":
+            case "on_lead":
                 dogIconImageView.setImageResource(R.drawable.dogonlead);
                 break;
-            case "off lead":
+            case "off_lead":
                 dogIconImageView.setImageResource(R.drawable.dogofflead);
                 break;
         }

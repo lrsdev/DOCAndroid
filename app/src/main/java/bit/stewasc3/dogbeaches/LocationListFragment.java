@@ -92,7 +92,7 @@ public class LocationListFragment extends ListFragment
             titleTextView.setText(l.getName());
 
             ImageView thumbImageView = (ImageView)convertView.findViewById(R.id.locationListThumbImageView);
-            Picasso.with(getActivity()).load(l.getImageThumb()).into(thumbImageView);
+            Picasso.with(getActivity()).load(l.getImage().getThumbnail()).into(thumbImageView);
 
             TextView statusTextView = (TextView)convertView.findViewById(R.id.locationListStatusTextView);
             statusTextView.setText("Dogs: " + l.getDogStatus());

@@ -40,9 +40,11 @@ import java.util.Date;
 import UserAPI.ImageAttachment;
 import UserAPI.Report;
 import UserAPI.RestClient;
+import UserAPI.UserApi;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 
 public class ReportFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener
@@ -121,35 +123,23 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     {
         if(requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK)
         {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mThumbImageView.setImageBitmap(imageBitmap);
+            //Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //mThumbImageView.setImageBitmap(imageBitmap);
         }
     }
 
     // Encode image to base64, get user entered details, encode JSON, send.
     private void submitReport()
     {
-        Report report = new Report();
         UserAPI.Location l = (UserAPI.Location) mLocationSpinner.getSelectedItem();
 
-        report.setLatitude(mLastLocation.getLatitude());
-        report.setLongitude(mLastLocation.getLongitude());
-
-        ImageAttachment img = new ImageAttachment();
-
-        img.setImageData(getBase64());
-        img.setImageContentType("image/jpeg");
-        img.setImageFilename(mPhotoFile.getName());
-        report.setImage(img);
-
-        report.setLocationId(l.getId());
-        report.setBlurb(mBlurbEditText.getText().toString());
-        report.setUserId(1); // No user registration avaiable yet, set to 1.
-        //report.setAnimalId(2);  // Not implemented server side
-
-        // Format date to API specification. Includes TimeZone so API knows how to store in UTC.
-        report.setSubmittedAt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").format(new Date()));
+        Integer locationId = l.getId();
+        double lat = 90.34234;
+        double longi = 123.123;
+        TypedFile tf = new TypedFile("image/jpeg", mPhotoFile);
+        String blurb = mBlurbEditText.getText().toString();
+        String submitted = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").format(new Date());
 
         // Progress spinner while report uploads
         pd = new ProgressDialog(getActivity());
@@ -159,7 +149,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         pd.setIndeterminate(true);
         pd.show();
 
-        RestClient.get().createReport(report, new Callback<Report>()
+        RestClient.get().createReport(tf, locationId, submitted, blurb, lat, longi, new Callback<Report>()
         {
             @Override
             public void success(Report report, Response response)
@@ -176,37 +166,6 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
                 pd.dismiss();
             }
         });
-    }
-
-    // Base64 available for SDK 8 + Only
-    // Refactored into more efficient InputStream method, avoids loading whole bitmap into memory.
-    // quick fix
-    // ToDo: Look into multipart post later
-    private String getBase64()
-    {
-        byte [] bytes;
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        try
-        {
-            InputStream is = new FileInputStream(mPhotoFile);
-            while ((bytesRead = is.read(buffer)) != -1)
-            {
-                output.write(buffer, 0, bytesRead);
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        bytes = output.toByteArray();
-        return Base64.encodeToString(bytes, Base64.DEFAULT);
-
-        /*Bitmap bm = BitmapFactory.decodeFile(mPhotoFile.getPath());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 80, baos);
-        return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);*/
     }
 
     private void takeAPhoto()
@@ -294,9 +253,9 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         {
             if(mPhotoFile== null)
                 Toast.makeText(getActivity(), "Please take a photo", Toast.LENGTH_SHORT).show();
-            else if(mLastLocation == null)
-                Toast.makeText(getActivity(), "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)
-                        .show();
+            //else if(mLastLocation == null)
+              //  Toast.makeText(getActivity(), "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)
+                //        .show();
             else
                 submitReport();
         }

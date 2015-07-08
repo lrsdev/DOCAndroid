@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.location.Location;
+
+import UserAPI.ApiGeoLocation;
 import UserAPI.RestClient;
 import UserAPI.UserApi;
 import retrofit.Callback;
@@ -104,16 +106,14 @@ public class MapDisplayFragment extends MapFragment
         mMap.moveCamera(c);
         for(UserAPI.Location l : mLocations)
         {
-            for(UserAPI.ApiGeoLocation g : l.getAccessPoints())
-            {
-                Marker mark = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(g.getLatitude(), g.getLongitude()))
-                        .title(l.getName())
-                        .anchor(0.5f, 0.5f) // Defines marker anchor point in the center
-                        .icon(getIconBitmap(l)));
-                // Add the marker to a map so we can determine which location info window was clicked later
-                mMarkerToLocationMap.put(mark, l);
-            }
+            ApiGeoLocation gl = l.getGeolocation();
+            Marker mark = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(gl.getLatitude(), gl.getLongitude()))
+                    .title(l.getName())
+                    .anchor(0.5f, 0.5f) // Defines marker anchor point in the center
+                    .icon(getIconBitmap(l)));
+            // Add the marker to a map so we can determine which location info window was clicked later
+            mMarkerToLocationMap.put(mark, l);
         }
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
         {
@@ -134,13 +134,13 @@ public class MapDisplayFragment extends MapFragment
     private BitmapDescriptor getIconBitmap(UserAPI.Location l)
     {
         int icon = 0;
-        switch(l.getDogStatus())
+        switch(l.getDogStatus().getStatus())
         {
-            case "on lead" : icon = R.drawable.dogonlead;
+            case "on_lead" : icon = R.drawable.dogonlead;
                 break;
-            case "off lead" : icon = R.drawable.dogofflead;
+            case "off_lead" : icon = R.drawable.dogofflead;
                 break;
-            case "no dogs" : icon = R.drawable.nodogs;
+            case "no_dogs" : icon = R.drawable.nodogs;
                 break;
         }
         return BitmapDescriptorFactory.fromResource(icon);
