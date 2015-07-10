@@ -16,6 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import bit.stewasc3.dogbeaches.Location.LocationRecyclerFragment;
+
 
 public class MainActivity extends AppCompatActivity
 {

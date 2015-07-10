@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import UserAPI.Location;
-import UserAPI.Report;
 import UserAPI.Sighting;
 
 /**

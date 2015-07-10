@@ -1,4 +1,4 @@
-package bit.stewasc3.dogbeaches;
+package bit.stewasc3.dogbeaches.Location;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import UserAPI.Location;
 import UserAPI.RestClient;
+import bit.stewasc3.dogbeaches.R;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

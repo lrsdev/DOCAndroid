@@ -29,9 +29,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import UserAPI.ImageAttachment;
-import UserAPI.Report;
 import UserAPI.RestClient;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -141,10 +138,10 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         pd.setIndeterminate(true);
         pd.show();
 
-        RestClient.get().createReport(tf, locationId, submitted, blurb, lat, longi, new Callback<Report>()
+        RestClient.get().createReport(tf, locationId, submitted, blurb, lat, longi, new Callback<String>()
         {
             @Override
-            public void success(Report report, Response response)
+            public void success(String s, Response response)
             {
                 Toast.makeText(getActivity(), "Report uploaded!", Toast.LENGTH_LONG).show();
                 pd.dismiss();

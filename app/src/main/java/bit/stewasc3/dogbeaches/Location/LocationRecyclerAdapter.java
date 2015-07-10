@@ -1,6 +1,7 @@
-package bit.stewasc3.dogbeaches;
+package bit.stewasc3.dogbeaches.Location;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import UserAPI.Location;
+import bit.stewasc3.dogbeaches.R;
 
 /**
  * Created by samuel on 8/07/15.
@@ -22,7 +24,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     private ArrayList<Location> mLocations;
     private Context mContext;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
+    public class ViewHolder extends RecyclerView.ViewHolder
     {
         public TextView titleTextView;
         public TextView blurbTextView;
@@ -36,6 +38,17 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
             imageView = (ImageView) recyclerView.findViewById(R.id.locationCardImageView);
             blurbTextView = (TextView) recyclerView.findViewById(R.id.locationCardBlurbTextView);
             statusTextView = (TextView) recyclerView.findViewById(R.id.locationCardStatusTextView);
+
+            recyclerView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Intent i = new Intent(mContext, LocationPagerActivity2.class);
+                    i.putExtra(LocationPagerActivity2.KEY_LOCATION, mLocations.get(getLayoutPosition()));
+                    mContext.startActivity(i);
+                }
+            });
         }
     }
 
@@ -53,6 +66,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         holder.blurbTextView.setText(l.getBlurb());
         holder.statusTextView.setText(l.getDogStatus().getStatus());
         Picasso.with(mContext).load(l.getImage().getMedium()).into(holder.imageView);
+
     }
 
     @Override

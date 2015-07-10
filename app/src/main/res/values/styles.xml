@@ -1,8 +1,26 @@
 <resources>
-    <style name="BaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryColorDark</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accentColor</item>
         <item name="android:textColor">#000</item>
+        <item name="vpiIconPageIndicatorStyle">@style/CustomIconPageIndicator</item>
     </style>
+
+    <!-- Styles the icon page indicators, add some padding -->
+    <style name="CustomIconPageIndicator">
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+
+    <!-- A style to use for drawing horizontal rule dividers -->
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
 </resources>

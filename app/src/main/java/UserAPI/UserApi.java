@@ -27,5 +27,5 @@ public interface UserApi
                              @Part("blurb") String blurb,
                              @Part("latitude") Double latitude,
                              @Part("longitude") Double longitude,
-                             Callback<Report> cb);
+                             Callback<String> cb);
 }

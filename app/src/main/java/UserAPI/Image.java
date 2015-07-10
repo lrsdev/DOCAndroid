@@ -1,9 +1,11 @@
 package UserAPI;
 
+import java.io.Serializable;
+
 /**
  * Created by samuel on 7/07/15.
  */
-public class Image
+public class Image implements Serializable
 {
     private String thumbnail;
     private String medium;
