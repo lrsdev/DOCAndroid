@@ -13,7 +13,7 @@ import bit.stewasc3.dogbeaches.R;
 /**
  * Created by samuel on 9/07/15.
  */
-public class LocationPagerActivity2 extends AppCompatActivity
+public class LocationPagerActivity extends AppCompatActivity
 {
     public static String KEY_LOCATION = "dogapp.location";
     private ViewPager mViewPager;
@@ -24,7 +24,7 @@ public class LocationPagerActivity2 extends AppCompatActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_locationpager);
+        setContentView(R.layout.activity_location_pager);
         mViewPager = (ViewPager) findViewById(R.id.locationViewPager);
 
         // Provide up navigation

@@ -37,14 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LocationPagerActivity"
-            android:label="@string/title_activity_location_pager"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait" >
-
-            <!-- Add Meta Data here to suppoet android versions lower than 16 -->
-        </activity>
 
         <activity
             android:name=".SightingPagerActivity"
@@ -54,7 +46,7 @@
         </activity>
 
         <activity
-            android:name=".Location.LocationPagerActivity2"
+            android:name=".Location.LocationPagerActivity"
             android:label="LocationPagerActivity2"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">

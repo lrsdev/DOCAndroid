@@ -27,6 +27,7 @@ import android.location.Location;
 import UserAPI.ApiGeoLocation;
 import UserAPI.RestClient;
 import UserAPI.UserApi;
+import bit.stewasc3.dogbeaches.Location.LocationPagerActivity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -124,8 +125,7 @@ public class MapDisplayFragment extends MapFragment
                 // ViewPager showing selected location from map.
                 int index = mLocations.indexOf(mMarkerToLocationMap.get(marker));
                 Intent i = new Intent(getActivity(), LocationPagerActivity.class);
-                i.putExtra(LocationPagerActivity.KEY_LOCATION_ARRAY, mLocations);
-                i.putExtra(LocationPagerActivity.KEY_LOCATION_ARRAY_INDEX, index);
+                i.putExtra(LocationPagerActivity.KEY_LOCATION, mLocations.get(index));
                 startActivity(i);
             }
         });

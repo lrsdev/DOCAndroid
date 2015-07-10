@@ -44,8 +44,8 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
                 @Override
                 public void onClick(View v)
                 {
-                    Intent i = new Intent(mContext, LocationPagerActivity2.class);
-                    i.putExtra(LocationPagerActivity2.KEY_LOCATION, mLocations.get(getLayoutPosition()));
+                    Intent i = new Intent(mContext, LocationPagerActivity.class);
+                    i.putExtra(LocationPagerActivity.KEY_LOCATION, mLocations.get(getLayoutPosition()));
                     mContext.startActivity(i);
                 }
             });
