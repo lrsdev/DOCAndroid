@@ -17,7 +17,7 @@ import UserAPI.Sighting;
  */
 public class SightingFragment extends Fragment
 {
-    public static final String KEY_SIGHTING = "dogapp.report";
+    public static final String KEY_SIGHTING = "dogapp.sighting";
     private Sighting mSighting;
 
     @Override
@@ -42,7 +42,7 @@ public class SightingFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_sighting, container, false);
 
         TextView locationTextView = (TextView)v.findViewById(R.id.sightingLocationTextView);
-        locationTextView.setText("Location: " + mSighting.getLocationName());
+        locationTextView.setText("Location: " + mSighting.getLocation().getName());
 
         TextView typeTextView = (TextView)v.findViewById(R.id.sightingTypeTextView);
         typeTextView.setText("Type: " + "Not yet implemented server side");
@@ -51,7 +51,7 @@ public class SightingFragment extends Fragment
         blurbTextView.setText("Blurb: " + mSighting.getBlurb());
 
         TextView dateTextView = (TextView)v.findViewById(R.id.sightingDateTextView);
-        dateTextView.setText("Date: " + mSighting.getSubmittedAt().toString());
+        dateTextView.setText("Date: " + mSighting.getCreatedAt().toString());
 
         ImageView sightingImageView = (ImageView)v.findViewById(R.id.sightingImageView);
         Picasso.with(getActivity()).load(mSighting.getImageMedium()).into(sightingImageView);

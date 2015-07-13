@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity
 
         setupDrawerList();
         setupDrawerToggle();
-
         //
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
@@ -166,14 +165,18 @@ public class MainActivity extends AppCompatActivity
                             setContentFragment(new LocationRecyclerFragment());
                             getSupportActionBar().setTitle("Location List");
                             break;
-                        case 3: // Wildlife was clicked
+                        case 3: // Sightings was clicked
+                            setContentFragment(new SightingRecyclerFragment());
+                            getSupportActionBar().setTitle("Sightings");
+                            break;
+                        case 4: // Wildlife was clicked
                             notImplemented();
                             break;
-                        case 4: // Report was clicked
+                        case 5: // Report was clicked
                             setContentFragment(new ReportFragment());
                             getSupportActionBar().setTitle("Wildlife Report");
                             break;
-                        case 5: // Donate was clicked
+                        case 6: // Donate was clicked
                             notImplemented();
                             break;
                     }

@@ -5,7 +5,7 @@
               android:background="@color/windowBackground">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/locationRecyclerView"
+        android:id="@+id/sightingRecyclerView"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

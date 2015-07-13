@@ -4,6 +4,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
     card_view:cardElevation="2dp">
 
     <RelativeLayout
@@ -18,7 +19,7 @@
             <ImageView
                 android:id="@+id/locationCardImageView"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:layout_alignParentTop="true"
                 android:scaleType="centerCrop" />
 
@@ -28,27 +29,45 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:background="#5000"
-                android:maxLines="1"
+                android:paddingLeft="16dp"
                 android:textColor="#FFF"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:fontFamily="sans-serif-light"
+                />
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/locationCardBlurbTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_below="@id/locationCardHeaderContainer"
-            android:maxLines="3"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:paddingTop="12dp"
+            >
 
-        <TextView
-            android:id="@+id/locationCardStatusTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/locationCardBlurbTextView"
-            android:textSize="16sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+            <TextView
+                android:id="@+id/locationCardStatusTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
+            <TextView
+                android:id="@+id/locationCardDistanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:text="3.4 Kilometres away"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="More Info"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+        </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

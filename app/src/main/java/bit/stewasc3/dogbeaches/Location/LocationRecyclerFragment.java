@@ -34,7 +34,6 @@ public class LocationRecyclerFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
         mLocations = new ArrayList<>();
-        populateLocations();
     }
 
     @Nullable
@@ -42,6 +41,8 @@ public class LocationRecyclerFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.fragment_location_recycler, container, false);
+        mAdapter = new LocationRecyclerAdapter(mLocations, getActivity());
+        populateLocations();
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.locationRecyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -49,7 +50,6 @@ public class LocationRecyclerFragment extends Fragment
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new LocationRecyclerAdapter(mLocations, getActivity());
         mRecyclerView.setAdapter(mAdapter);
 
         return v;

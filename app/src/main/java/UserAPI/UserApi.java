@@ -19,6 +19,9 @@ public interface UserApi
     @GET("/reports/")
     public void getReports(@Query("location_id") Integer location_id, Callback<ArrayList<Sighting>> cb);
 
+    @GET("/reports/")
+    public void getAllReports(Callback<ArrayList<Sighting>> cb);
+
     @Multipart
     @POST("/reports")
     public void createReport(@Part("image") TypedFile file,

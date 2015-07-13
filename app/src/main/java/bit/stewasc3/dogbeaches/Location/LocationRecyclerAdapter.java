@@ -36,7 +36,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
             super(recyclerView);
             titleTextView = (TextView) recyclerView.findViewById(R.id.locationCardTitleTextView);
             imageView = (ImageView) recyclerView.findViewById(R.id.locationCardImageView);
-            blurbTextView = (TextView) recyclerView.findViewById(R.id.locationCardBlurbTextView);
+            //blurbTextView = (TextView) recyclerView.findViewById(R.id.locationCardBlurbTextView);
             statusTextView = (TextView) recyclerView.findViewById(R.id.locationCardStatusTextView);
 
             recyclerView.setOnClickListener(new View.OnClickListener()
@@ -63,8 +63,21 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     {
         Location l = mLocations.get(position);
         holder.titleTextView.setText(l.getName());
-        holder.blurbTextView.setText(l.getBlurb());
-        holder.statusTextView.setText(l.getDogStatus().getStatus());
+        //holder.blurbTextView.setText(l.getBlurb());
+
+        String statusString = "";
+
+        switch(l.getDogStatus().getStatus())
+        {
+            case "on_lead": statusString = "Dogs allowed on lead";
+                break;
+            case "off_lead": statusString = "Dogs allowed off lead";
+                break;
+            case "no_dogs": statusString = "No dogs allowed";
+                break;
+        }
+
+        holder.statusTextView.setText(statusString);
         Picasso.with(mContext).load(l.getImage().getMedium()).into(holder.imageView);
 
     }

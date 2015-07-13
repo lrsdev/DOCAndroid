@@ -14,8 +14,51 @@ public class Sighting implements Serializable
     private String blurb;
     private String imageThumb;
     private String imageMedium;
-    private Date submittedAt;
-    private String locationName;
+    private Date createdAt;
+    private Location location;
+    private Animal animal;
+    private ApiGeoLocation geoLocation;
+    private Image image;
+
+    public Image getImage()
+    {
+        return image;
+    }
+
+    public void setImage(Image image)
+    {
+        this.image = image;
+    }
+
+    public Date getCreatedAt()
+    {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt)
+    {
+        this.createdAt = createdAt;
+    }
+
+    public Animal getAnimal()
+    {
+        return animal;
+    }
+
+    public void setAnimal(Animal animal)
+    {
+        this.animal = animal;
+    }
+
+    public Location getLocation()
+    {
+        return location;
+    }
+
+    public void setLocation(Location location)
+    {
+        this.location = location;
+    }
 
     public ApiGeoLocation getGeoLocation()
     {
@@ -25,28 +68,6 @@ public class Sighting implements Serializable
     public void setGeoLocation(ApiGeoLocation geoLocation)
     {
         this.geoLocation = geoLocation;
-    }
-
-    private ApiGeoLocation geoLocation;
-
-    public String getLocationName()
-    {
-        return locationName;
-    }
-
-    public void setLocationName(String locationName)
-    {
-        this.locationName = locationName;
-    }
-
-    public Date getSubmittedAt()
-    {
-        return submittedAt;
-    }
-
-    public void setSubmittedAt(Date submittedAt)
-    {
-        this.submittedAt = submittedAt;
     }
 
     public int getId()
