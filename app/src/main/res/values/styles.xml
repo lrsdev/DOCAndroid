@@ -1,9 +1,8 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accentColor</item>
-        <item name="android:textColor">#000</item>
         <item name="vpiIconPageIndicatorStyle">@style/CustomIconPageIndicator</item>
     </style>
 
@@ -22,5 +21,4 @@
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:background">?android:attr/listDivider</item>
     </style>
-
 </resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_home"
+            android:icon="@drawable/home"
+            android:title="Home" />
+        <item
+            android:id="@+id/drawer_map"
+            android:icon="@drawable/map"
+            android:title="Map" />
+        <item
+            android:id="@+id/drawer_locations"
+            android:icon="@drawable/marker"
+            android:title="Locations" />
+        <item
+            android:id="@+id/drawer_sightings"
+            android:icon="@drawable/binos"
+            android:title="Sightings" />
+        <item
+            android:id="@+id/drawer_wildlife"
+            android:icon="@drawable/penguin"
+            android:title="Wildlife" />
+        <item
+            android:id="@+id/drawer_report"
+            android:icon="@drawable/pen"
+            android:title="Report Sighting" />
+        <item
+            android:id="@+id/drawer_donate"
+            android:icon="@drawable/moneybag"
+            android:title="Donate" />
+    </group>
+</menu>

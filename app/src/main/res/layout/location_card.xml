@@ -21,9 +21,9 @@
             <ImageView
                 android:id="@+id/locationCardImageView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_alignParentTop="true"
-                android:scaleType="centerCrop" />
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:layout_alignParentTop="true" />
 
             <TextView
                 android:id="@+id/locationCardTitleTextView"
@@ -34,8 +34,7 @@
                 android:paddingLeft="16dp"
                 android:textColor="#FFF"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:fontFamily="sans-serif-light"
-                />
+                android:fontFamily="sans-serif-light" />
 
         </RelativeLayout>
 
@@ -75,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="View Map"
-                style="@style/Widget.AppCompat.Button.Borderless" />
+                style="@style/Widget.AppCompat.Button.Borderless.Colored" />
 
             <!-- Button programmatically set to visible when a location has reports -->
             <Button
