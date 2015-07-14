@@ -18,10 +18,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import UserAPI.ApiGeoLocation;
 import UserAPI.RestClient;
-import bit.stewasc3.dogbeaches.OldLocationClasses.LocationPagerActivity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -117,10 +115,10 @@ public class MapDisplayFragment extends MapFragment
             {
                 // Get index of location in array to open view pager correctly, start Location
                 // ViewPager showing selected location from map.
-                int index = mLocations.indexOf(mMarkerToLocationMap.get(marker));
-                Intent i = new Intent(getActivity(), LocationPagerActivity.class);
-                i.putExtra(LocationPagerActivity.KEY_LOCATION, mLocations.get(index));
-                startActivity(i);
+                //int index = mLocations.indexOf(mMarkerToLocationMap.get(marker));
+                //Intent i = new Intent(getActivity(), LocationPagerActivity.class);
+                //i.putExtra(LocationPagerActivity.KEY_LOCATION, mLocations.get(index));
+                //startActivity(i);
             }
         });
     }

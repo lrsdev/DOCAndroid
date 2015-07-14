@@ -8,13 +8,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-
 import UserAPI.Location;
-import bit.stewasc3.dogbeaches.OldLocationClasses.LocationPagerActivity;
 
 /**
  * Created by samuel on 8/07/15.
