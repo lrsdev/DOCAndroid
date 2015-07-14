@@ -13,10 +13,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import bit.stewasc3.dogbeaches.Location.LocationRecyclerFragment;
 
 
 public class MainActivity extends AppCompatActivity
@@ -24,6 +23,9 @@ public class MainActivity extends AppCompatActivity
     private String[] mNavTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+
+    private LinearLayout mDrawerView;
+
     private FrameLayout mContentContainer;
     private FragmentManager fm;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -39,7 +41,8 @@ public class MainActivity extends AppCompatActivity
         mContentContainer = (FrameLayout) findViewById(R.id.content_container);
         mNavTitles = getResources().getStringArray(R.array.navigation_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.nav_drawer);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerView = (LinearLayout) findViewById(R.id.drawer_view);
 
         setupDrawerList();
         setupDrawerToggle();
@@ -183,7 +186,7 @@ public class MainActivity extends AppCompatActivity
 
             // Set checked, close the drawer after selection. ToDo: Selected item styling
             mDrawerList.setItemChecked(position, true);
-            mDrawerLayout.closeDrawer(mDrawerList);
+            mDrawerLayout.closeDrawer(mDrawerView);
         }
     }
 }

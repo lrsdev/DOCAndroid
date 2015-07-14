@@ -46,7 +46,7 @@
         </activity>
 
         <activity
-            android:name=".Location.LocationPagerActivity"
+            android:name=".OldLocationClasses.LocationPagerActivity"
             android:label="LocationPagerActivity2"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">

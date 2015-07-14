@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="bit.stewasc3.dogbeaches.Location.LocationWildlifeFragment">
+             tools:context="bit.stewasc3.dogbeaches.OldLocationClasses.LocationWildlifeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

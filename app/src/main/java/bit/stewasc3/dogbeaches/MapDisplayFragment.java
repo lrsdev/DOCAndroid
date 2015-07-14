@@ -1,9 +1,6 @@
 package bit.stewasc3.dogbeaches;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +19,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.location.Location;
-
 import UserAPI.ApiGeoLocation;
 import UserAPI.RestClient;
-import UserAPI.UserApi;
-import bit.stewasc3.dogbeaches.Location.LocationPagerActivity;
+import bit.stewasc3.dogbeaches.OldLocationClasses.LocationPagerActivity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

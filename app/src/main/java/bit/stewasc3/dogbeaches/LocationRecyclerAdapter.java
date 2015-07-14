@@ -1,4 +1,4 @@
-package bit.stewasc3.dogbeaches.Location;
+package bit.stewasc3.dogbeaches;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import UserAPI.Location;
-import bit.stewasc3.dogbeaches.R;
+import bit.stewasc3.dogbeaches.OldLocationClasses.LocationPagerActivity;
 
 /**
  * Created by samuel on 8/07/15.
@@ -28,8 +29,11 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     {
         public TextView titleTextView;
         public TextView blurbTextView;
+        public TextView guidelinesTextView;
         public ImageView imageView;
         public TextView statusTextView;
+        public Button mapButton;
+        public Button sightingsButton;
 
         public ViewHolder(View recyclerView)
         {
@@ -38,7 +42,11 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
             imageView = (ImageView) recyclerView.findViewById(R.id.locationCardImageView);
             //blurbTextView = (TextView) recyclerView.findViewById(R.id.locationCardBlurbTextView);
             statusTextView = (TextView) recyclerView.findViewById(R.id.locationCardStatusTextView);
+            guidelinesTextView = (TextView) recyclerView.findViewById(R.id.locationCardDogGuidelines);
+            mapButton = (Button) recyclerView.findViewById(R.id.locationCardMapButton);
+            sightingsButton = (Button) recyclerView.findViewById(R.id.locationCardSightingsButton);
 
+            /*
             recyclerView.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -49,6 +57,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
                     mContext.startActivity(i);
                 }
             });
+            */
         }
     }
 
@@ -63,6 +72,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     {
         Location l = mLocations.get(position);
         holder.titleTextView.setText(l.getName());
+        holder.guidelinesTextView.setText(l.getDogStatus().getGuidelines());
         //holder.blurbTextView.setText(l.getBlurb());
 
         String statusString = "";
@@ -79,6 +89,12 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
         holder.statusTextView.setText(statusString);
         Picasso.with(mContext).load(l.getImage().getMedium()).into(holder.imageView);
+
+        // Show sightings button only if location has sightings
+        if (!(l.getSightings().isEmpty()))
+        {
+            holder.sightingsButton.setVisibility(View.VISIBLE);
+        }
 
     }
 

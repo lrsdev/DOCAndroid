@@ -1,4 +1,4 @@
-package bit.stewasc3.dogbeaches.Location;
+package bit.stewasc3.dogbeaches.OldLocationClasses;
 
 
 import android.os.Bundle;
