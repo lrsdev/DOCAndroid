@@ -1,4 +1,4 @@
-package bit.stewasc3.dogbeaches.OldLocationClasses;
+package bit.stewasc3.dogbeaches;
 
 
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import UserAPI.Location;
-import bit.stewasc3.dogbeaches.R;
 
 
 /**
