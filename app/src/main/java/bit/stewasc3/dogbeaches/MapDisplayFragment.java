@@ -113,6 +113,8 @@ public class MapDisplayFragment extends MapFragment
             @Override
             public void onInfoWindowClick(Marker marker)
             {
+                // Disabled
+
                 // Get index of location in array to open view pager correctly, start Location
                 // ViewPager showing selected location from map.
                 //int index = mLocations.indexOf(mMarkerToLocationMap.get(marker));

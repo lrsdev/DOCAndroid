@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    card_view:cardElevation="2dp">
+    card_view:cardElevation="4dp"
+    card_view:cardCornerRadius="2dp">
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,9 +16,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:id="@+id/locationCardHeaderContainer">
 
+            <!-- ImageView will scale height to maintain aspect ratio. Images on server need to be 16:9 -->
             <ImageView
                 android:id="@+id/locationCardImageView"
                 android:layout_width="match_parent"
@@ -25,55 +26,68 @@
                 android:adjustViewBounds="true"
                 android:layout_alignParentTop="true" />
 
-            <TextView
-                android:id="@+id/locationCardTitleTextView"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="#5000"
-                android:paddingLeft="16dp"
-                android:textColor="#FFF"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:fontFamily="sans-serif-light" />
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/locationCardTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFF"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                <TextView
+                    android:id="@+id/locationCardStatusTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFF"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            </LinearLayout>
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/locationCardStatusTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+            android:padding="16dp" >
 
-        <TextView
-            android:id="@+id/locationCardDistanceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginBottom="12dp"
-            android:text="3.4 Kilometres away"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+            <TextView
+                android:id="@+id/locationCardDistanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3.4 Kilometres away"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
-        <TextView
-            android:id="@+id/locationCardDogGuidelines"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            <!-- Remove view pending client discussion -->
+            <TextView
+                android:id="@+id/locationCardDogGuidelines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp" >
 
+            <!-- consider finding a different layout where you can set 8dp as a padding between buttons -->
             <Button
                 android:id="@+id/locationCardMapButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="View Map"
+                android:layout_marginRight="8dp"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored" />
 
             <!-- Button programmatically set to visible when a location has reports -->
