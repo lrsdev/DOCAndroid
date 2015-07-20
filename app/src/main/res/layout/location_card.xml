@@ -26,52 +26,48 @@
                 android:adjustViewBounds="true"
                 android:layout_alignParentTop="true" />
 
+            <TextView
+                android:id="@+id/locationCardTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#5000"
+                android:paddingLeft="16dp"
+                android:textColor="#FFF"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                />
+
+            </RelativeLayout>
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/locationCardTitleTextView"
-                    android:layout_width="match_parent"
+                    android:id="@+id/locationCardDistanceTextView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#FFF"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                    android:text="3.4 Kilometres away"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
                 <TextView
                     android:id="@+id/locationCardStatusTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#FFF"
+                    android:visibility="gone"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
+                <!-- Remove view pending client discussion -->
+                <TextView
+                    android:id="@+id/locationCardDogGuidelines"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
             </LinearLayout>
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp" >
-
-            <TextView
-                android:id="@+id/locationCardDistanceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3.4 Kilometres away"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
-
-            <!-- Remove view pending client discussion -->
-            <TextView
-                android:id="@+id/locationCardDogGuidelines"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"

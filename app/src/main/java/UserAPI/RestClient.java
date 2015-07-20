@@ -21,7 +21,7 @@ import retrofit.converter.GsonConverter;
 public class RestClient
 {
     private static UserApi REST_CLIENT;
-    private static String ROOT = "http://meat.stewpot.nz:3001/";
+    private static String ROOT = "http://meat.stewpot.nz:3000/";
 
     private RestClient()
     {

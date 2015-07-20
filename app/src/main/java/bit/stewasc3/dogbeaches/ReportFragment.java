@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import UserAPI.RestClient;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -53,7 +54,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     private ArrayAdapter mLocationAdapter;
     private ArrayAdapter mWildlifeAdapter;
     private Location mLastLocation;
-    private Spinner mLocationSpinner;
+    private MaterialSpinner mLocationSpinner;
     private Spinner mWildlifeSpinner;
     private EditText mBlurbEditText;
     private GoogleApiClient mGoogleApiClient;
@@ -78,7 +79,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         final View view = inflater.inflate(R.layout.fragment_report, container, false);
 
         mLocationAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, mLocations);
-        mLocationSpinner = (Spinner) view.findViewById(R.id.reportLocationSpinner);
+        mLocationSpinner = (MaterialSpinner) view.findViewById(R.id.reportLocationSpinner);
         mLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mLocationSpinner.setAdapter(mLocationAdapter);
 
