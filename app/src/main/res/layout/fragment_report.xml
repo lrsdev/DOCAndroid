@@ -5,128 +5,111 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:padding="8dp"
-              android:background="@color/windowBackground">
+              android:background="@color/windowBackground"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+    <!-- Stops edit text being auto selected -->
 
-    <!-- Page Heading -->
-    <TextView
-        android:id="@+id/reportHeaderTextView"
+    <!-- Image View -->
+    <ImageButton
+        android:id="@+id/reportImageButton"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:text="Sighting Details"
-        android:gravity="center_vertical"
-        android:textStyle="bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:cropToPadding="false"
+        android:adjustViewBounds="true"
+        android:layout_weight="3"
+        android:src="@drawable/placeholder"/>
 
-    <!-- Location Label -->
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="72dp">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="4" >
 
-        <fr.ganfra.materialspinner.MaterialSpinner
-            android:id="@+id/reportLocationSpinner"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            app:ms_hint="Select a location"
-            app:ms_floatingLabelText="Location"
-            app:ms_floatingLabelColor="@color/accentColor"/>
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:text="* Please endeavour to center your subject in image" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="72dp">
-
-        <fr.ganfra.materialspinner.MaterialSpinner
-            android:id="@+id/reportWildlifeTypeSpinner"
+        <!-- Location Label -->
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            app:ms_hint="Select a species"
-            app:ms_floatingLabelText="Species"
-            app:ms_floatingLabelColor="@color/accentColor"/>
+            android:gravity="center_vertical"
+            android:layout_height="48dp">
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="72dp"
-        android:orientation="vertical">
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/reportNotesTextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/reportNotesEditText"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:hint="Notes"/>
+                android:layout_weight="1"
+                android:text="Location"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
-        </android.support.design.widget.TextInputLayout>
+            <Spinner
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:id="@+id/reportLocationSpinner"
+                android:layout_height="wrap_content"
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_gravity="right"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="48dp">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Species"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            <Spinner
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:id="@+id/reportWildlifeTypeSpinner"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="right"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/reportNotesTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    style="@style/Widget.AppCompat.EditText"
+                    android:id="@+id/reportNotesEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="140"
+                    android:hint="Notes"/>
+
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/reportSubmitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/Widget.AppCompat.Button"
+            android:text="Submit"/>
 
     </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/reportWildlifeTextView"
-        android:layout_width="156dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="0dp"
-        android:textStyle="bold"
-        android:text="Wildlife Type: "
-        android:textColor="#FFFFFF"
-        android:gravity="center_vertical"
-        />
-
-    <TextView
-        android:id="@+id/reportNotesTextView"
-        android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="0dp"
-        android:textStyle="bold"
-        android:text="Notes : "
-        android:textColor="#FFFFFF"
-        android:gravity="center_vertical"
-        />
-
-    <ImageButton
-        android:id="@+id/reportPhotoButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@color/windowBackground"
-        android:src="@drawable/camera"
-        android:layout_marginBottom="16dp" />
-
-    <ImageButton
-        android:id="@+id/reportSubmitButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@color/windowBackground"
-        android:src="@drawable/upload"
-        android:layout_marginBottom="16dp" />
-
-
-    <ImageButton
-        android:id="@+id/reportClearButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@color/windowBackground"
-        android:src="@drawable/trash"
-        android:layout_marginBottom="16dp" />
-
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@drawable/image_placeholder"
-        android:id="@+id/reportThumbImageView"
-        android:layout_below="@+id/reportNotesEditText"
-        android:layout_centerHorizontal="true"
-        android:scaleType="fitXY"
-        android:layout_marginTop="81dp"/>
-
 </LinearLayout>

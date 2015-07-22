@@ -9,11 +9,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import UserAPI.RestClient;
+import UserAPI.Sighting;
 import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -49,12 +53,12 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
      */
 
     private ArrayList<UserAPI.Location> mLocations;
-    private ImageView mThumbImageView;
+    private ImageButton mImageButton;
     private ProgressDialog pd;
     private ArrayAdapter mLocationAdapter;
     private ArrayAdapter mWildlifeAdapter;
     private Location mLastLocation;
-    private MaterialSpinner mLocationSpinner;
+    private Spinner mLocationSpinner;
     private Spinner mWildlifeSpinner;
     private EditText mBlurbEditText;
     private GoogleApiClient mGoogleApiClient;
@@ -78,29 +82,25 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     {
         final View view = inflater.inflate(R.layout.fragment_report, container, false);
 
-        mLocationAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, mLocations);
-        mLocationSpinner = (MaterialSpinner) view.findViewById(R.id.reportLocationSpinner);
-        mLocationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mLocationAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mLocations);
+        mLocationSpinner = (Spinner) view.findViewById(R.id.reportLocationSpinner);
         mLocationSpinner.setAdapter(mLocationAdapter);
 
         // Wildlife type populated from resource string array for now.
         // ToDo: Implement server side wildlife model, store locally for selection.
         mWildlifeSpinner = (Spinner) view.findViewById(R.id.reportWildlifeTypeSpinner);
         mWildlifeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.wildlife_array,
-                android.R.layout.simple_spinner_item);
-        mWildlifeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                android.R.layout.simple_spinner_dropdown_item);
         mWildlifeSpinner.setAdapter(mWildlifeAdapter);
 
         // User entered notes/ blurb
         mBlurbEditText = (EditText) view.findViewById(R.id.reportNotesEditText);
-        // Thumbnail displaying image after being taken
-        mThumbImageView = (ImageView) view.findViewById(R.id.reportThumbImageView);
 
         // Camera image button
-        ImageButton photoButton = (ImageButton) view.findViewById(R.id.reportPhotoButton);
-        photoButton.setOnClickListener(new CameraButtonClick());
+        mImageButton = (ImageButton) view.findViewById(R.id.reportImageButton);
+        mImageButton.setOnClickListener(new ImageButtonClick());
 
-        ImageButton submitButton = (ImageButton) view.findViewById(R.id.reportSubmitButton);
+        Button submitButton = (Button) view.findViewById(R.id.reportSubmitButton);
         submitButton.setOnClickListener(new SubmitButtonClick());
 
         getLocations();
@@ -113,23 +113,21 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     {
         if(requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK)
         {
-            //Bundle extras = data.getExtras();
-            //Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //mThumbImageView.setImageBitmap(imageBitmap);
+            Picasso.with(getActivity()).load(mPhotoFile).into(mImageButton);
         }
     }
 
-    // Encode image to base64, get user entered details, encode JSON, send.
     private void submitReport()
     {
         UserAPI.Location l = (UserAPI.Location) mLocationSpinner.getSelectedItem();
 
         Integer locationId = l.getId();
-        double lat = 90.34234;
-        double longi = 123.123;
+        double lat = mLastLocation.getLatitude();
+        double longi = mLastLocation.getLongitude();
         TypedFile tf = new TypedFile("image/jpeg", mPhotoFile);
         String blurb = mBlurbEditText.getText().toString();
         String submitted = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").format(new Date());
+        String animalType = (String) mWildlifeSpinner.getSelectedItem();
 
         // Progress spinner while report uploads
         pd = new ProgressDialog(getActivity());
@@ -139,10 +137,10 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         pd.setIndeterminate(true);
         pd.show();
 
-        RestClient.get().createReport(tf, locationId, submitted, blurb, lat, longi, new Callback<String>()
+        RestClient.get().createReport(tf, locationId, submitted, blurb, lat, longi, animalType, new Callback<Sighting>()
         {
             @Override
-            public void success(String s, Response response)
+            public void success(Sighting s, Response response)
             {
                 Toast.makeText(getActivity(), "Report uploaded!", Toast.LENGTH_LONG).show();
                 pd.dismiss();
@@ -153,6 +151,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
             public void failure(RetrofitError error)
             {
                 Toast.makeText(getActivity(), "Report upload failed", Toast.LENGTH_LONG).show();
+                Log.d("RETROFIT", error.toString());
                 pd.dismiss();
             }
         });
@@ -161,7 +160,6 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     private void takeAPhoto()
     {
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File imageFile = null;
         try
         {
             mPhotoFile = createImageFile();
@@ -212,6 +210,11 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         });
     }
 
+    private void getAnimals()
+    {
+
+    }
+
     @Override
     public void onDestroy()
     {
@@ -242,16 +245,19 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         public void onClick(View v)
         {
             if(mPhotoFile== null)
+            {
                 Toast.makeText(getActivity(), "Please take a photo", Toast.LENGTH_SHORT).show();
-            //else if(mLastLocation == null)
-              //  Toast.makeText(getActivity(), "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)
-                //        .show();
+            }
+
+            else if(mLastLocation == null)
+                Toast.makeText(getActivity(), "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)
+                        .show();
             else
                 submitReport();
         }
     }
 
-    private class CameraButtonClick implements View.OnClickListener
+    private class ImageButtonClick implements View.OnClickListener
     {
         @Override
         public void onClick(View v)

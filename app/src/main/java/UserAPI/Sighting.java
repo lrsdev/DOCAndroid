@@ -11,6 +11,7 @@ public class Sighting implements Serializable
     private int id;
     private int userId;
     private int animalId;
+    private String animalType;
     private String blurb;
     private String imageThumb;
     private String imageMedium;
@@ -19,6 +20,16 @@ public class Sighting implements Serializable
     private Animal animal;
     private ApiGeoLocation geoLocation;
     private Image image;
+
+    public String getAnimalType()
+    {
+        return animalType;
+    }
+
+    public void setAnimalType(String animalType)
+    {
+        this.animalType = animalType;
+    }
 
     public Image getImage()
     {

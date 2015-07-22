@@ -1,8 +1,7 @@
 package bit.stewasc3.dogbeaches;
-
-
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,12 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.squareup.picasso.Picasso;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import UserAPI.RestClient;
 import UserAPI.Sighting;
 import retrofit.Callback;
@@ -25,6 +21,7 @@ import retrofit.client.Response;
 
 public class SightingRecyclerFragment extends Fragment
 {
+    public final static String KEY_LOCATIONID = "dogbeaches.sightingrecyclerfragment.locationid";
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -44,7 +41,15 @@ public class SightingRecyclerFragment extends Fragment
     {
         View v = inflater.inflate(R.layout.fragment_sighting_recycler, container, false);
         mAdapter = new SightingRecyclerAdapter();
-        populateSightings();
+
+        Bundle args = getArguments();
+
+        if(args != null && args.containsKey(KEY_LOCATIONID))
+        {
+            populateSightingsByLocationId(args.getInt(KEY_LOCATIONID));
+        }
+        else
+            populateSightings();
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.sightingRecyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -57,9 +62,38 @@ public class SightingRecyclerFragment extends Fragment
         return v;
     }
 
+    public static Fragment newInstance(int locationId)
+    {
+        Fragment f = new SightingRecyclerFragment();
+        Bundle b = new Bundle();
+        b.putInt(KEY_LOCATIONID, locationId);
+        f.setArguments(b);
+        return f;
+    }
+
     private void populateSightings()
     {
         RestClient.get().getAllReports(new Callback<ArrayList<Sighting>>()
+        {
+            @Override
+            public void success(ArrayList<Sighting> sightings, Response response)
+            {
+                mSightings.addAll(sightings);
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void failure(RetrofitError error)
+            {
+                Toast.makeText(getActivity().getApplicationContext(),
+                        error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void populateSightingsByLocationId(int locationId)
+    {
+        RestClient.get().getReports(locationId, new Callback<ArrayList<Sighting>>()
         {
             @Override
             public void success(ArrayList<Sighting> sightings, Response response)
@@ -106,7 +140,7 @@ public class SightingRecyclerFragment extends Fragment
         public void onBindViewHolder(ViewHolder holder, int position)
         {
             Sighting s = mSightings.get(position);
-            holder.nameTextView.setText(s.getAnimal().getName());
+            holder.nameTextView.setText(s.getAnimalType());
             String date = new SimpleDateFormat("EEE, d MMM ''yy HH:mm").format(s.getCreatedAt());
             holder.dateTextView.setText(date);
             holder.locationTextView.setText(s.getLocation().getName());

@@ -30,5 +30,6 @@ public interface UserApi
                              @Part("blurb") String blurb,
                              @Part("latitude") Double latitude,
                              @Part("longitude") Double longitude,
-                             Callback<String> cb);
+                             @Part("animal_type") String animalType,
+                             Callback<Sighting> cb);
 }
