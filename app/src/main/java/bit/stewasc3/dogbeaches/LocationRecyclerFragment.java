@@ -153,12 +153,12 @@ public class LocationRecyclerFragment extends Fragment
         {
             Location l = mLocations.get(position);
             holder.titleTextView.setText(l.getName());
-            holder.guidelinesTextView.setText(l.getDogStatus().getGuidelines());
+            holder.guidelinesTextView.setText(l.getDogGuidelines());
             //holder.blurbTextView.setText(l.getBlurb());
 
             String statusString = "";
 
-            switch(l.getDogStatus().getStatus())
+            switch(l.getDogStatus())
             {
                 case "on_lead": statusString = "Dogs allowed on lead";
                     break;
@@ -169,7 +169,7 @@ public class LocationRecyclerFragment extends Fragment
             }
 
             holder.statusTextView.setText(statusString);
-            Picasso.with(mContext).load(l.getImage().getMedium()).into(holder.imageView);
+            Picasso.with(mContext).load(l.getImageMedium()).into(holder.imageView);
 
             // Show sightings button only if location has sightings
             if (!(l.getSightings().isEmpty()))

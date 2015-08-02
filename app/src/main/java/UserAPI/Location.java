@@ -14,12 +14,63 @@ public class Location implements Serializable
     private String category;
     private String name;
     private String blurb;
-    private ApiGeoLocation geolocation;
-    private DogStatus dogStatus;
-    private Image image;
+    private String imageThumb;
+    private String imageMedium;
+    private double latitude;
+    private double longitude;
+    private String dogStatus;
+    private String dogGuidelines;
 
     @SerializedName("reports")
     private ArrayList<Sighting> sightings;
+
+    public String getDogStatus() {
+        return dogStatus;
+    }
+
+    public void setDogStatus(String dogStatus) {
+        this.dogStatus = dogStatus;
+    }
+
+    public String getDogGuidelines() {
+        return dogGuidelines;
+    }
+
+    public void setDogGuidelines(String dogGuidelines) {
+        this.dogGuidelines = dogGuidelines;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getImageThumb() {
+        return imageThumb;
+    }
+
+    public void setImageThumb(String imageThumb) {
+        this.imageThumb = imageThumb;
+    }
+
+    public String getImageMedium() {
+        return imageMedium;
+    }
+
+    public void setImageMedium(String imageMedium) {
+        this.imageMedium = imageMedium;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
 
     public int getId()
     {
@@ -59,36 +110,6 @@ public class Location implements Serializable
     public void setBlurb(String blurb)
     {
         this.blurb = blurb;
-    }
-
-    public ApiGeoLocation getGeolocation()
-    {
-        return geolocation;
-    }
-
-    public void setGeolocation(ApiGeoLocation geolocation)
-    {
-        this.geolocation = geolocation;
-    }
-
-    public DogStatus getDogStatus()
-    {
-        return dogStatus;
-    }
-
-    public void setDogStatus(DogStatus dogStatus)
-    {
-        this.dogStatus = dogStatus;
-    }
-
-    public Image getImage()
-    {
-        return image;
-    }
-
-    public void setImage(Image image)
-    {
-        this.image = image;
     }
 
     public ArrayList<Sighting> getSightings()

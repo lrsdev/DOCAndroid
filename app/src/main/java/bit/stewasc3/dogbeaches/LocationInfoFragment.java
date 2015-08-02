@@ -46,7 +46,7 @@ public class LocationInfoFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_location_info, container, false);
 
         ImageView iv = (ImageView) v.findViewById(R.id.locationInfoImage);
-        Picasso.with(getActivity()).load(mLocation.getImage().getMedium()).into(iv);
+        Picasso.with(getActivity()).load(mLocation.getImageMedium()).into(iv);
 
         TextView nameTextView = (TextView) v.findViewById(R.id.locationInfoNameTextView);
         nameTextView.setText(mLocation.getName());
@@ -55,7 +55,7 @@ public class LocationInfoFragment extends Fragment
         blurbTextView.setText(mLocation.getBlurb());
 
         TextView guidelinesTextView = (TextView) v.findViewById(R.id.locationInfoDogGuidelinesTextView);
-        guidelinesTextView.setText(mLocation.getDogStatus().getGuidelines());
+        guidelinesTextView.setText(mLocation.getDogGuidelines());
 
         return v;
     }

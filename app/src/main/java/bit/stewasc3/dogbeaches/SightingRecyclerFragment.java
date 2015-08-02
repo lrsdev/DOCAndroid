@@ -144,7 +144,7 @@ public class SightingRecyclerFragment extends Fragment
             String date = new SimpleDateFormat("EEE, d MMM ''yy HH:mm").format(s.getCreatedAt());
             holder.dateTextView.setText(date);
             holder.locationTextView.setText(s.getLocation().getName());
-            Picasso.with(getActivity()).load(s.getImage().getMedium()).into(holder.imageView);
+            Picasso.with(getActivity()).load(s.getImageMedium()).into(holder.imageView);
             holder.blurbTextView.setText(s.getBlurb());
         }
 

@@ -1,6 +1,5 @@
 package bit.stewasc3.dogbeaches;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
-import UserAPI.ApiGeoLocation;
 import UserAPI.RestClient;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -99,9 +97,8 @@ public class MapDisplayFragment extends MapFragment
         mMap.moveCamera(c);
         for(UserAPI.Location l : mLocations)
         {
-            ApiGeoLocation gl = l.getGeolocation();
             Marker mark = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(gl.getLatitude(), gl.getLongitude()))
+                    .position(new LatLng(l.getLatitude(), l.getLongitude()))
                     .title(l.getName())
                     .anchor(0.5f, 0.5f) // Defines marker anchor point in the center
                     .icon(getIconBitmap(l)));
@@ -128,7 +125,7 @@ public class MapDisplayFragment extends MapFragment
     private BitmapDescriptor getIconBitmap(UserAPI.Location l)
     {
         int icon = 0;
-        switch(l.getDogStatus().getStatus())
+        switch(l.getDogStatus())
         {
             case "on_lead" : icon = R.drawable.dogonlead;
                 break;

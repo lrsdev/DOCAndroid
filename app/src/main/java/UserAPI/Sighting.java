@@ -13,13 +13,29 @@ public class Sighting implements Serializable
     private int animalId;
     private String animalType;
     private String blurb;
-    private String imageThumb;
-    private String imageMedium;
     private Date createdAt;
     private Location location;
     private Animal animal;
-    private ApiGeoLocation geoLocation;
-    private Image image;
+    private String imageThumb;
+    private String imageMedium;
+    private double latitude;
+    private double longitide;
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitide() {
+        return longitide;
+    }
+
+    public void setLongitide(double longitide) {
+        this.longitide = longitide;
+    }
 
     public String getAnimalType()
     {
@@ -29,16 +45,6 @@ public class Sighting implements Serializable
     public void setAnimalType(String animalType)
     {
         this.animalType = animalType;
-    }
-
-    public Image getImage()
-    {
-        return image;
-    }
-
-    public void setImage(Image image)
-    {
-        this.image = image;
     }
 
     public Date getCreatedAt()
@@ -69,16 +75,6 @@ public class Sighting implements Serializable
     public void setLocation(Location location)
     {
         this.location = location;
-    }
-
-    public ApiGeoLocation getGeoLocation()
-    {
-        return geoLocation;
-    }
-
-    public void setGeoLocation(ApiGeoLocation geoLocation)
-    {
-        this.geoLocation = geoLocation;
     }
 
     public int getId()
