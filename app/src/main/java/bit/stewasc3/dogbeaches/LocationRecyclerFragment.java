@@ -2,12 +2,17 @@ package bit.stewasc3.dogbeaches;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +27,8 @@ import java.util.ArrayList;
 
 import UserAPI.Location;
 import UserAPI.RestClient;
+import bit.stewasc3.dogbeaches.contentprovider.LocationProvider;
+import bit.stewasc3.dogbeaches.contentprovider.SQLiteHelper;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -29,13 +36,14 @@ import retrofit.client.Response;
 /**
  * Created by samuel on 8/07/15.
  */
-public class LocationRecyclerFragment extends Fragment
+public class LocationRecyclerFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<UserAPI.Location> mLocations;
     private OnSightingsSelectedListener mSightingsCallback;
+
+    private static int LOCATION_RECYCLER_LOADER = 1;
 
     public interface OnSightingsSelectedListener
     {
@@ -61,7 +69,7 @@ public class LocationRecyclerFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mLocations = new ArrayList<>();
+        getLoaderManager().initLoader(LOCATION_RECYCLER_LOADER, null, this);
     }
 
     @Nullable
@@ -69,8 +77,6 @@ public class LocationRecyclerFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.fragment_location_recycler, container, false);
-        mAdapter = new LocationRecyclerAdapter(mLocations, getActivity());
-        populateLocations();
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.locationRecyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -78,34 +84,35 @@ public class LocationRecyclerFragment extends Fragment
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mRecyclerView.setAdapter(mAdapter);
-
         return v;
     }
 
-    private void populateLocations()
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
-        RestClient.get().getAllLocations(new Callback<ArrayList<Location>>()
-        {
-            @Override
-            public void success(ArrayList<Location> locations, Response response)
-            {
-                mLocations.addAll(locations);
-                mAdapter.notifyDataSetChanged();
-            }
+        String[] projection = {SQLiteHelper.COLUMN_NAME, SQLiteHelper.COLUMN_DOG_GUIDELINES,
+            SQLiteHelper.COLUMN_DOG_STATUS, SQLiteHelper.COLUMN_IMAGE_MEDIUM};
+        CursorLoader cursorLoader = new CursorLoader(getActivity(), LocationProvider.CONTENT_URI,
+                projection, null, null, null);
+        return cursorLoader;
+    }
 
-            @Override
-            public void failure(RetrofitError error)
-            {
-                Toast.makeText(getActivity().getApplicationContext(),
-                        error.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
+    {
+        mAdapter = new LocationRecyclerAdapter(cursor, getActivity());
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader)
+    {
+
     }
 
     private class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder>
     {
-        private ArrayList<Location> mLocations;
+        private Cursor mLocationCursor;
         private Context mContext;
 
         public class ViewHolder extends RecyclerView.ViewHolder
@@ -136,29 +143,29 @@ public class LocationRecyclerFragment extends Fragment
                         //Intent i = new Intent(mContext, SightingActivity.class);
                         //i.putExtra(SightingActivity.KEY_LOCATIONID, mLocations.get(getLayoutPosition()).getId());
                         //mContext.startActivity(i);
-                        mSightingsCallback.onSightingsSelected(mLocations.get(getLayoutPosition()).getId());
+                        //mSightingsCallback.onSightingsSelected(mLocations.get(getLayoutPosition()).getId());
                     }
                 });
             }
         }
 
-        public LocationRecyclerAdapter(ArrayList<UserAPI.Location> locations, Context context)
+        public LocationRecyclerAdapter(Cursor locationCursor, Context context)
         {
-            mLocations = locations;
+            mLocationCursor = locationCursor;
             mContext = context;
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position)
         {
-            Location l = mLocations.get(position);
-            holder.titleTextView.setText(l.getName());
-            holder.guidelinesTextView.setText(l.getDogGuidelines());
+            mLocationCursor.moveToPosition(position);
+            holder.titleTextView.setText(mLocationCursor.getString(0));
+            holder.guidelinesTextView.setText(mLocationCursor.getString(1));
             //holder.blurbTextView.setText(l.getBlurb());
 
             String statusString = "";
 
-            switch(l.getDogStatus())
+            switch(mLocationCursor.getString(2))
             {
                 case "on_lead": statusString = "Dogs allowed on lead";
                     break;
@@ -169,13 +176,13 @@ public class LocationRecyclerFragment extends Fragment
             }
 
             holder.statusTextView.setText(statusString);
-            Picasso.with(mContext).load(l.getImageMedium()).into(holder.imageView);
+            Picasso.with(mContext).load(mLocationCursor.getString(3)).into(holder.imageView);
 
             // Show sightings button only if location has sightings
-            if (!(l.getSightings().isEmpty()))
-            {
-                holder.sightingsButton.setVisibility(View.VISIBLE);
-            }
+            //if (!(l.getSightings().isEmpty()))
+            //{
+            holder.sightingsButton.setVisibility(View.VISIBLE);
+            //}
 
         }
 
@@ -192,7 +199,7 @@ public class LocationRecyclerFragment extends Fragment
         @Override
         public int getItemCount()
         {
-            return mLocations.size();
+            return mLocationCursor.getCount();
         }
     }
 }

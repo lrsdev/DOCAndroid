@@ -14,7 +14,7 @@ public class Location implements Serializable
     private String category;
     private String name;
     private String blurb;
-    private String imageThumb;
+    private String imageThumbnail;
     private String imageMedium;
     private double latitude;
     private double longitude;
@@ -48,12 +48,12 @@ public class Location implements Serializable
         this.longitude = longitude;
     }
 
-    public String getImageThumb() {
-        return imageThumb;
+    public String getImageThumbnail() {
+        return imageThumbnail;
     }
 
-    public void setImageThumb(String imageThumb) {
-        this.imageThumb = imageThumb;
+    public void setImageThumbnail(String imageThumb) {
+        this.imageThumbnail = imageThumb;
     }
 
     public String getImageMedium() {
