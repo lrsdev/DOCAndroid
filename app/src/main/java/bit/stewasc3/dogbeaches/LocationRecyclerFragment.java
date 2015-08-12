@@ -42,6 +42,14 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private OnSightingsSelectedListener mSightingsCallback;
+    private static String[] sLocationProjection = { SQLiteHelper.COLUMN_ID, SQLiteHelper.COLUMN_NAME,
+            SQLiteHelper.COLUMN_DOG_GUIDELINES, SQLiteHelper.COLUMN_DOG_STATUS,
+            SQLiteHelper.COLUMN_IMAGE_MEDIUM };
+    private static int ID_INDEX = 0;
+    private static int NAME_INDEX = 1;
+    private static int GUIDELINE_INDEX = 2;
+    private static int STATUS_INDEX = 3;
+    private static int IMAGE_INDEX = 4;
 
     private static int LOCATION_RECYCLER_LOADER = 1;
 
@@ -80,7 +88,6 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.locationRecyclerView);
         mRecyclerView.setHasFixedSize(true);
-
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -90,10 +97,8 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
-        String[] projection = {SQLiteHelper.COLUMN_NAME, SQLiteHelper.COLUMN_DOG_GUIDELINES,
-            SQLiteHelper.COLUMN_DOG_STATUS, SQLiteHelper.COLUMN_IMAGE_MEDIUM};
         CursorLoader cursorLoader = new CursorLoader(getActivity(), LocationProvider.CONTENT_URI,
-                projection, null, null, null);
+                sLocationProjection, null, null, null);
         return cursorLoader;
     }
 
@@ -130,7 +135,6 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
                 super(recyclerView);
                 titleTextView = (TextView) recyclerView.findViewById(R.id.locationCardTitleTextView);
                 imageView = (ImageView) recyclerView.findViewById(R.id.locationCardImageView);
-                //blurbTextView = (TextView) recyclerView.findViewById(R.id.locationCardBlurbTextView);
                 statusTextView = (TextView) recyclerView.findViewById(R.id.locationCardStatusTextView);
                 guidelinesTextView = (TextView) recyclerView.findViewById(R.id.locationCardDogGuidelines);
                 mapButton = (Button) recyclerView.findViewById(R.id.locationCardMapButton);
@@ -159,13 +163,12 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
         public void onBindViewHolder(ViewHolder holder, int position)
         {
             mLocationCursor.moveToPosition(position);
-            holder.titleTextView.setText(mLocationCursor.getString(0));
-            holder.guidelinesTextView.setText(mLocationCursor.getString(1));
-            //holder.blurbTextView.setText(l.getBlurb());
+            holder.titleTextView.setText(mLocationCursor.getString(NAME_INDEX));
+            holder.guidelinesTextView.setText(mLocationCursor.getString(GUIDELINE_INDEX));
 
             String statusString = "";
 
-            switch(mLocationCursor.getString(2))
+            switch(mLocationCursor.getString(STATUS_INDEX))
             {
                 case "on_lead": statusString = "Dogs allowed on lead";
                     break;
@@ -176,7 +179,7 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
             }
 
             holder.statusTextView.setText(statusString);
-            Picasso.with(mContext).load(mLocationCursor.getString(3)).into(holder.imageView);
+            Picasso.with(mContext).load(mLocationCursor.getString(IMAGE_INDEX)).into(holder.imageView);
 
             // Show sightings button only if location has sightings
             //if (!(l.getSightings().isEmpty()))
