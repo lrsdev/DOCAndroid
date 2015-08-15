@@ -5,33 +5,23 @@ import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
-import UserAPI.Location;
-import UserAPI.RestClient;
-import bit.stewasc3.dogbeaches.contentprovider.LocationProvider;
-import bit.stewasc3.dogbeaches.contentprovider.SQLiteHelper;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider;
+import bit.stewasc3.dogbeaches.db.DBHelper;
 
 /**
  * Created by samuel on 8/07/15.
@@ -42,9 +32,9 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private OnSightingsSelectedListener mSightingsCallback;
-    private static String[] sLocationProjection = { SQLiteHelper.COLUMN_ID, SQLiteHelper.COLUMN_NAME,
-            SQLiteHelper.COLUMN_DOG_GUIDELINES, SQLiteHelper.COLUMN_DOG_STATUS,
-            SQLiteHelper.COLUMN_IMAGE_MEDIUM };
+    private static String[] sLocationProjection = { DBHelper.COLUMN_ID, DBHelper.COLUMN_NAME,
+            DBHelper.COLUMN_DOG_GUIDELINES, DBHelper.COLUMN_DOG_STATUS,
+            DBHelper.COLUMN_IMAGE_MEDIUM };
     private static int ID_INDEX = 0;
     private static int NAME_INDEX = 1;
     private static int GUIDELINE_INDEX = 2;
@@ -97,7 +87,7 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
-        CursorLoader cursorLoader = new CursorLoader(getActivity(), LocationProvider.CONTENT_URI,
+        CursorLoader cursorLoader = new CursorLoader(getActivity(), DogBeachesProvider.CONTENT_URI,
                 sLocationProjection, null, null, null);
         return cursorLoader;
     }

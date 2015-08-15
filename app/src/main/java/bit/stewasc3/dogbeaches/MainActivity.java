@@ -2,7 +2,6 @@ package bit.stewasc3.dogbeaches;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,19 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-
-import UserAPI.Location;
-import UserAPI.RestClient;
-import UserAPI.UserApi;
-import bit.stewasc3.dogbeaches.contentprovider.SQLiteHelper;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity implements
         LocationRecyclerFragment.OnSightingsSelectedListener

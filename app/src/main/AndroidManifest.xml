@@ -51,8 +51,8 @@
             android:screenOrientation="portrait">
         </activity>
         <provider
-            android:name="bit.stewasc3.dogbeaches.contentprovider.LocationProvider"
-            android:authorities="bit.stewasc3.dogbeaches.contentprovider.LocationProvider"
+            android:name=".contentprovider.DogBeachesProvider"
+            android:authorities="bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider"
             />
     </application>
 

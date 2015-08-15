@@ -7,13 +7,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
+import bit.stewasc3.dogbeaches.db.DBHelper;
+
 /**
  * Created by sam on 11/08/15.
  */
-public class LocationProvider extends ContentProvider
+public class DogBeachesProvider extends ContentProvider
 {
-    private SQLiteHelper mDb;
-    private static final String AUTHORITY = "bit.stewasc3.dogbeaches.contentprovider.LocationProvider";
+    private DBHelper mDb;
+    private static final String AUTHORITY = "bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider";
     private static final String LOCATIONS_TABLE = "locations";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + LOCATIONS_TABLE);
     public static final int LOCATIONS = 1;
@@ -29,7 +31,7 @@ public class LocationProvider extends ContentProvider
     @Override
     public boolean onCreate()
     {
-        mDb = new SQLiteHelper(getContext());
+        mDb = new DBHelper(getContext());
         return true;
     }
 
@@ -37,12 +39,12 @@ public class LocationProvider extends ContentProvider
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
     {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        queryBuilder.setTables(SQLiteHelper.TABLE_LOCATIONS);
+        queryBuilder.setTables(DBHelper.TABLE_LOCATIONS);
         int uriType = sURIMatcher.match(uri);
         switch (uriType)
         {
             case LOCATIONS_ID:
-                queryBuilder.appendWhere(SQLiteHelper.COLUMN_ID + "=" + uri.getLastPathSegment());
+                queryBuilder.appendWhere(DBHelper.COLUMN_ID + "=" + uri.getLastPathSegment());
                 break;
             case LOCATIONS:
                 break;
@@ -74,6 +76,7 @@ public class LocationProvider extends ContentProvider
     }
 
     @Override
+    /* Returns mime type for URI */
     public String getType(Uri uri)
     {
         return null;
