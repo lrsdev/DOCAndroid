@@ -32,24 +32,4 @@ public class DBHelper extends SQLiteOpenHelper
         LocationsTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
         AnimalsTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
     }
-
-    /*
-    public void addLocation(UserAPI.Location l)
-    {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, l.getName());
-        values.put(COLUMN_CATEGORY, l.getCategory());
-        values.put(COLUMN_ANIMAL_BLURB, l.getCategory());
-        values.put(COLUMN_DOG_STATUS, l.getDogStatus());
-        values.put(COLUMN_DOG_GUIDELINES, l.getDogGuidelines());
-        values.put(COLUMN_IMAGE_THUMBNAIL, l.getImageThumbnail());
-        values.put(COLUMN_IMAGE_MEDIUM, l.getImageMedium());
-        values.put(COLUMN_LATITUDE, l.getLatitude());
-        values.put(COLUMN_LONGITUDE, l.getLongitude());
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(TABLE_LOCATIONS, null, values);
-        db.close();
-    }
-    */
 }

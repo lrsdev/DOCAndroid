@@ -20,21 +20,21 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider;
 import bit.stewasc3.dogbeaches.db.DBHelper;
 
 /**
  * Created by samuel on 8/07/15.
  */
+
+// TODO: Find a way to close the cursor.
 public class LocationRecyclerFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private OnSightingsSelectedListener mSightingsCallback;
-    private static String[] sLocationProjection = { DBHelper.COLUMN_ID, DBHelper.COLUMN_NAME,
-            DBHelper.COLUMN_DOG_GUIDELINES, DBHelper.COLUMN_DOG_STATUS,
-            DBHelper.COLUMN_IMAGE_MEDIUM };
     private static int ID_INDEX = 0;
     private static int NAME_INDEX = 1;
     private static int GUIDELINE_INDEX = 2;
@@ -87,8 +87,8 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
-        CursorLoader cursorLoader = new CursorLoader(getActivity(), DogBeachesProvider.CONTENT_URI,
-                sLocationProjection, null, null, null);
+        CursorLoader cursorLoader = new CursorLoader(getActivity(), DogBeachesContract.Locations.CONTENT_URI,
+                DogBeachesContract.Locations.PROJECTION_ALL, null, null, null);
         return cursorLoader;
     }
 
@@ -169,7 +169,8 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
             }
 
             holder.statusTextView.setText(statusString);
-            Picasso.with(mContext).load(mLocationCursor.getString(IMAGE_INDEX)).into(holder.imageView);
+            int columnIndex = mLocationCursor.getColumnIndex("image_medium");
+            Picasso.with(mContext).load(mLocationCursor.getString(columnIndex)).into(holder.imageView);
 
             // Show sightings button only if location has sightings
             //if (!(l.getSightings().isEmpty()))

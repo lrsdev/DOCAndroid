@@ -1,17 +1,33 @@
 package bit.stewasc3.dogbeaches;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import UserAPI.Location;
+import UserAPI.RestClient;
+import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
+import bit.stewasc3.dogbeaches.db.LocationsTable;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity implements
         LocationRecyclerFragment.OnSightingsSelectedListener
@@ -20,6 +36,11 @@ public class MainActivity extends AppCompatActivity implements
     private NavigationView mNavigationView;
     private FrameLayout mContentContainer;
     private FragmentManager fm;
+    private Account mAccount;
+
+    public static final String AUTHORITY = DogBeachesContract.AUTHORITY;
+    public static final String ACCOUNT_TYPE = "bit.stewasc3.dogbeaches";
+    public static final String ACCOUNT = "dummyaccount";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,9 +66,38 @@ public class MainActivity extends AppCompatActivity implements
             setupDrawerContent(navigationView);
         }
 
+        // Create a dummy account for synchronisation
+        mAccount = CreateSyncAccount(this);
+
+        /* Uncommenting will perform a sync
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
+        */
+
         // Set initial content fragment to home
         setContentFragment(new HomeFragment());
     }
+
+    public static Account CreateSyncAccount(Context context)
+    {
+        Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
+        AccountManager accountManager = (AccountManager) context.getSystemService(ACCOUNT_SERVICE);
+
+        if (accountManager.addAccountExplicitly(newAccount, null, null))
+        {
+            // Inform the system this account supports sync
+            ContentResolver.setIsSyncable(newAccount, DogBeachesContract.AUTHORITY, 1);
+            // Inform the system this account is eligible for auto sync when the network is up
+        }
+        else
+        {
+            Log.d("Account", "Error adding account");
+        }
+        return newAccount;
+    }
+
 
     private void setupDrawerContent(NavigationView nv)
     {
@@ -133,5 +183,37 @@ public class MainActivity extends AppCompatActivity implements
     {
         Fragment f = SightingRecyclerFragment.newInstance(locationId);
         setContentFragment(f);
+    }
+
+    public void addLocations()
+    {
+        RestClient.get().getAllLocations(new Callback<ArrayList<Location>>()
+        {
+            @Override
+            public void success(ArrayList<Location> locations, Response response)
+            {
+                for (Location l : locations)
+                {
+                    ContentValues values = new ContentValues();
+                    values.put(DogBeachesContract.Locations.COLUMN_ID, l.getId());
+                    values.put(DogBeachesContract.Locations.COLUMN_NAME, l.getName());
+                    values.put(DogBeachesContract.Locations.COLUMN_CATEGORY, l.getCategory());
+                    values.put(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getCategory());
+                    values.put(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus());
+                    values.put(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES, l.getDogGuidelines());
+                    values.put(DogBeachesContract.Locations.COLUMN_IMAGE_THUMBNAIL, l.getImageThumbnail());
+                    values.put(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM, l.getImageMedium());
+                    values.put(DogBeachesContract.Locations.COLUMN_LATITUDE, l.getLatitude());
+                    values.put(DogBeachesContract.Locations.COLUMN_LONGITUDE, l.getLongitude());
+                    getContentResolver().insert(DogBeachesContract.Locations.CONTENT_URI, values);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error)
+            {
+
+            }
+        });
     }
 }
