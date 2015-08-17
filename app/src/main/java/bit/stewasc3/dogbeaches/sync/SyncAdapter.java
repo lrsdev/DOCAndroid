@@ -59,12 +59,21 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         try
         {
             // Arbitrary timestamp for testing
-            Sync syncObject = RestClient.get().getSync("2015-08-17T12:46:04.964Z");
+            Sync syncObject = RestClient.get().getSync("2014-08-17T12:46:04.964Z");
             // Holds content provider operations to execute as a transaction
             ArrayList<ContentProviderOperation> batch = new ArrayList<>();
             // Hold filenames to delete after batch operation.
             ArrayList<String> filesToDelete = new ArrayList<>();
             updateLocations(syncObject, batch, filesToDelete);
+
+            // Apply batch operation
+            mContentResolver.applyBatch(DogBeachesContract.AUTHORITY, batch);
+
+            // Tidy up files
+            for(String fileString : filesToDelete)
+            {
+                getContext().deleteFile(fileString);
+            }
         }
         catch(RemoteException|OperationApplicationException e)
         {
@@ -160,27 +169,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             // Download image, save to file, get file uri, save to database
             String filename = storeImage(l.getImageMedium(), "location", l.getId(), "medium");
 
-            batch.add(
-                ContentProviderOperation.newInsert(DogBeachesContract.Locations.CONTENT_URI)
-                    .withValue(DogBeachesContract.Locations.COLUMN_ID, l.getId())
-                    .withValue(DogBeachesContract.Locations.COLUMN_NAME, l.getName())
-                    .withValue(DogBeachesContract.Locations.COLUMN_CATEGORY, l.getCategory())
-                    .withValue(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getAnimalBlurb())
-                    .withValue(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus())
-                    .withValue(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES, l.getDogGuidelines())
-                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE_THUMBNAIL, l.getImageThumbnail())
-                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM, l.getImageMedium())
-                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM_LOCAL, filename)
-                    .withValue(DogBeachesContract.Locations.COLUMN_LATITUDE, l.getLatitude())
-                    .withValue(DogBeachesContract.Locations.COLUMN_LONGITUDE, l.getLongitude())
-                    .withYieldAllowed(true)
-                    .build());
+            batch.add(ContentProviderOperation.newInsert(DogBeachesContract.Locations.CONTENT_URI).withValue(DogBeachesContract.Locations.COLUMN_ID, l.getId()).withValue(DogBeachesContract.Locations.COLUMN_NAME, l.getName()).withValue(DogBeachesContract.Locations.COLUMN_CATEGORY, l.getCategory()).withValue(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getAnimalBlurb()).withValue(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus()).withValue(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES, l.getDogGuidelines()).withValue(DogBeachesContract.Locations.COLUMN_IMAGE_THUMBNAIL, l.getImageThumbnail()).withValue(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM, l.getImageMedium()).withValue(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM_LOCAL, filename).withValue(DogBeachesContract.Locations.COLUMN_LATITUDE, l.getLatitude()).withValue(DogBeachesContract.Locations.COLUMN_LONGITUDE, l.getLongitude()).withYieldAllowed(true).build());
         }
-        mContentResolver.applyBatch(DogBeachesContract.AUTHORITY, batch);
-        for(String fileString : filesToDelete)
-        {
-            getContext().deleteFile(fileString);
-        }
+
     }
 
     // Downloads image, stores and returns path
