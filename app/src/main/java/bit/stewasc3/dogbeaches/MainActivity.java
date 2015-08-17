@@ -69,12 +69,12 @@ public class MainActivity extends AppCompatActivity implements
         // Create a dummy account for synchronisation
         mAccount = CreateSyncAccount(this);
 
-        /* Uncommenting will perform a sync
+        // Uncommenting will perform a sync
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
-        */
+
 
         // Set initial content fragment to home
         setContentFragment(new HomeFragment());

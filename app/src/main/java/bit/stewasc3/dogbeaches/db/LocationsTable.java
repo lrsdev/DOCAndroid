@@ -16,6 +16,7 @@ public class LocationsTable
     public static final String COLUMN_DOG_GUIDELINES = "dog_guidelines";
     public static final String COLUMN_IMAGE_THUMBNAIL = "image_thumbnail";
     public static final String COLUMN_IMAGE_MEDIUM = "image_medium";
+    public static final String COLUMN_IMAGE_MEDIUM_LOCAL = "image_medium_local";
     public static final String COLUMN_LATITUDE = "latitude";
     public static final String COLUMN_LONGITUDE = "longitude";
 
@@ -28,6 +29,7 @@ public class LocationsTable
             COLUMN_DOG_GUIDELINES + " text not null, " +
             COLUMN_IMAGE_THUMBNAIL +  " text not null, " +
             COLUMN_IMAGE_MEDIUM + " text not null, " +
+            COLUMN_IMAGE_MEDIUM_LOCAL + " text not null," +
             COLUMN_LATITUDE + " real not null, " +
             COLUMN_LONGITUDE + " real not null);";
 

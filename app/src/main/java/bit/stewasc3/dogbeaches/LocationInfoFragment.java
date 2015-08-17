@@ -52,7 +52,7 @@ public class LocationInfoFragment extends Fragment
         nameTextView.setText(mLocation.getName());
 
         TextView blurbTextView = (TextView) v.findViewById(R.id.locationInfoBlurbTextView);
-        blurbTextView.setText(mLocation.getBlurb());
+        blurbTextView.setText(mLocation.getAnimalBlurb());
 
         TextView guidelinesTextView = (TextView) v.findViewById(R.id.locationInfoDogGuidelinesTextView);
         guidelinesTextView.setText(mLocation.getDogGuidelines());

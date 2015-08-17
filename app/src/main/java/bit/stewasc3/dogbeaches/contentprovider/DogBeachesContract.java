@@ -24,19 +24,20 @@ public class DogBeachesContract
         public static final String COLUMN_DOG_GUIDELINES = "dog_guidelines";
         public static final String COLUMN_IMAGE_THUMBNAIL = "image_thumbnail";
         public static final String COLUMN_IMAGE_MEDIUM = "image_medium";
+        public static final String COLUMN_IMAGE_MEDIUM_LOCAL = "image_medium_local";
         public static final String COLUMN_LATITUDE = "latitude";
         public static final String COLUMN_LONGITUDE = "longitude";
         private static final String LOCATIONS_TABLE = "locations";
 
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + LOCATIONS_TABLE);
         public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
-                "/bit.stewasc3.dogbeaches.locations";
+                "/locations";
         public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
-                "/bit.stewasc3.dodbeaches.locations";
+                "/location";
 
         public static final String[] PROJECTION_ALL = {COLUMN_ID, COLUMN_NAME, COLUMN_CATEGORY,
             COLUMN_ANIMAL_BLURB, COLUMN_DOG_STATUS, COLUMN_DOG_GUIDELINES, COLUMN_IMAGE_THUMBNAIL,
-            COLUMN_IMAGE_MEDIUM, COLUMN_LATITUDE, COLUMN_LONGITUDE};
+            COLUMN_IMAGE_MEDIUM, COLUMN_IMAGE_MEDIUM_LOCAL, COLUMN_LATITUDE, COLUMN_LONGITUDE};
 
     }
 

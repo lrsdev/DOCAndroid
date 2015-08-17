@@ -2,9 +2,7 @@ package UserAPI;
 
 import java.util.ArrayList;
 
-import UserAPI.Sync.Sync;
 import retrofit.Callback;
-import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;

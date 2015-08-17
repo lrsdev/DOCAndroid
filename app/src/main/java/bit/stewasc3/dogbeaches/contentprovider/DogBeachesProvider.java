@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 import bit.stewasc3.dogbeaches.db.DBHelper;
 import bit.stewasc3.dogbeaches.db.LocationsTable;
@@ -18,7 +19,7 @@ public class DogBeachesProvider extends ContentProvider
 {
     private DBHelper mHelper;
     public static final int LOCATIONS = 10;
-    public static final int LOCATIONS_ID = 11;
+    public static final int LOCATION_ID = 11;
     public static final int ANIMALS = 20;
     public static final int ANIMALS_ID = 21;
 
@@ -30,7 +31,7 @@ public class DogBeachesProvider extends ContentProvider
     static
     {
         sURIMatcher.addURI(DogBeachesContract.AUTHORITY, "locations", LOCATIONS);
-        sURIMatcher.addURI(DogBeachesContract.AUTHORITY, "locations/#", LOCATIONS_ID);
+        sURIMatcher.addURI(DogBeachesContract.AUTHORITY, "locations/#", LOCATION_ID);
     }
 
     /**
@@ -52,7 +53,7 @@ public class DogBeachesProvider extends ContentProvider
         int uriType = sURIMatcher.match(uri);
         switch (uriType)
         {
-            case LOCATIONS_ID:
+            case LOCATION_ID:
                 queryBuilder.appendWhere(LocationsTable.COLUMN_ID + "=" + uri.getLastPathSegment());
                 break;
             case LOCATIONS:
@@ -93,15 +94,18 @@ public class DogBeachesProvider extends ContentProvider
             case LOCATIONS:
                 delCount = db.delete(LocationsTable.TABLE_LOCATIONS, selection, selectionArgs);
                 break;
-            case LOCATIONS_ID:
+            case LOCATION_ID:
                 String idStr = uri.getLastPathSegment();
-                String where = LocationsTable.TABLE_LOCATIONS;
+                String where = LocationsTable.COLUMN_ID + " = " + idStr;
                 delCount = db.delete(LocationsTable.TABLE_LOCATIONS, where, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI " + uri);
         }
+
         // ToDo: implement listener notifications
+        Log.d("Location deleted count ", Integer.toString(delCount));
+
         return delCount;
     }
 
@@ -116,16 +120,17 @@ public class DogBeachesProvider extends ContentProvider
             case LOCATIONS:
                 updateCount = db.update(LocationsTable.TABLE_LOCATIONS, contentValues, selection, selectionArgs);
                 break;
-            case LOCATIONS_ID:
+            case LOCATION_ID:
                 String idStr = uri.getLastPathSegment();
-                String where = LocationsTable.COLUMN_ID + " " + idStr;
-                updateCount = db.update(LocationsTable.TABLE_LOCATIONS, contentValues, selection, selectionArgs);
+                String where = LocationsTable.COLUMN_ID + " = " + idStr;
+                updateCount = db.update(LocationsTable.TABLE_LOCATIONS, contentValues, where, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
+        Log.d("Location Updated", Integer.toString(updateCount));
 
-        // Todo: Notify listeners
+        // Todo: Notify listeners if necessary
 
         return updateCount;
     }
@@ -138,7 +143,7 @@ public class DogBeachesProvider extends ContentProvider
         {
             case LOCATIONS:
                 return DogBeachesContract.Locations.CONTENT_TYPE;
-            case LOCATIONS_ID:
+            case LOCATION_ID:
                 return DogBeachesContract.Locations.CONTENT_ITEM_TYPE;
             default:
                 return null;
