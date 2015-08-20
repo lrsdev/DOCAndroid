@@ -140,7 +140,7 @@ public class SightingRecyclerFragment extends Fragment
         public void onBindViewHolder(ViewHolder holder, int position)
         {
             Sighting s = mSightings.get(position);
-            holder.nameTextView.setText(s.getAnimal().getName());
+            holder.nameTextView.setText(s.getAnimalType());
             String date = new SimpleDateFormat("EEE, d MMM ''yy HH:mm").format(s.getCreatedAt());
             holder.dateTextView.setText(date);
             holder.locationTextView.setText(s.getLocation().getName());

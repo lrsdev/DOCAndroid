@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/safetybg">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/safetyHeader"
+            android:textColor="#000000"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:id="@+id/safetyHeaderText"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/safetyText"
+            android:textColor="#000000"
+            android:layout_margin="16dp"
+            android:textSize="14sp"
+            android:id="@+id/safetyText"
+            android:layout_below="@+id/safetyHeaderText"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/safetyToDoHeadText"
+            android:textColor="#000000"
+            android:layout_marginLeft="16dp"
+            android:textSize="14sp"
+            android:id="@+id/safetyToDoHeadText"
+            android:layout_below="@+id/safetyText"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="&#8226;Put your dog on a lead."
+            android:textColor="#000000"
+            android:layout_marginLeft="32dp"
+            android:textSize="14sp"
+            android:id="@+id/safetyToDoList1"
+            android:layout_below="@+id/safetyToDoHeadText"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="&#8226;Stay more than 10m (two car lengths) away and lead your dog away."
+            android:textColor="#000000"
+            android:layout_marginLeft="32dp"
+            android:textSize="14sp"
+            android:id="@+id/safetyToDoList2"
+            android:layout_below="@+id/safetyToDoList1"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="&#8226;Use the widest and safest place to pass."
+            android:textColor="#000000"
+            android:layout_marginLeft="32dp"
+            android:textSize="14sp"
+            android:id="@+id/safetyToDoList3"
+            android:layout_below="@+id/safetyToDoList2"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/contactText"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:id="@+id/contactText2"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"/>
+
+
+</RelativeLayout>

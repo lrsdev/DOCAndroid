@@ -3,6 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_report">Report</string>
+    <string name="donations">Donations</string>
 
     <!-- Navigation drawer menu item strings -->
     <string-array name="navigation_array">
@@ -33,5 +35,27 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_sighting">SightingActivity</string>
 
+
+<!-- Donation Page Content -->
+    <!-- Intro -->
+    <string name="donation_intro"></string>
+
+    <!-- Yellow-Eyed Penguin Trust -->
+
+
+    <!-- NZ Sealion Trust -->
+
+
+    <!-- Otago Peninsula Trust -->
+
+
+<!-- Safety Page Text Content -->
+    <string name="safetyHeader">Keep your dog safe on the beach</string>
+    <string name="safetyText">Some Marine wildlife move fast and have big sharp teeth. Ensure you are aware of what’s ahead of you and what your dog could start sniffing around. It’s easier to call a dog to you before its interacting with wildlife than after.</string>
+    <string name="safetyToDoHeadText">If you come across widlife on our beaches:</string>
+    <string name="safetyToDoList">  </string>
+    <string name="contactText">Report roaming or uncontrolled dogs to <b>Dunedin City Council, Animal Services 03 477 4000</b>, or
+Call DOC for sick or injured wildlife</string>
+    <string name="title_activity_wildlife">Wildlife</string>
 </resources>
 

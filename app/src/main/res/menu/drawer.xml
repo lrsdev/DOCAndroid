@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/drawer_home"
@@ -14,10 +15,6 @@
             android:icon="@drawable/marker"
             android:title="Locations" />
         <item
-            android:id="@+id/drawer_sightings"
-            android:icon="@drawable/binos"
-            android:title="Sightings" />
-        <item
             android:id="@+id/drawer_wildlife"
             android:icon="@drawable/penguin"
             android:title="Wildlife" />
@@ -29,5 +26,9 @@
             android:id="@+id/drawer_donate"
             android:icon="@drawable/moneybag"
             android:title="Donate" />
+        <item
+            android:id="@+id/drawer_safety"
+            android:icon="@drawable/info"
+            android:title="Dog Safety" />
     </group>
 </menu>

@@ -48,7 +48,7 @@
         <activity
             android:name=".SightingActivity"
             android:label="@string/title_activity_sighting"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

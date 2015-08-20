@@ -2,7 +2,6 @@ package bit.stewasc3.dogbeaches;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -71,12 +70,10 @@ public class MainActivity extends AppCompatActivity implements
                         setContentFragment(new LocationRecyclerFragment());
                         getSupportActionBar().setTitle("Location List");
                         break;
-                    case R.id.drawer_sightings: // Sightings was clicked
-                        setContentFragment(new SightingRecyclerFragment());
-                        getSupportActionBar().setTitle("Sightings");
-                        break;
                     case R.id.drawer_wildlife: // Wildlife was clicked
                         notImplemented();
+                        //setContentFragment(new WildlifeFragment());
+                        //getSupportActionBar().setTitle("Wildlife");
                         break;
                     case R.id.drawer_report: // Report was clicked
                         setContentFragment(new ReportFragment());
@@ -84,7 +81,14 @@ public class MainActivity extends AppCompatActivity implements
                         break;
                     case R.id.drawer_donate: // Donate was clicked
                         notImplemented();
+                        //setContentFragment(new DonateFragment());
+                        //getSupportActionBar().setTitle("Donate");
                         break;
+                    case R.id.drawer_safety: // Safety was clicked
+                        setContentFragment(new SafetyFragment());
+                        getSupportActionBar().setTitle("Dog Safety");
+                        break;
+
                 }
                 menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
@@ -135,4 +139,14 @@ public class MainActivity extends AppCompatActivity implements
         Fragment f = SightingRecyclerFragment.newInstance(locationId);
         setContentFragment(f);
     }
+
+    public void onReportAction(MenuItem mi)
+    {
+        //handle onClick of camera here
+        setContentFragment(new ReportFragment());
+        getSupportActionBar().setTitle("Wildlife Report");
+
+    }
+
+
 }
