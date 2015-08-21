@@ -15,15 +15,19 @@ public class AnimalsTable
     public static final String COLUMN_EXT_URL = "ext_url";
     public static final String COLUMN_IMAGE_THUMBNAIL = "image_thumbnail";
     public static final String COLUMN_IMAGE_MEDIUM = "image_medium";
+    public static final String COLUMN_IMAGE_MEDIUM_LOCAL = "image_medium_local";
+    public static final String COLUMN_IMAGE_THUMBNAIL_LOCATION = "image_thumbnail_local";
 
     private static final String TABLE_CREATE = "create table " + TABLE_ANIMALS + "(" +
-            COLUMN_ID + " integer primary key autoincrement, " +
+            COLUMN_ID + " integer primary key, " +
             COLUMN_NAME + " text not null, " +
             COLUMN_BLURB + " text not null, " +
             COLUMN_GUIDELINES + " text not null, " +
             COLUMN_EXT_URL + " text not null, " +
             COLUMN_IMAGE_THUMBNAIL +  " text not null, " +
-            COLUMN_IMAGE_MEDIUM + " text not null);";
+            COLUMN_IMAGE_MEDIUM + " text not null, " +
+            COLUMN_IMAGE_MEDIUM_LOCAL + " text not null, " +
+            COLUMN_IMAGE_THUMBNAIL_LOCATION + " text not null);";
 
     public static void onCreate(SQLiteDatabase db)
     {

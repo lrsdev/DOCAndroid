@@ -13,6 +13,17 @@ public class Sync
     private ArrayList<Integer> deletedAnimalIds;
     private ArrayList<Integer> locationIds;
     private ArrayList<Integer> animalIds;
+    private String syncedAt;
+
+    public String getSyncedAt()
+    {
+        return syncedAt;
+    }
+
+    public void setSyncedAt(String syncedAt)
+    {
+        this.syncedAt = syncedAt;
+    }
 
     public ArrayList<Integer> getDeletedLocationIds()
     {

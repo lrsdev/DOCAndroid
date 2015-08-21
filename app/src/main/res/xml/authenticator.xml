@@ -4,4 +4,4 @@
     android:accountType="bit.stewasc3.dogbeaches"
     android:icon="@drawable/ic_launcher"
     android:smallIcon="@drawable/ic_launcher"
-    android:label="Dog Beaches" />
+    android:label="@string/app_name" />

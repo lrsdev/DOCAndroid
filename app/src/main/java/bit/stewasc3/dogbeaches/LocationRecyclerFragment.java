@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider;
@@ -31,6 +34,7 @@ import bit.stewasc3.dogbeaches.db.DBHelper;
 // TODO: Find a way to close the cursor.
 public class LocationRecyclerFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
+    private final static String TAG = "LocationRecyclerFrag";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -102,7 +106,7 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
     @Override
     public void onLoaderReset(Loader<Cursor> loader)
     {
-
+        // Do nothing
     }
 
     private class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder>
@@ -169,8 +173,10 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
             }
 
             holder.statusTextView.setText(statusString);
-            int columnIndex = mLocationCursor.getColumnIndex("image_medium");
-            Picasso.with(mContext).load(mLocationCursor.getString(columnIndex)).into(holder.imageView);
+            int columnIndex = mLocationCursor.getColumnIndex(DogBeachesContract.Locations
+                    .COLUMN_IMAGE_MEDIUM_LOCAL);
+            File f = new File(mContext.getFilesDir(), mLocationCursor.getString(columnIndex));
+            Picasso.with(mContext).load(f).into(holder.imageView);
 
             // Show sightings button only if location has sightings
             //if (!(l.getSightings().isEmpty()))

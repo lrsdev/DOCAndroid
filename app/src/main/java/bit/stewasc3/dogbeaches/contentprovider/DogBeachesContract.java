@@ -27,7 +27,7 @@ public class DogBeachesContract
         public static final String COLUMN_IMAGE_MEDIUM_LOCAL = "image_medium_local";
         public static final String COLUMN_LATITUDE = "latitude";
         public static final String COLUMN_LONGITUDE = "longitude";
-        private static final String LOCATIONS_TABLE = "locations";
+        public static final String LOCATIONS_TABLE = "locations";
 
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + LOCATIONS_TABLE);
         public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
@@ -43,6 +43,28 @@ public class DogBeachesContract
 
     public static final class Animals
     {
+        public static final String ANIMALS_TABLE = "animals";
+        public static final String COLUMN_ID = "_id";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_BLURB = "blurb";
+        public static final String COLUMN_GUIDELINES = "guidelines";
+        public static final String COLUMN_EXT_URL = "ext_url";
+        public static final String COLUMN_IMAGE_THUMBNAIL = "image_thumbnail";
+        public static final String COLUMN_IMAGE_MEDIUM = "image_medium";
+        public static final String COLUMN_IMAGE_MEDIUM_LOCAL = "image_medium_local";
+        public static final String COLUMN_IMAGE_THUMBNAIL_LOCAL = "image_thumbnail_local";
+
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + ANIMALS_TABLE);
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
+                "/animals";
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
+                "/animal";
+
+        public static final String[] PROJECTION_ALL = {COLUMN_ID, COLUMN_NAME, COLUMN_BLURB,
+                COLUMN_GUIDELINES, COLUMN_EXT_URL, COLUMN_IMAGE_THUMBNAIL, COLUMN_IMAGE_MEDIUM,
+                COLUMN_IMAGE_MEDIUM_LOCAL, COLUMN_IMAGE_THUMBNAIL_LOCAL};
+
+
 
     }
 }

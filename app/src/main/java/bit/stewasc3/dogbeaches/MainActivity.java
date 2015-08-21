@@ -42,6 +42,10 @@ public class MainActivity extends AppCompatActivity implements
     public static final String ACCOUNT_TYPE = "bit.stewasc3.dogbeaches";
     public static final String ACCOUNT = "dummyaccount";
 
+    public static final long SECONDS_PER_MINUTE = 60L;
+    public static final long SYNC_INTERVAL_IN_MINUTES = 120L;
+    public static final long SYNC_INTERVAL = SECONDS_PER_MINUTE * SYNC_INTERVAL_IN_MINUTES;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -66,14 +70,16 @@ public class MainActivity extends AppCompatActivity implements
             setupDrawerContent(navigationView);
         }
 
-        // Create a dummy account for synchronisation
+        // Create a dummy account for synchronisation, add a periodic sync for two hour intervals.
         mAccount = CreateSyncAccount(this);
+        //ContentResolver.addPeriodicSync(mAccount, AUTHORITY, Bundle.EMPTY, SYNC_INTERVAL);
+        ContentResolver.setSyncAutomatically(mAccount, AUTHORITY, true);
 
         // Uncommenting will perform a sync
-        Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
+        //Bundle settingsBundle = new Bundle();
+        //settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        //settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        //ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
 
 
         // Set initial content fragment to home

@@ -57,6 +57,7 @@
             android:name=".contentprovider.DogBeachesProvider"
             android:authorities="bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider"
             android:syncable="true"
+            android:exported="true"
             />
         <service
             android:name=".sync.AuthenticatorService">

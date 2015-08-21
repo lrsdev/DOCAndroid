@@ -21,7 +21,7 @@ public class LocationsTable
     public static final String COLUMN_LONGITUDE = "longitude";
 
     private static final String TABLE_CREATE = "create table " + TABLE_LOCATIONS + "(" +
-            COLUMN_ID + " integer primary key autoincrement, " +
+            COLUMN_ID + " integer primary key, " +
             COLUMN_NAME + " text not null, " +
             COLUMN_CATEGORY + " text not null, " +
             COLUMN_ANIMAL_BLURB + " text not null, " +
