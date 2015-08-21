@@ -13,12 +13,23 @@ public class Location implements Serializable
     private int id;
     private String category;
     private String name;
-    private String blurb;
-    private String imageThumb;
+    private String animalBlurb;
+    private String imageThumbnail;
     private String imageMedium;
     private double latitude;
     private double longitude;
     private String dogStatus;
+
+    public String getAnimalBlurb()
+    {
+        return animalBlurb;
+    }
+
+    public void setAnimalBlurb(String animalBlurb)
+    {
+        this.animalBlurb = animalBlurb;
+    }
+
     private String dogGuidelines;
 
     @SerializedName("reports")
@@ -48,12 +59,12 @@ public class Location implements Serializable
         this.longitude = longitude;
     }
 
-    public String getImageThumb() {
-        return imageThumb;
+    public String getImageThumbnail() {
+        return imageThumbnail;
     }
 
-    public void setImageThumb(String imageThumb) {
-        this.imageThumb = imageThumb;
+    public void setImageThumbnail(String imageThumb) {
+        this.imageThumbnail = imageThumb;
     }
 
     public String getImageMedium() {
@@ -100,16 +111,6 @@ public class Location implements Serializable
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public String getBlurb()
-    {
-        return blurb;
-    }
-
-    public void setBlurb(String blurb)
-    {
-        this.blurb = blurb;
     }
 
     public ArrayList<Sighting> getSightings()

@@ -3,7 +3,6 @@ package UserAPI;
 import java.util.ArrayList;
 
 import retrofit.Callback;
-import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
@@ -21,6 +20,10 @@ public interface UserApi
 
     @GET("/reports/")
     public void getAllReports(Callback<ArrayList<Sighting>> cb);
+
+    // Sync objects are fetched off UI thread so do do not need a callback.
+    @GET("/sync/")
+    public Sync getSync(@Query("from") String timestamp);
 
     @Multipart
     @POST("/reports")
