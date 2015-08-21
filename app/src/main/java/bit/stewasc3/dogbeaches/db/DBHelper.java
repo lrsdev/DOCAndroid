@@ -33,8 +33,7 @@ public class DBHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int newVersion, int oldVersion)
     {
-        LocationsTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
-        AnimalsTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
-        SyncTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
+        //LocationsTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
+        //AnimalsTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
     }
 }
