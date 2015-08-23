@@ -30,5 +30,6 @@
             android:id="@+id/drawer_safety"
             android:icon="@drawable/info"
             android:title="Dog Safety" />
+
     </group>
 </menu>
