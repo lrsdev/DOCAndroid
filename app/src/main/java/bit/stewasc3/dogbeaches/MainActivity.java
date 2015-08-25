@@ -81,15 +81,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentFragment(new HomeFragment());
 
         // Make the FAB Hotline call
-        hotlineCall = findViewById(R.id.fab);
-        hotlineCall.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("@string/hotLineNum"));
-            }
-        });
+
     }
 
     public static Account CreateSyncAccount(Context context)
