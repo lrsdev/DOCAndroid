@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+import android.view.View.OnClickListener;
 
 import java.util.ArrayList;
 
@@ -42,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements
     private FragmentManager fm;
     private Account mAccount;
 
-    private View hotlineCall;
 
     public static final String AUTHORITY = DogBeachesContract.AUTHORITY;
     public static final String ACCOUNT_TYPE = "bit.stewasc3.dogbeaches";
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         fm = getFragmentManager();
         mContentContainer = (FrameLayout) findViewById(R.id.content_container);
@@ -79,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements
 
         // Set initial content fragment to home
         setContentFragment(new HomeFragment());
-
-        // Make the FAB Hotline call
 
     }
 

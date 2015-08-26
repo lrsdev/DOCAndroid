@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DogBeaches</string>
+    <string name="app_name">Dog And Beaches</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -63,6 +63,6 @@ Call DOC for sick or injured wildlife</string>
 
 
 <!-- Hotline Telephone Number -->
-    <string name="hotlineNum">0800</string>
+    <string name="hotlineNum">tel:0800362468</string>
 </resources>
 
