@@ -36,7 +36,9 @@ public class HomeFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:0800362468"));
+                Intent callIntent = new Intent();
+                callIntent.setAction(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:0800362468"));
                 startActivity(callIntent);
             }
         });

@@ -63,6 +63,6 @@ Call DOC for sick or injured wildlife</string>
 
 
 <!-- Hotline Telephone Number -->
-    <string name="hotlineNum">tel:0800362468</string>
+    <string name="hot">tel:0800362468</string>
 </resources>
 
