@@ -19,17 +19,16 @@
             android:icon="@drawable/penguin"
             android:title="Wildlife" />
         <item
+            android:id="@+id/drawer_safety"
+            android:icon="@drawable/info"
+            android:title="Dog Safety" />
+        <item
             android:id="@+id/drawer_report"
-            android:icon="@drawable/pen"
+            android:icon="@drawable/binoculars"
             android:title="Report Sighting" />
         <item
             android:id="@+id/drawer_donate"
             android:icon="@drawable/moneybag"
             android:title="Donate" />
-        <item
-            android:id="@+id/drawer_safety"
-            android:icon="@drawable/info"
-            android:title="Dog Safety" />
-
     </group>
 </menu>

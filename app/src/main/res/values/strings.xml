@@ -60,5 +60,20 @@
     <string name="contactText">Report roaming or uncontrolled dogs to <b>Dunedin City Council, Animal Services 03 477 4000</b>, or
 Call DOC for sick or injured wildlife</string>
     <string name="title_activity_wildlife">Wildlife</string>
+    <string name="title_activity_location">LocationActivity</string>
+
+    <string name="dataOn">dataOn</string>
+    <string name="dataOff">dataOff</string>
+
+    <string name="saveMapButtonText">Save Map</string>
+    <string name="loadMapButtonText">Load Map</string>
+    <string name="deleteMapsButtonText">Delete Map</string>
+    <string name="resetMapButtonText">Reset</string>
+
+    <string name="mapbox_access_token">sk.eyJ1Ijoic2FtdWVsY3N0ZXdhcnQiLCJhIjoiNTk4MWFmNDNjNzk4ZDYzM2VmNzA0OGY1YTQ2N2Q0NDYifQ.OeeXYK1S33i_KCyW3VzZiA</string>
+    <string name="mapbox_map_id">samuelcstewart.n8pi63c5</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps_acitivty">MapsAcitivty</string>
+
 </resources>
 

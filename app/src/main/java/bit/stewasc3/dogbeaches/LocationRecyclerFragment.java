@@ -5,8 +5,10 @@ import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +21,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -30,48 +35,18 @@ import bit.stewasc3.dogbeaches.db.DBHelper;
 /**
  * Created by samuel on 8/07/15.
  */
-
-// TODO: Find a way to close the cursor.
-public class LocationRecyclerFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
+public class LocationRecyclerFragment extends Fragment
 {
     private final static String TAG = "LocationRecyclerFrag";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private OnSightingsSelectedListener mSightingsCallback;
-    private static int ID_INDEX = 0;
-    private static int NAME_INDEX = 1;
-    private static int GUIDELINE_INDEX = 2;
-    private static int STATUS_INDEX = 3;
-    private static int IMAGE_INDEX = 4;
-
-    private static int LOCATION_RECYCLER_LOADER = 1;
-
-    public interface OnSightingsSelectedListener
-    {
-        public void onSightingsSelected(int locationId);
-    }
-
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
-
-        try
-        {
-            mSightingsCallback = (OnSightingsSelectedListener) getActivity();
-        }
-        catch (ClassCastException e)
-        {
-           throw new ClassCastException(getActivity().toString() + " must implement OnSightingsSelectedListener");
-        }
-    }
+    private Cursor mCursor;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getLoaderManager().initLoader(LOCATION_RECYCLER_LOADER, null, this);
     }
 
     @Nullable
@@ -80,59 +55,59 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
     {
         View v = inflater.inflate(R.layout.fragment_location_recycler, container, false);
 
+        mCursor = getActivity().getContentResolver().query(DogBeachesContract.Locations.CONTENT_URI,
+                DogBeachesContract.Locations.PROJECTION_ALL, null, null, null);
+
         mRecyclerView = (RecyclerView) v.findViewById(R.id.locationRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        mAdapter = new LocationRecyclerAdapter(mCursor, getActivity());
+        mRecyclerView.setAdapter(mAdapter);
         return v;
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
+    public void onDestroyView()
     {
-        CursorLoader cursorLoader = new CursorLoader(getActivity(), DogBeachesContract.Locations.CONTENT_URI,
-                DogBeachesContract.Locations.PROJECTION_ALL, null, null, null);
-        return cursorLoader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor)
-    {
-        mAdapter = new LocationRecyclerAdapter(cursor, getActivity());
-        mRecyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader)
-    {
-        // Do nothing
+        mCursor.close();
+        super.onDestroyView();
     }
 
     private class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder>
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
     {
         private Cursor mLocationCursor;
         private Context mContext;
+        private Location mLastLocation;
+        private GoogleApiClient mGoogleApiClient;
+        private int mNameIndex;
+        private int mIdIndex;
+        private int mDogGuidelinesIndex;
+        private int mLocalMediumImageIndex;
+        private int mLatitudeIndex;
+        private int mLongitudeIndex;
 
         public class ViewHolder extends RecyclerView.ViewHolder
         {
             public TextView titleTextView;
-            public TextView blurbTextView;
             public TextView guidelinesTextView;
+            public TextView distanceTextView;
             public ImageView imageView;
-            public TextView statusTextView;
-            public Button mapButton;
+            public Button moreInfoButton;
             public Button sightingsButton;
+            public Location coordinates;
+            public Integer locationId;
 
             public ViewHolder(View recyclerView)
             {
                 super(recyclerView);
                 titleTextView = (TextView) recyclerView.findViewById(R.id.locationCardTitleTextView);
                 imageView = (ImageView) recyclerView.findViewById(R.id.locationCardImageView);
-                statusTextView = (TextView) recyclerView.findViewById(R.id.locationCardStatusTextView);
                 guidelinesTextView = (TextView) recyclerView.findViewById(R.id.locationCardDogGuidelines);
-                mapButton = (Button) recyclerView.findViewById(R.id.locationCardMapButton);
+                moreInfoButton = (Button) recyclerView.findViewById(R.id.locationCardMoreInfoButton);
                 sightingsButton = (Button) recyclerView.findViewById(R.id.locationCardSightingsButton);
+                distanceTextView = (TextView) recyclerView.findViewById(R.id.locationCardDistanceTextView);
 
                 sightingsButton.setOnClickListener(new View.OnClickListener(){
                     @Override
@@ -144,6 +119,19 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
                         //mSightingsCallback.onSightingsSelected(mLocations.get(getLayoutPosition()).getId());
                     }
                 });
+
+                moreInfoButton.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        Intent i = new Intent(mContext, LocationActivity.class);
+                        i.putExtra(LocationActivity.KEY_LOCATION_ID, locationId);
+                        startActivity(i);
+                    }
+                });
+
+
             }
         }
 
@@ -151,39 +139,37 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
         {
             mLocationCursor = locationCursor;
             mContext = context;
+            mIdIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_ID);
+            mNameIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_NAME);
+            mDogGuidelinesIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES);
+            mLocalMediumImageIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM_LOCAL);
+            mLatitudeIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_LATITUDE);
+            mLongitudeIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_LONGITUDE);
+            buildGoogleApiClient();
+            mGoogleApiClient.connect();
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position)
         {
             mLocationCursor.moveToPosition(position);
-            holder.titleTextView.setText(mLocationCursor.getString(NAME_INDEX));
-            holder.guidelinesTextView.setText(mLocationCursor.getString(GUIDELINE_INDEX));
-
-            String statusString = "";
-
-            switch(mLocationCursor.getString(STATUS_INDEX))
-            {
-                case "on_lead": statusString = "Dogs allowed on lead";
-                    break;
-                case "off_lead": statusString = "Dogs allowed off lead";
-                    break;
-                case "no_dogs": statusString = "No dogs allowed";
-                    break;
-            }
-
-            holder.statusTextView.setText(statusString);
-            int columnIndex = mLocationCursor.getColumnIndex(DogBeachesContract.Locations
-                    .COLUMN_IMAGE_MEDIUM_LOCAL);
-            File f = new File(mContext.getFilesDir(), mLocationCursor.getString(columnIndex));
+            holder.locationId = mLocationCursor.getInt(mIdIndex);
+            holder.titleTextView.setText(mLocationCursor.getString(mNameIndex));
+            holder.guidelinesTextView.setText(mLocationCursor.getString(mDogGuidelinesIndex));
+            File f = new File(mContext.getFilesDir(), mLocationCursor.getString(mLocalMediumImageIndex));
             Picasso.with(mContext).load(f).into(holder.imageView);
 
-            // Show sightings button only if location has sightings
-            //if (!(l.getSightings().isEmpty()))
-            //{
-            holder.sightingsButton.setVisibility(View.VISIBLE);
-            //}
+            holder.coordinates = new Location("");
+            holder.coordinates.setLatitude(mLocationCursor.getDouble(mLatitudeIndex));
+            holder.coordinates.setLongitude(mLocationCursor.getDouble(mLongitudeIndex));
 
+            if (mLastLocation != null)
+            {
+                Float distance = mLastLocation.distanceTo(holder.coordinates);
+                String kms = String.format("%.2f", (distance/1000)) + " Kms away";
+                holder.distanceTextView.setText(kms);
+            }
+            holder.sightingsButton.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -200,6 +186,38 @@ public class LocationRecyclerFragment extends Fragment implements LoaderManager.
         public int getItemCount()
         {
             return mLocationCursor.getCount();
+        }
+
+        protected synchronized void buildGoogleApiClient()
+        {
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
+        @Override
+        public void onConnected(Bundle bundle)
+        {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if(mLastLocation != null)
+            {
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+
+
+        @Override
+        public void onConnectionSuspended(int i)
+        {
+
+        }
+
+        @Override
+        public void onConnectionFailed(ConnectionResult connectionResult)
+        {
+
         }
     }
 }

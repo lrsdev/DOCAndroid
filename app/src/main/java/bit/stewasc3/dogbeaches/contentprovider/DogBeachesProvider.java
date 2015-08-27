@@ -56,15 +56,17 @@ public class DogBeachesProvider extends ContentProvider
         switch (uriType)
         {
             case LOCATION_ID:
+                queryBuilder.setTables(DogBeachesContract.Locations.LOCATIONS_TABLE);
                 queryBuilder.appendWhere(DogBeachesContract.Locations.COLUMN_ID +
-                        "=" + uri.getLastPathSegment());
+                        " = " + uri.getLastPathSegment());
                 break;
             case LOCATIONS:
                 queryBuilder.setTables(DogBeachesContract.Locations.LOCATIONS_TABLE);
                 break;
             case ANIMAL_ID:
-                queryBuilder.appendWhere(DogBeachesContract.Animals.COLUMN_ID + "=" +
-                        uri.getLastPathSegment());
+                queryBuilder.setTables(DogBeachesContract.Animals.ANIMALS_TABLE);
+                queryBuilder.appendWhere(DogBeachesContract.Animals.COLUMN_ID +
+                        " = " + uri.getLastPathSegment());
                 break;
             case ANIMALS:
                 queryBuilder.setTables(DogBeachesContract.Animals.ANIMALS_TABLE);
@@ -140,7 +142,6 @@ public class DogBeachesProvider extends ContentProvider
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs)
     {
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         int updateCount = 0;
         String id;
         String where;

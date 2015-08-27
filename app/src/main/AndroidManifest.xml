@@ -20,11 +20,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
     <!--
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
     -->
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -53,31 +53,42 @@
             android:label="@string/title_activity_sighting"
             android:screenOrientation="portrait" >
         </activity>
+
         <provider
             android:name=".contentprovider.DogBeachesProvider"
             android:authorities="bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider"
-            android:syncable="true"
             android:exported="true"
-            />
-        <service
-            android:name=".sync.AuthenticatorService">
+            android:syncable="true" />
+
+        <service android:name=".sync.AuthenticatorService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
         <service
             android:name=".sync.SyncService"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
+
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
+
+        <activity
+            android:name=".LocationActivity"
+            android:label="@string/title_activity_location" >
+        </activity>
+        <activity
+            android:name=".MapsAcitivty"
+            android:label="@string/title_activity_maps_acitivty" >
+        </activity>
     </application>
 
 </manifest>

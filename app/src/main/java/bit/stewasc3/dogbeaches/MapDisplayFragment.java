@@ -1,33 +1,28 @@
 package bit.stewasc3.dogbeaches;
 
+import android.app.Fragment;
+import android.database.Cursor;
+import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import java.util.ArrayList;
+import com.mapbox.mapboxsdk.overlay.Marker;
+import com.mapbox.mapboxsdk.tileprovider.tilesource.ITileLayer;
+import com.mapbox.mapboxsdk.tileprovider.tilesource.MBTilesLayer;
+import com.mapbox.mapboxsdk.tileprovider.tilesource.TileLayer;
+import com.mapbox.mapboxsdk.views.MapView;
 import java.util.HashMap;
-import UserAPI.RestClient;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 
 
-public class MapDisplayFragment extends MapFragment
+public class MapDisplayFragment extends Fragment
 {
-    private GoogleMap mMap;
-    private ArrayList<UserAPI.Location> mLocations;
-    private HashMap<Marker, UserAPI.Location> mMarkerToLocationMap;
+    private static final Integer MAX_ZOOM = 13;
+    private static final Integer MIN_ZOOM = 11;
+    private MapView mv;
 
     public static MapDisplayFragment newInstance()
     {
@@ -41,45 +36,26 @@ public class MapDisplayFragment extends MapFragment
     // Once map is ready, pull locations, set up the map once locations have been pulled.
     public void onCreate(Bundle savedInstanceState)
     {
-        mMarkerToLocationMap = new HashMap<>();
-        getMapAsync(new OnMapReadyCallback()
-        {
-            @Override
-            public void onMapReady(GoogleMap googleMap)
-            {
-                mMap = googleMap;
-                getLocations();
-            }
-        });
-
         super.onCreate(savedInstanceState);
-    }
-
-    // Get all locations from remote DB for now, in future, restrict to user defined radius.
-    public void getLocations()
-    {
-        RestClient.get().getAllLocations(new Callback<ArrayList<UserAPI.Location>>()
-        {
-            @Override
-            public void success(ArrayList<UserAPI.Location> locations, Response response)
-            {
-                mLocations = locations;
-                setupMap();
-            }
-
-            @Override
-            public void failure(RetrofitError error)
-            {
-
-            }
-        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View v = inflater.inflate(R.layout.fragment_map_display, container, false);
+        mv = (MapView) v.findViewById(R.id.mapActivityMap);
+
+        /* For using local mmbtiles
+        TileLayer mbTileLayer = new MBTilesLayer(getActivity().getDatabasePath("dunedin2.mbtiles"));
+        mv.setTileSource(new ITileLayer[]{mbTileLayer});
+        mv.setScrollableAreaLimit(mbTileLayer.getBoundingBox());
+        */
+
+        mv.setUserLocationEnabled(true);
+        mv.goToUserLocation(true);
+        addLocationMarkers();
+        return v;
     }
 
     @Override
@@ -90,42 +66,35 @@ public class MapDisplayFragment extends MapFragment
 
     public void setupMap()
     {
-        mMap.setMyLocationEnabled(true);
-        // Center map on Dunedin for now, User location later.
-        CameraUpdate c = CameraUpdateFactory.newLatLngZoom(new LatLng(
-                -45.873629, 170.503692), 10);
-        mMap.moveCamera(c);
-        for(UserAPI.Location l : mLocations)
-        {
-            Marker mark = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(l.getLatitude(), l.getLongitude()))
-                    .title(l.getName())
-                    .anchor(0.5f, 0.5f) // Defines marker anchor point in the center
-                    .icon(getIconBitmap(l)));
-            // Add the marker to a map so we can determine which location info window was clicked later
-            mMarkerToLocationMap.put(mark, l);
-        }
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener()
-        {
-            @Override
-            public void onInfoWindowClick(Marker marker)
-            {
-                // Disabled
+    }
+    public void addLocationMarkers()
+    {
+        Cursor c = getActivity().getContentResolver().query(DogBeachesContract.Locations.CONTENT_URI, DogBeachesContract.Locations.PROJECTION_ALL, null, null, null);
 
-                // Get index of location in array to open view pager correctly, start Location
-                // ViewPager showing selected location from map.
-                //int index = mLocations.indexOf(mMarkerToLocationMap.get(marker));
-                //Intent i = new Intent(getActivity(), LocationPagerActivity.class);
-                //i.putExtra(LocationPagerActivity.KEY_LOCATION, mLocations.get(index));
-                //startActivity(i);
-            }
-        });
+        Integer nameIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_NAME);
+        Integer idIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_ID);
+        Integer latIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_LATITUDE);
+        Integer longIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_LONGITUDE);
+        Integer statusIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_DOG_STATUS);
+        Integer imageIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM_LOCAL);
+
+        while(c.moveToNext())
+        {
+            com.mapbox.mapboxsdk.overlay.Marker m = new com.mapbox.mapboxsdk.overlay.Marker(c.getString(nameIndex), "",
+                    new com.mapbox.mapboxsdk.geometry.LatLng(c.getDouble(latIndex),
+                    c.getDouble(longIndex)));
+            m.setMarker(getIconBitmap(c.getString(statusIndex)));
+            m.setAnchor(new PointF(0.5f, 0.5f));
+            m.setToolTip(new LocationInfoWindow(mv, c.getInt(idIndex), c.getString(imageIndex)));
+            mv.addMarker(m);
+        }
+        c.close();
     }
 
-    private BitmapDescriptor getIconBitmap(UserAPI.Location l)
+    private Drawable getIconBitmap(String status)
     {
         int icon = 0;
-        switch(l.getDogStatus())
+        switch(status)
         {
             case "on_lead" : icon = R.drawable.dogonlead;
                 break;
@@ -134,6 +103,6 @@ public class MapDisplayFragment extends MapFragment
             case "no_dogs" : icon = R.drawable.nodogs;
                 break;
         }
-        return BitmapDescriptorFactory.fromResource(icon);
+        return getResources().getDrawable(icon);
     }
 }

@@ -49,7 +49,7 @@
                     android:id="@+id/locationCardDistanceTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3.4 Kilometres away"
+                    android:text="Distance unknown"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
                 <TextView
@@ -79,10 +79,10 @@
 
             <!-- consider finding a different layout where you can set 8dp as a padding between buttons -->
             <Button
-                android:id="@+id/locationCardMapButton"
+                android:id="@+id/locationCardMoreInfoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View Map"
+                android:text="More Info"
                 android:layout_marginRight="8dp"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored" />
 

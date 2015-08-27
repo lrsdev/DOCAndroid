@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="4dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/locationInfoWindowImage"
+            android:layout_width="142dp"
+            android:layout_height="80dp"
+            android:scaleType="fitXY"
+            />
+
+        <TextView
+            android:id="@+id/locationInfoWindowTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textSize="10sp"
+            android:text="*Touch for more details"
+            />
+
+    </LinearLayout>
+
+    <!-- The arrow on the bottom of the info window view -->
+    <com.mapbox.mapboxsdk.views.TipView
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        />
+</LinearLayout>

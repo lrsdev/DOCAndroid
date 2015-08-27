@@ -38,7 +38,6 @@ public class DogBeachesContract
         public static final String[] PROJECTION_ALL = {COLUMN_ID, COLUMN_NAME, COLUMN_CATEGORY,
             COLUMN_ANIMAL_BLURB, COLUMN_DOG_STATUS, COLUMN_DOG_GUIDELINES, COLUMN_IMAGE_THUMBNAIL,
             COLUMN_IMAGE_MEDIUM, COLUMN_IMAGE_MEDIUM_LOCAL, COLUMN_LATITUDE, COLUMN_LONGITUDE};
-
     }
 
     public static final class Animals

@@ -15,7 +15,7 @@ import bit.stewasc3.dogbeaches.R;
 public class DBHelper extends SQLiteOpenHelper
 {
     private static final String DATABASE_NAME = "docdog.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 1;
 
     public DBHelper(Context context)
     {

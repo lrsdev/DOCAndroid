@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +20,10 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+
 import java.util.ArrayList;
 
 import UserAPI.Location;
@@ -29,14 +34,16 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends AppCompatActivity implements
-        LocationRecyclerFragment.OnSightingsSelectedListener
+public class MainActivity extends AppCompatActivity
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private FrameLayout mContentContainer;
     private FragmentManager fm;
     private Account mAccount;
+    private android.location.Location mLastLocation;
+    private GoogleApiClient mGoogleApiClient;
 
     public static final String AUTHORITY = DogBeachesContract.AUTHORITY;
     public static final String ACCOUNT_TYPE = "bit.stewasc3.dogbeaches";
@@ -109,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements
                         break;
                     case R.id.drawer_map: // Map was clicked
                         getSupportActionBar().setTitle("Map");
-                        setContentFragment(new MapDisplayFragment());
+                        setContentFragment(MapDisplayFragment.newInstance());
                         break;
                     case R.id.drawer_locations: // Locations was clicked
                         setContentFragment(new LocationRecyclerFragment());
@@ -125,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements
                         getSupportActionBar().setTitle("Wildlife Report");
                         break;
                     case R.id.drawer_donate: // Donate was clicked
-                        notImplemented();
                         //setContentFragment(new DonateFragment());
                         //getSupportActionBar().setTitle("Donate");
                         break;
@@ -178,18 +184,39 @@ public class MainActivity extends AppCompatActivity implements
         Toast.makeText(this, "Not implemented", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onSightingsSelected(int locationId)
-    {
-        Fragment f = SightingRecyclerFragment.newInstance(locationId);
-        setContentFragment(f);
-    }
-
     public void onReportAction(MenuItem mi)
     {
         //handle onClick of camera here
         setContentFragment(new ReportFragment());
         getSupportActionBar().setTitle("Wildlife Report");
+
+    }
+
+    protected synchronized void buildGoogleApiClient()
+    {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle)
+    {
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int i)
+    {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult)
+    {
 
     }
 
