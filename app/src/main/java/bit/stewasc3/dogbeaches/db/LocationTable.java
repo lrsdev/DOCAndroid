@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Created by sam on 14/08/15.
  */
-public class LocationsTable
+public class LocationTable
 {
     public static final String TABLE_LOCATIONS = "locations";
     public static final String COLUMN_ID = "_id";

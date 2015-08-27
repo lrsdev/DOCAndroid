@@ -1,13 +1,8 @@
 package bit.stewasc3.dogbeaches.db;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import bit.stewasc3.dogbeaches.R;
 
 /**
  * Created by sam on 10/08/15.
@@ -25,15 +20,15 @@ public class DBHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase)
     {
-        LocationsTable.onCreate(sqLiteDatabase);
-        AnimalsTable.onCreate(sqLiteDatabase);
+        LocationTable.onCreate(sqLiteDatabase);
+        AnimalTable.onCreate(sqLiteDatabase);
         SyncTable.onCreate(sqLiteDatabase);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int newVersion, int oldVersion)
     {
-        //LocationsTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
-        //AnimalsTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
+        //LocationTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
+        //AnimalTable.onUpgrade(sqLiteDatabase, newVersion, oldVersion);
     }
 }

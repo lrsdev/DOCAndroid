@@ -2,8 +2,13 @@ package bit.stewasc3.dogbeaches;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.LoaderManager;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import UserAPI.RestClient;
 import UserAPI.Sighting;
+import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -41,9 +48,11 @@ import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
 public class ReportFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener
+        GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor>
 {
     private static final int REQUEST_IMAGE_CODE = 100;
+    private static final int LOADER_ANIMAL = 1;
+    private static final int LOADER_LOCATION = 2;
 
     /* Start obtaining users location when fragment instantiates. Populate Location list with
         locations close to the user. At the moment, this will jsut pull in the entire location list
@@ -55,11 +64,11 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     private ArrayList<UserAPI.Location> mLocations;
     private ImageButton mImageButton;
     private ProgressDialog pd;
-    private ArrayAdapter mLocationAdapter;
-    private ArrayAdapter mWildlifeAdapter;
+    private LocationCursorAdapter mLocationAdapter;
+    private AnimalCursorAdapter mAnimalAdapter;
     private Location mLastLocation;
     private Spinner mLocationSpinner;
-    private Spinner mWildlifeSpinner;
+    private Spinner mAnimalSpinner;
     private EditText mBlurbEditText;
     private GoogleApiClient mGoogleApiClient;
     private File mPhotoFile;
@@ -82,29 +91,25 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     {
         final View view = inflater.inflate(R.layout.fragment_report, container, false);
 
-        mLocationAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, mLocations);
+
         mLocationSpinner = (Spinner) view.findViewById(R.id.reportLocationSpinner);
+        mLocationAdapter = new LocationCursorAdapter();
         mLocationSpinner.setAdapter(mLocationAdapter);
 
-        // Wildlife type populated from resource string array for now.
-        // ToDo: Implement server side wildlife model, store locally for selection.
-        mWildlifeSpinner = (Spinner) view.findViewById(R.id.reportWildlifeTypeSpinner);
-        mWildlifeAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.wildlife_array,
-                android.R.layout.simple_spinner_dropdown_item);
-        mWildlifeSpinner.setAdapter(mWildlifeAdapter);
+        mAnimalSpinner = (Spinner) view.findViewById(R.id.reportAnimalSpinner);
+        mAnimalAdapter = new AnimalCursorAdapter();
+        mAnimalSpinner.setAdapter(mAnimalAdapter);
 
-        // User entered notes/ blurb
         mBlurbEditText = (EditText) view.findViewById(R.id.reportNotesEditText);
 
-        // Camera image button
         mImageButton = (ImageButton) view.findViewById(R.id.reportImageButton);
         mImageButton.setOnClickListener(new ImageButtonClick());
 
         Button submitButton = (Button) view.findViewById(R.id.reportSubmitButton);
         submitButton.setOnClickListener(new SubmitButtonClick());
 
-        getLocations();
-
+        getLoaderManager().initLoader(LOADER_LOCATION, null, this);
+        getLoaderManager().initLoader(LOADER_ANIMAL, null, this);
         return view;
     }
 
@@ -119,42 +124,12 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
 
     private void submitReport()
     {
-        UserAPI.Location l = (UserAPI.Location) mLocationSpinner.getSelectedItem();
-
-        Integer locationId = l.getId();
+        long locationId = mLocationSpinner.getSelectedItemId();
+        long animalId = mAnimalSpinner.getSelectedItemId();
         double lat = mLastLocation.getLatitude();
-        double longi = mLastLocation.getLongitude();
-        TypedFile tf = new TypedFile("image/jpeg", mPhotoFile);
+        double lon = mLastLocation.getLongitude();
         String blurb = mBlurbEditText.getText().toString();
         String submitted = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").format(new Date());
-        String animalType = (String) mWildlifeSpinner.getSelectedItem();
-
-        // Progress spinner while report uploads
-        pd = new ProgressDialog(getActivity());
-        pd.setTitle("Submitting...");
-        pd.setMessage("Please wait.");
-        pd.setCancelable(false);
-        pd.setIndeterminate(true);
-        pd.show();
-
-        RestClient.get().createReport(tf, locationId, submitted, blurb, lat, longi, animalType, new Callback<Sighting>()
-        {
-            @Override
-            public void success(Sighting s, Response response)
-            {
-                Toast.makeText(getActivity(), "Report uploaded!", Toast.LENGTH_LONG).show();
-                pd.dismiss();
-                getFragmentManager().popBackStackImmediate();
-            }
-
-            @Override
-            public void failure(RetrofitError error)
-            {
-                Toast.makeText(getActivity(), "Report upload failed", Toast.LENGTH_LONG).show();
-                Log.d("RETROFIT", error.toString());
-                pd.dismiss();
-            }
-        });
     }
 
     private void takeAPhoto()
@@ -187,34 +162,6 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         return image;
     }
 
-    // Get locations to populate location list. This will be refined later to locations close to
-    // user. If request is successful, add items to location array and notify the adapter.
-    private void getLocations()
-    {
-        RestClient.get().getAllLocations(new Callback<ArrayList<UserAPI.Location>>()
-        {
-            @Override
-            public void success(ArrayList<UserAPI.Location> locations, Response response)
-            {
-                mLocations.addAll(locations);
-                mLocationAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void failure(RetrofitError error)
-            {
-                mLocations = new ArrayList<>();  // <-- create empty on failure for now
-                Toast.makeText(getActivity(), "Couldn't obtain locations",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void getAnimals()
-    {
-
-    }
-
     @Override
     public void onDestroy()
     {
@@ -237,6 +184,56 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     public void onConnectionFailed(ConnectionResult connectionResult)
     {
 
+    }
+
+    @Override
+    public Loader onCreateLoader(int i, Bundle bundle)
+    {
+        String[] projection = null;
+        Uri uri = null;
+        switch(i)
+        {
+            case LOADER_ANIMAL:
+                projection = new String[] { DogBeachesContract.Animals.COLUMN_ID,
+                    DogBeachesContract.Animals.COLUMN_NAME };
+                uri = DogBeachesContract.Animals.CONTENT_URI;
+                break;
+            case LOADER_LOCATION:
+                projection = new String[] { DogBeachesContract.Locations.COLUMN_ID,
+                    DogBeachesContract.Locations.COLUMN_NAME };
+                uri = DogBeachesContract.Locations.CONTENT_URI;
+                break;
+        }
+
+       return new CursorLoader(getActivity(), uri, projection, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Cursor c)
+    {
+        switch(loader.getId())
+        {
+            case LOADER_ANIMAL:
+                mAnimalAdapter.changeCursor(c);
+                break;
+            case LOADER_LOCATION:
+                mLocationAdapter.changeCursor(c);
+                break;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader)
+    {
+        switch(loader.getId())
+        {
+            case LOADER_ANIMAL:
+                mAnimalAdapter.changeCursor(null);
+                break;
+            case LOADER_LOCATION:
+                mLocationAdapter.changeCursor(null);
+                break;
+        }
     }
 
     private class SubmitButtonClick implements View.OnClickListener
@@ -263,6 +260,33 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         public void onClick(View v)
         {
             takeAPhoto();
+        }
+    }
+
+    private class AnimalCursorAdapter extends SimpleCursorAdapter
+    {
+
+        public AnimalCursorAdapter()
+        {
+            super(getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    null,
+                    new String[] {DogBeachesContract.Animals.COLUMN_NAME},
+                    new int[] {android.R.id.text1},
+                    SimpleCursorAdapter.NO_SELECTION);
+        }
+    }
+
+    private class LocationCursorAdapter extends SimpleCursorAdapter
+    {
+        public LocationCursorAdapter()
+        {
+            super(getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    null,
+                    new String[] {DogBeachesContract.Locations.COLUMN_NAME},
+                    new int[] {android.R.id.text1},
+                    SimpleCursorAdapter.NO_SELECTION);
         }
     }
 }

@@ -36,6 +36,7 @@ import UserAPI.Sync;
 import bit.stewasc3.dogbeaches.R;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.db.DBHelper;
+import bit.stewasc3.dogbeaches.db.ReportTable;
 import bit.stewasc3.dogbeaches.db.SyncTable;
 
 /**
@@ -72,6 +73,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
         Cursor locationCursor = null;
         Cursor animalCursor = null;
+        Cursor reportCursor = null;
         Boolean success = false;
         Boolean syncTableEmpty = true;
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -142,7 +144,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             if(animalCursor != null)
                 animalCursor.close();
         }
-        Log.i(TAG, "Sync complete");
+
     }
 
     private void updateAnimals(Sync syncObject, ArrayList<ContentProviderOperation> batch, Cursor c,

@@ -5,9 +5,8 @@ import android.accounts.AccountManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,15 +23,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
-import java.util.ArrayList;
+import java.io.File;
 
-import UserAPI.Location;
-import UserAPI.RestClient;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
-import bit.stewasc3.dogbeaches.db.LocationsTable;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
@@ -80,6 +73,11 @@ public class MainActivity extends AppCompatActivity
 
         // Set initial content fragment to home
         setContentFragment(new HomeFragment());
+
+        // Some testing
+        File f = Environment.getExternalStorageDirectory();
+        File j = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
     }
 
     public static Account CreateSyncAccount(Context context)

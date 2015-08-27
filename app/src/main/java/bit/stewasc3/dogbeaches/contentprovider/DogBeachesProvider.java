@@ -7,11 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
 
-import bit.stewasc3.dogbeaches.db.AnimalsTable;
 import bit.stewasc3.dogbeaches.db.DBHelper;
-import bit.stewasc3.dogbeaches.db.LocationsTable;
 
 /**
  * Created by sam on 11/08/15.
