@@ -1,4 +1,4 @@
-package bit.stewasc3.dogbeaches;
+package bit.stewasc3.dogbeaches.map;
 
 import android.content.Intent;
 import android.view.MotionEvent;
@@ -13,6 +13,9 @@ import com.mapbox.mapboxsdk.views.MapView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+
+import bit.stewasc3.dogbeaches.LocationActivity;
+import bit.stewasc3.dogbeaches.R;
 
 /**
  * Created by sam on 26/08/15.

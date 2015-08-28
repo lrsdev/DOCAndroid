@@ -51,7 +51,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         ToDo: Backup plan if user location not available
      */
 
-    private ArrayList<bit.stewasc3.dogbeaches.sync.UserAPI.Location> mLocations;
+    private ArrayList<bit.stewasc3.dogbeaches.sync.API.Location> mLocations;
     private ImageButton mImageButton;
     private ProgressDialog pd;
     private LocationCursorAdapter mLocationAdapter;
@@ -100,16 +100,8 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
 
         getLoaderManager().initLoader(LOADER_LOCATION, null, this);
         getLoaderManager().initLoader(LOADER_ANIMAL, null, this);
-        return view;
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if(requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK)
-        {
-            Picasso.with(getActivity()).load(mPhotoFile).into(mImageButton);
-        }
+        return view;
     }
 
     private void submitReport()
@@ -141,6 +133,21 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK)
+        {
+            Picasso.with(getActivity()).load(mPhotoFile)
+                    .resize(mImageButton.getWidth(), mImageButton.getHeight()).into(mImageButton);
+        }
+    }
+
+    /**
+     * Creates a file to save captured image to. Image made available in public image directory.
+     * @return File
+     * @throws IOException
+     */
     private File createImageFile() throws IOException
     {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -148,7 +155,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         if (!storageDir.exists())
             storageDir.mkdir();
-        File image = File.createTempFile(fileName, ".jpg", storageDir);
+        File image = new File(storageDir, fileName);
         return image;
     }
 

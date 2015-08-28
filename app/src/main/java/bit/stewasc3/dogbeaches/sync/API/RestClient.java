@@ -1,4 +1,4 @@
-package bit.stewasc3.dogbeaches.sync.UserAPI;
+package bit.stewasc3.dogbeaches.sync.API;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -16,6 +16,10 @@ import java.util.TimeZone;
 
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
+
+/**
+ * Rest client Sync Adapter utilises to transfer data to and from the API.
+ */
 
 public class RestClient
 {

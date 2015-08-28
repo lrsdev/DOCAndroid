@@ -25,10 +25,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import bit.stewasc3.dogbeaches.sync.UserAPI.Animal;
-import bit.stewasc3.dogbeaches.sync.UserAPI.Location;
-import bit.stewasc3.dogbeaches.sync.UserAPI.RestClient;
-import bit.stewasc3.dogbeaches.sync.UserAPI.Sync;
+import bit.stewasc3.dogbeaches.sync.API.Animal;
+import bit.stewasc3.dogbeaches.sync.API.Location;
+import bit.stewasc3.dogbeaches.sync.API.RestClient;
+import bit.stewasc3.dogbeaches.sync.API.Sync;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.db.DBHelper;
 import bit.stewasc3.dogbeaches.db.SyncTable;

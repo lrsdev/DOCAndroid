@@ -26,6 +26,7 @@ import com.google.android.gms.location.LocationServices;
 import java.io.File;
 
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
+import bit.stewasc3.dogbeaches.map.MapDisplayFragment;
 
 public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener

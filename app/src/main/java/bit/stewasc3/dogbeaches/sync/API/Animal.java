@@ -1,4 +1,4 @@
-package bit.stewasc3.dogbeaches.sync.UserAPI;
+package bit.stewasc3.dogbeaches.sync.API;
 
 /**
  * Created by samuel on 14/07/15.

@@ -1,4 +1,4 @@
-package bit.stewasc3.dogbeaches;
+package bit.stewasc3.dogbeaches.map;
 
 import android.app.Fragment;
 import android.database.Cursor;
@@ -6,15 +6,12 @@ import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import com.mapbox.mapboxsdk.overlay.Marker;
-import com.mapbox.mapboxsdk.tileprovider.tilesource.ITileLayer;
-import com.mapbox.mapboxsdk.tileprovider.tilesource.MBTilesLayer;
-import com.mapbox.mapboxsdk.tileprovider.tilesource.TileLayer;
+
 import com.mapbox.mapboxsdk.views.MapView;
-import java.util.HashMap;
+
+import bit.stewasc3.dogbeaches.R;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 
 
@@ -69,14 +66,15 @@ public class MapDisplayFragment extends Fragment
     }
     public void addLocationMarkers()
     {
-        Cursor c = getActivity().getContentResolver().query(DogBeachesContract.Locations.CONTENT_URI, DogBeachesContract.Locations.PROJECTION_ALL, null, null, null);
+        Cursor c = getActivity().getContentResolver().query(DogBeachesContract.Locations.CONTENT_URI,
+                DogBeachesContract.Locations.PROJECTION_ALL, null, null, null);
 
-        Integer nameIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_NAME);
-        Integer idIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_ID);
-        Integer latIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_LATITUDE);
-        Integer longIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_LONGITUDE);
-        Integer statusIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_DOG_STATUS);
-        Integer imageIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_IMAGE);
+        int nameIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_NAME);
+        int idIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_ID);
+        int latIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_LATITUDE);
+        int longIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_LONGITUDE);
+        int statusIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_DOG_STATUS);
+        int imageIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_IMAGE);
 
         while(c.moveToNext())
         {
