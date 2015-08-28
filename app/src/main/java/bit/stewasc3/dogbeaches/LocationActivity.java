@@ -66,7 +66,7 @@ public class LocationActivity extends AppCompatActivity
         mNameIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_NAME);
         mAnimalBlurbIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB);
         mDogGuidelinesIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES);
-        mLocalMediumImageIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM_LOCAL);
+        mLocalMediumImageIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_IMAGE);
         mDogStatusIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_DOG_STATUS);
         mLatitudeIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_LATITUDE);
         mLongitudeIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_LONGITUDE);

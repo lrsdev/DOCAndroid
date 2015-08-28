@@ -14,9 +14,8 @@ public class LocationTable implements ILocationTableConstants
             COLUMN_ANIMAL_BLURB + " text not null, " +
             COLUMN_DOG_STATUS + " text not null, " +
             COLUMN_DOG_GUIDELINES + " text not null, " +
-            COLUMN_IMAGE_THUMBNAIL +  " text not null, " +
-            COLUMN_IMAGE_MEDIUM + " text not null, " +
-            COLUMN_IMAGE_MEDIUM_LOCAL + " text not null," +
+            COLUMN_IMAGE + " text not null, " +
+            COLUMN_IMAGE_URL + " text not null," +
             COLUMN_LATITUDE + " real not null, " +
             COLUMN_LONGITUDE + " real not null);";
 

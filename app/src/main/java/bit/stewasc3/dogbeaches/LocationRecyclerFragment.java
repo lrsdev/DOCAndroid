@@ -142,7 +142,7 @@ public class LocationRecyclerFragment extends Fragment
             mIdIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_ID);
             mNameIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_NAME);
             mDogGuidelinesIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES);
-            mLocalMediumImageIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM_LOCAL);
+            mLocalMediumImageIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_IMAGE);
             mLatitudeIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_LATITUDE);
             mLongitudeIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_LONGITUDE);
             buildGoogleApiClient();

@@ -76,7 +76,7 @@ public class MapDisplayFragment extends Fragment
         Integer latIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_LATITUDE);
         Integer longIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_LONGITUDE);
         Integer statusIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_DOG_STATUS);
-        Integer imageIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM_LOCAL);
+        Integer imageIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_IMAGE);
 
         while(c.moveToNext())
         {
