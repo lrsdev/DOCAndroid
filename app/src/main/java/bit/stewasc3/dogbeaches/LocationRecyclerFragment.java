@@ -156,7 +156,7 @@ public class LocationRecyclerFragment extends Fragment
             holder.locationId = mLocationCursor.getInt(mIdIndex);
             holder.titleTextView.setText(mLocationCursor.getString(mNameIndex));
             holder.guidelinesTextView.setText(mLocationCursor.getString(mDogGuidelinesIndex));
-            File f = new File(mContext.getFilesDir(), mLocationCursor.getString(mLocalMediumImageIndex));
+            File f = new File(mLocationCursor.getString(mLocalMediumImageIndex));
             Picasso.with(mContext).load(f).into(holder.imageView);
 
             holder.coordinates = new Location("");

@@ -53,7 +53,7 @@ public class LocationInfoWindow extends InfoWindow
     {
         ImageView iv = (ImageView) mView.findViewById(R.id.locationInfoWindowImage);
         TextView tv = (TextView) mView.findViewById(R.id.locationInfoWindowTitle);
-        File f = new File(mView.getContext().getFilesDir(), imageLocation);
+        File f = new File(imageLocation);
         Picasso.with(mView.getContext()).load(f).into(iv);
         tv.setText(overlayItem.getTitle());
     }

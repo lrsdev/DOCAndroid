@@ -79,7 +79,7 @@ public class LocationActivity extends AppCompatActivity
         dogGuidelinesTextView = (TextView) findViewById(R.id.locationActivityDogGuidelinesTextView);
         directionsButton = (Button) findViewById(R.id.locationActivityDirectionsButton);
 
-        File f = new File(getFilesDir(), mCursor.getString(mLocalMediumImageIndex));
+        File f = new File(mCursor.getString(mLocalMediumImageIndex));
         Picasso.with(this).load(f).into(imageView);
 
         nameTextView.setText(mCursor.getString(mNameIndex));

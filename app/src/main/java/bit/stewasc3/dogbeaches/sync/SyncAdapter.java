@@ -2,14 +2,12 @@ package bit.stewasc3.dogbeaches.sync;
 
 import android.accounts.Account;
 import android.content.AbstractThreadedSyncAdapter;
-import android.content.ContentProvider;
 import android.content.ContentProviderClient;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
-import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,20 +22,15 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import UserAPI.Animal;
 import UserAPI.Location;
 import UserAPI.RestClient;
 import UserAPI.Sync;
-import bit.stewasc3.dogbeaches.Constants;
-import bit.stewasc3.dogbeaches.R;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.db.DBHelper;
-import bit.stewasc3.dogbeaches.db.ReportTable;
 import bit.stewasc3.dogbeaches.db.SyncTable;
 
 /**
@@ -45,6 +38,8 @@ import bit.stewasc3.dogbeaches.db.SyncTable;
  */
 public class SyncAdapter extends AbstractThreadedSyncAdapter
 {
+    private static String LOCATION_IMAGE_PATH = "/images/locations";
+    private static String ANIMAL_IMAGE_PATH = "/images/animals";
     private static final String TAG = "SyncAdapter";
     private ContentResolver mContentResolver;
     private DBHelper mDbHelper;
@@ -61,8 +56,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         super(context, autoInitialize, allowParallelSyncs);
         mContentResolver = context.getContentResolver();
         mDbHelper = new DBHelper(context);
-        mLocationImagePath = context.getFilesDir().toString() + Constants.LOCATION_IMAGE_PATH;
-        mAnimalImagePath = context.getFilesDir().toString() + Constants.ANIMAL_IMAGE_PATH;
+        mLocationImagePath = context.getFilesDir().toString() + LOCATION_IMAGE_PATH;
+        mAnimalImagePath = context.getFilesDir().toString() + ANIMAL_IMAGE_PATH;
         File f = new File(mLocationImagePath);
         f.mkdirs();
         f = new File(mAnimalImagePath);
