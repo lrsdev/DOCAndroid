@@ -287,8 +287,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                     .withValue(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getAnimalBlurb())
                     .withValue(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus())
                     .withValue(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES, l.getDogGuidelines())
-                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE, l.getImageMedium())
-                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE_URL, f.getAbsolutePath())
+                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE, f.getAbsolutePath())
+                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE_URL, l.getImageMedium())
                     .withValue(DogBeachesContract.Locations.COLUMN_LATITUDE, l.getLatitude())
                     .withValue(DogBeachesContract.Locations.COLUMN_LONGITUDE, l.getLongitude())
                     .withYieldAllowed(true).build());
