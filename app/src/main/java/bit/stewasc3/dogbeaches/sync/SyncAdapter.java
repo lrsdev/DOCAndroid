@@ -101,15 +101,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
 
             // Apply batch operation
             mContentResolver.applyBatch(DogBeachesContract.AUTHORITY, batch);
-            // If batch applies without exception, success
+
+            // If batch applies without exception, success.
             success = true;
+
+            // Clean up replaced files
+            deleteFiles(filesToDelete);
 
             // Write timestamp to db
             ContentValues cv = new ContentValues();
             cv.put(SyncTable.LAST_SYNC, syncObject.getSyncedAt());
-            db.execSQL("DELETE FROM " + SyncTable.TABLE_SYNC);
-            db.insert(SyncTable.TABLE_SYNC, null, cv);
-            deleteFiles(filesToDelete);
+            db.execSQL("DELETE FROM " + SyncTable.TABLE_NAME);
+            db.insert(SyncTable.TABLE_NAME, null, cv);
         }
         catch(RemoteException|OperationApplicationException e)
         {
@@ -228,8 +231,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
 
         // Get integer values to index cursor columns
         Integer idIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_ID);
-        Integer localImageMediumIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM_LOCAL);
-        Integer urlImageMediumIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM);
+        Integer imageIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_IMAGE);
+        Integer imageUrlIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_IMAGE_URL);
 
         // Iterate cursor containing local containers.
         while (c.moveToNext())
@@ -241,7 +244,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                 Uri deleteUri = DogBeachesContract.Locations.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(currentId)).build();
 
-                filesToDelete.add(c.getString(localImageMediumIndex));
+                filesToDelete.add(c.getString(imageIndex));
                 batch.add(ContentProviderOperation.newDelete(deleteUri).build());
             }
 
@@ -259,19 +262,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                         .withValue(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getAnimalBlurb())
                         .withValue(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus())
                         .withValue(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES, l.getDogGuidelines())
-                        .withValue(DogBeachesContract.Locations.COLUMN_IMAGE_THUMBNAIL, l.getImageThumbnail())
-                        .withValue(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM, l.getImageMedium())
+                        .withValue(DogBeachesContract.Locations.COLUMN_IMAGE_URL, l.getImageMedium())
                         .withValue(DogBeachesContract.Locations.COLUMN_LATITUDE, l.getLatitude())
                         .withValue(DogBeachesContract.Locations.COLUMN_LONGITUDE, l.getLongitude())
                         .withYieldAllowed(true);
 
                 // Get new medium image if URL's are different
-                if(l.getImageMedium().compareTo(c.getString(urlImageMediumIndex)) != 0)
+                if(l.getImageMedium().compareTo(c.getString(imageUrlIndex)) != 0)
                 {
-                    String filename = storeImage(l.getImageMedium(), "location", l.getId(), "medium");
-                    filesCreated.add(filename);
-                    filesToDelete.add(c.getString(localImageMediumIndex));
-                    op.withValue(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM_LOCAL, filename);
+                    File f = createImageFile(mLocationImagePath, Integer.toString(l.getId()) + ".jpg");
+                    downloadImageToFile(f, l.getImageMedium());
+                    filesCreated.add(f.getAbsolutePath());
+                    op.withValue(DogBeachesContract.Locations.COLUMN_IMAGE, f.getAbsolutePath());
                 }
                 batch.add(op.build());
                 entryMap.remove(currentId);
@@ -280,10 +282,21 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         // Any elements still present in hashmap are new records, insert them
         for (Location l : entryMap.values())
         {
-            // Download image, save to file, get file uri, save to database
-            String filename = storeImage(l.getImageMedium(), "location", l.getId(), "medium");
-            filesCreated.add(filename);
-            batch.add(ContentProviderOperation.newInsert(DogBeachesContract.Locations.CONTENT_URI).withValue(DogBeachesContract.Locations.COLUMN_ID, l.getId()).withValue(DogBeachesContract.Locations.COLUMN_NAME, l.getName()).withValue(DogBeachesContract.Locations.COLUMN_CATEGORY, l.getCategory()).withValue(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getAnimalBlurb()).withValue(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus()).withValue(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES, l.getDogGuidelines()).withValue(DogBeachesContract.Locations.COLUMN_IMAGE_THUMBNAIL, l.getImageThumbnail()).withValue(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM, l.getImageMedium()).withValue(DogBeachesContract.Locations.COLUMN_IMAGE_MEDIUM_LOCAL, filename).withValue(DogBeachesContract.Locations.COLUMN_LATITUDE, l.getLatitude()).withValue(DogBeachesContract.Locations.COLUMN_LONGITUDE, l.getLongitude()).withYieldAllowed(true).build());
+            File f = createImageFile(mLocationImagePath, Integer.toString(l.getId()) + ".jpg");
+            downloadImageToFile(f, l.getImageMedium());
+            filesCreated.add(f.getAbsolutePath());
+            batch.add(ContentProviderOperation.newInsert(DogBeachesContract.Locations.CONTENT_URI)
+                    .withValue(DogBeachesContract.Locations.COLUMN_ID, l.getId())
+                    .withValue(DogBeachesContract.Locations.COLUMN_NAME, l.getName())
+                    .withValue(DogBeachesContract.Locations.COLUMN_CATEGORY, l.getCategory())
+                    .withValue(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getAnimalBlurb())
+                    .withValue(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus())
+                    .withValue(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES, l.getDogGuidelines())
+                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE, l.getImageMedium())
+                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE_URL, f.getAbsolutePath())
+                    .withValue(DogBeachesContract.Locations.COLUMN_LATITUDE, l.getLatitude())
+                    .withValue(DogBeachesContract.Locations.COLUMN_LONGITUDE, l.getLongitude())
+                    .withYieldAllowed(true).build());
         }
     }
 
@@ -307,7 +320,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
     {
         // Get last sync time
         String[] projection = {SyncTable.LAST_SYNC};
-        Cursor c = db.query(SyncTable.TABLE_SYNC, projection, null, null, null, null, null);
+        Cursor c = db.query(SyncTable.TABLE_NAME, projection, null, null, null, null, null);
         String timestamp = "1970-01-01T00:00:00.000Z";
         if(c.getCount() != 0)
         {
@@ -316,21 +329,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         }
         c.close();
         return timestamp;
-    }
-
-    // Downloads image, stores and returns URI string
-    private String storeImage(String url, String filePrefix, int resourceId, String filePostfix) throws IOException
-    {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String filename = filePrefix + resourceId + "_" + timeStamp + filePostfix + ".jpg";
-        File file = new File(getContext().getFilesDir(), filename);
-        FileOutputStream out = null;
-        Bitmap bm = Picasso.with(getContext()).load(url).get();
-        out = new FileOutputStream(file);
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
-        if (out != null)
-            out.close();
-        return filename;
     }
 
     private void deleteFiles(ArrayList<String> fileList)

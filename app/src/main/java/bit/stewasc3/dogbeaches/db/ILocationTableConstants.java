@@ -12,13 +12,12 @@ public interface ILocationTableConstants
     public static final String COLUMN_ANIMAL_BLURB = "animal_blurb";
     public static final String COLUMN_DOG_STATUS = "dog_status";
     public static final String COLUMN_DOG_GUIDELINES = "dog_guidelines";
-    public static final String COLUMN_IMAGE_THUMBNAIL = "image_thumbnail";
-    public static final String COLUMN_IMAGE_MEDIUM = "image_medium";
-    public static final String COLUMN_IMAGE_MEDIUM_LOCAL = "image_medium_local";
+    public static final String COLUMN_IMAGE = "image";
+    public static final String COLUMN_IMAGE_URL = "image_url";
     public static final String COLUMN_LATITUDE = "latitude";
     public static final String COLUMN_LONGITUDE = "longitude";
 
     public static final String[] PROJECTION_ALL = {COLUMN_ID, COLUMN_NAME, COLUMN_CATEGORY,
-            COLUMN_ANIMAL_BLURB, COLUMN_DOG_STATUS, COLUMN_DOG_GUIDELINES, COLUMN_IMAGE_THUMBNAIL,
-            COLUMN_IMAGE_MEDIUM, COLUMN_IMAGE_MEDIUM_LOCAL, COLUMN_LATITUDE, COLUMN_LONGITUDE};
+            COLUMN_ANIMAL_BLURB, COLUMN_DOG_STATUS, COLUMN_DOG_GUIDELINES,
+            COLUMN_IMAGE, COLUMN_IMAGE_URL, COLUMN_LATITUDE, COLUMN_LONGITUDE};
 }
