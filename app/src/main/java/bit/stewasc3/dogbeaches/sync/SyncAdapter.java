@@ -33,6 +33,7 @@ import UserAPI.Animal;
 import UserAPI.Location;
 import UserAPI.RestClient;
 import UserAPI.Sync;
+import bit.stewasc3.dogbeaches.Constants;
 import bit.stewasc3.dogbeaches.R;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.db.DBHelper;
@@ -47,12 +48,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
     private static final String TAG = "SyncAdapter";
     private ContentResolver mContentResolver;
     private DBHelper mDbHelper;
+    private String mLocationImagePath;
+    private String mAnimalImagePath;
 
     public SyncAdapter(Context context, boolean autoInitialize)
     {
-        super(context, autoInitialize);
-        mContentResolver = context.getContentResolver();
-        mDbHelper = new DBHelper(context);
+        this(context, autoInitialize, false);
     }
 
     public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs)
@@ -60,6 +61,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         super(context, autoInitialize, allowParallelSyncs);
         mContentResolver = context.getContentResolver();
         mDbHelper = new DBHelper(context);
+        mLocationImagePath = context.getFilesDir().toString() + Constants.LOCATION_IMAGE_PATH;
+        mAnimalImagePath = context.getFilesDir().toString() + Constants.ANIMAL_IMAGE_PATH;
+        File f = new File(mLocationImagePath);
+        f.mkdirs();
+        f = new File(mAnimalImagePath);
+        f.mkdirs();
     }
 
     // Syncing algorithm. Performed on a background thread so no need to worry about calling http
@@ -75,27 +82,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         Cursor animalCursor = null;
         Cursor reportCursor = null;
         Boolean success = false;
-        Boolean syncTableEmpty = true;
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String timestamp = getLastSyncTimestamp(db);
 
         try
         {
-            // Get last sync time
-            String[] projection = {SyncTable.LAST_SYNC};
-            Cursor c = db.query(SyncTable.TABLE_SYNC, projection, null, null, null, null, null);
-            String timestamp = "1970-01-01T00:00:00.000Z";
-            if(c.getCount() != 0)
-            {
-                syncTableEmpty = false;
-                c.moveToFirst();
-                timestamp = c.getString(c.getColumnIndex(SyncTable.LAST_SYNC));
-            }
-            c.close();
             Sync syncObject = RestClient.get().getSync(timestamp);
 
-            // ToDo don't run any syncing logic if there is nothing to sync
-
-            // Get cursors here so we can guarantee closure
+            // Get all required cursors
             locationCursor = mContentResolver.query(DogBeachesContract.Locations.CONTENT_URI,
                 DogBeachesContract.Locations.PROJECTION_ALL, null, null, null);
 
@@ -113,10 +107,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             // Write timestamp to db
             ContentValues cv = new ContentValues();
             cv.put(SyncTable.LAST_SYNC, syncObject.getSyncedAt());
-            if (!syncTableEmpty)
-                db.execSQL("DELETE FROM " + SyncTable.TABLE_SYNC);
+            db.execSQL("DELETE FROM " + SyncTable.TABLE_SYNC);
             db.insert(SyncTable.TABLE_SYNC, null, cv);
-            // Tidy up replaced files (only run if the batch operation succeeds)
             deleteFiles(filesToDelete);
         }
         catch(RemoteException|OperationApplicationException e)
@@ -161,10 +153,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         }
 
         Integer idIndex = c.getColumnIndex(DogBeachesContract.Animals.COLUMN_ID);
-        Integer localImageMediumIndex = c.getColumnIndex(DogBeachesContract.Animals.COLUMN_IMAGE_MEDIUM_LOCAL);
-        Integer urlImageMediumIndex = c.getColumnIndex(DogBeachesContract.Animals.COLUMN_IMAGE_MEDIUM);
-        Integer localImageThumbnailIndex = c.getColumnIndex(DogBeachesContract.Animals.COLUMN_IMAGE_THUMBNAIL_LOCAL);
-        Integer urlImageThumbnailIndex = c.getColumnIndex(DogBeachesContract.Animals.COLUMN_IMAGE_THUMBNAIL);
+        Integer imageIndex = c.getColumnIndex(DogBeachesContract.Animals.COLUMN_IMAGE);
+        Integer imageIndexURL = c.getColumnIndex(DogBeachesContract.Animals.COLUMN_IMAGE_URL);
 
         while (c.moveToNext())
         {
@@ -174,8 +164,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             {
                 Uri deleteUri = DogBeachesContract.Animals.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(currentId)).build();
-                filesToDelete.add(c.getString(localImageMediumIndex));
-                filesToDelete.add(c.getString(localImageThumbnailIndex));
+                filesToDelete.add(c.getString(imageIndex));
                 batch.add(ContentProviderOperation.newDelete(deleteUri).build());
             }
 
@@ -189,24 +178,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                         .withValue(DogBeachesContract.Animals.COLUMN_BLURB, a.getBlurb())
                         .withValue(DogBeachesContract.Animals.COLUMN_GUIDELINES, a.getGuidelines())
                         .withValue(DogBeachesContract.Animals.COLUMN_EXT_URL, a.getExtUrl())
-                        .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_MEDIUM, a.getImageMedium())
-                        .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_THUMBNAIL, a.getImageThumbnail())
+                        .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_URL, a.getImageMedium())
                         .withYieldAllowed(true);
 
-                if(a.getImageThumbnail().compareTo(c.getString(urlImageThumbnailIndex)) != 0)
+                if(a.getImageMedium().compareTo(c.getString(imageIndexURL)) != 0)
                 {
-                    String filename = storeImage(a.getImageMedium(), "animal", a.getId(), "thumb");
-                    filesCreated.add(filename);
-                    filesToDelete.add(c.getString(localImageThumbnailIndex));
-                    op.withValue(DogBeachesContract.Animals.COLUMN_IMAGE_THUMBNAIL_LOCAL, filename);
-                }
-
-                if(a.getImageMedium().compareTo(c.getString(urlImageMediumIndex)) != 0)
-                {
-                    String filename = storeImage(a.getImageMedium(), "animal", a.getId(), "medium");
-                    filesCreated.add(filename);
-                    filesToDelete.add(c.getString(localImageMediumIndex));
-                    op.withValue(DogBeachesContract.Animals.COLUMN_IMAGE_MEDIUM_LOCAL, filename);
+                    File f = createImageFile(mAnimalImagePath, a.getId().toString() + ".jpg");
+                    downloadImageToFile(f, a.getImageMedium());
+                    filesCreated.add(f.getAbsolutePath());
+                    filesToDelete.add(c.getString(imageIndex));
+                    op.withValue(DogBeachesContract.Animals.COLUMN_IMAGE, f.getAbsolutePath());
                 }
                 batch.add(op.build());
                 entryMap.remove(currentId);
@@ -214,10 +195,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         }
         for (Animal a : entryMap.values())
         {
-            String filenameMedium = storeImage(a.getImageMedium(), "animal", a.getId(), "medium");
-            String filenameThumb = storeImage(a.getImageThumbnail(), "animal", a.getId(), "thumb");
-            filesCreated.add(filenameMedium);
-            filesCreated.add(filenameThumb);
+            File f = createImageFile(mAnimalImagePath, a.getId().toString() + ".jpg");
+            downloadImageToFile(f, a.getImageMedium());
+            filesCreated.add(f.getAbsolutePath());
             batch.add(
                 ContentProviderOperation.newInsert(DogBeachesContract.Animals.CONTENT_URI)
                     .withValue(DogBeachesContract.Animals.COLUMN_ID, a.getId())
@@ -225,11 +205,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                     .withValue(DogBeachesContract.Animals.COLUMN_BLURB, a.getBlurb())
                     .withValue(DogBeachesContract.Animals.COLUMN_GUIDELINES, a.getGuidelines())
                     .withValue(DogBeachesContract.Animals.COLUMN_EXT_URL, a.getExtUrl())
-                    .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_MEDIUM, a.getImageMedium())
-                    .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_THUMBNAIL, a.getImageThumbnail())
-                    .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_MEDIUM_LOCAL, filenameMedium)
-                    .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_THUMBNAIL_LOCAL, filenameThumb)
-                            .withYieldAllowed(true).build());
+                        .withValue(DogBeachesContract.Animals.COLUMN_IMAGE, f.getAbsolutePath())
+                        .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_URL, a.getImageMedium())
+                        .withYieldAllowed(true).build());
         }
     }
 
@@ -309,7 +287,38 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         }
     }
 
-    // Downloads image, stores and returns path
+    private File createImageFile(String path, String fileName)
+    {
+        File file = new File(path, fileName);
+        return file;
+    }
+
+    private void downloadImageToFile(File file, String url) throws IOException
+    {
+        FileOutputStream out = null;
+        Bitmap bm = Picasso.with(getContext()).load(url).get();
+        out = new FileOutputStream(file);
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        if (out != null)
+            out.close();
+    }
+
+    private String getLastSyncTimestamp(SQLiteDatabase db)
+    {
+        // Get last sync time
+        String[] projection = {SyncTable.LAST_SYNC};
+        Cursor c = db.query(SyncTable.TABLE_SYNC, projection, null, null, null, null, null);
+        String timestamp = "1970-01-01T00:00:00.000Z";
+        if(c.getCount() != 0)
+        {
+            c.moveToFirst();
+            timestamp = c.getString(c.getColumnIndex(SyncTable.LAST_SYNC));
+        }
+        c.close();
+        return timestamp;
+    }
+
+    // Downloads image, stores and returns URI string
     private String storeImage(String url, String filePrefix, int resourceId, String filePostfix) throws IOException
     {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
