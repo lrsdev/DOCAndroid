@@ -53,20 +53,20 @@ public class DogBeachesProvider extends ContentProvider
         switch (uriType)
         {
             case LOCATION_ID:
-                queryBuilder.setTables(DogBeachesContract.Locations.LOCATIONS_TABLE);
+                queryBuilder.setTables(DogBeachesContract.Locations.TABLE_NAME);
                 queryBuilder.appendWhere(DogBeachesContract.Locations.COLUMN_ID +
                         " = " + uri.getLastPathSegment());
                 break;
             case LOCATIONS:
-                queryBuilder.setTables(DogBeachesContract.Locations.LOCATIONS_TABLE);
+                queryBuilder.setTables(DogBeachesContract.Locations.TABLE_NAME);
                 break;
             case ANIMAL_ID:
-                queryBuilder.setTables(DogBeachesContract.Animals.ANIMALS_TABLE);
+                queryBuilder.setTables(DogBeachesContract.Animals.TABLE_NAME);
                 queryBuilder.appendWhere(DogBeachesContract.Animals.COLUMN_ID +
                         " = " + uri.getLastPathSegment());
                 break;
             case ANIMALS:
-                queryBuilder.setTables(DogBeachesContract.Animals.ANIMALS_TABLE);
+                queryBuilder.setTables(DogBeachesContract.Animals.TABLE_NAME);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI");
@@ -87,12 +87,12 @@ public class DogBeachesProvider extends ContentProvider
         switch (uriType)
         {
             case LOCATIONS:
-                id = db.insertOrThrow(DogBeachesContract.Locations.LOCATIONS_TABLE, null, contentValues);
-                uriString = DogBeachesContract.Locations.LOCATIONS_TABLE + "/" + id;
+                id = db.insertOrThrow(DogBeachesContract.Locations.TABLE_NAME, null, contentValues);
+                uriString = DogBeachesContract.Locations.TABLE_NAME + "/" + id;
                 break;
             case ANIMALS:
-                id = db.insertOrThrow(DogBeachesContract.Animals.ANIMALS_TABLE, null, contentValues);
-                uriString = DogBeachesContract.Animals.ANIMALS_TABLE + "/" + id;
+                id = db.insertOrThrow(DogBeachesContract.Animals.TABLE_NAME, null, contentValues);
+                uriString = DogBeachesContract.Animals.TABLE_NAME + "/" + id;
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI");
@@ -113,20 +113,20 @@ public class DogBeachesProvider extends ContentProvider
         switch(uriType)
         {
             case LOCATIONS:
-                delCount = db.delete(DogBeachesContract.Locations.LOCATIONS_TABLE, selection, selectionArgs);
+                delCount = db.delete(DogBeachesContract.Locations.TABLE_NAME, selection, selectionArgs);
                 break;
             case LOCATION_ID:
                 id = uri.getLastPathSegment();
                 where = DogBeachesContract.Locations.COLUMN_ID + " = " + id;
-                delCount = db.delete(DogBeachesContract.Locations.LOCATIONS_TABLE, where, selectionArgs);
+                delCount = db.delete(DogBeachesContract.Locations.TABLE_NAME, where, selectionArgs);
                 break;
             case ANIMALS:
-                delCount = db.delete(DogBeachesContract.Animals.ANIMALS_TABLE, selection, selectionArgs);
+                delCount = db.delete(DogBeachesContract.Animals.TABLE_NAME, selection, selectionArgs);
                 break;
             case ANIMAL_ID:
                 id = uri.getLastPathSegment();
                 where = DogBeachesContract.Animals.COLUMN_ID + " = " + id;
-                delCount = db.delete(DogBeachesContract.Animals.ANIMALS_TABLE, where, selectionArgs);
+                delCount = db.delete(DogBeachesContract.Animals.TABLE_NAME, where, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI " + uri);
@@ -145,23 +145,23 @@ public class DogBeachesProvider extends ContentProvider
         switch (sURIMatcher.match(uri))
         {
             case LOCATIONS:
-                updateCount = db.update(DogBeachesContract.Locations.LOCATIONS_TABLE,
+                updateCount = db.update(DogBeachesContract.Locations.TABLE_NAME,
                         contentValues, selection, selectionArgs);
                 break;
             case LOCATION_ID:
                 id = uri.getLastPathSegment();
                 where = DogBeachesContract.Locations.COLUMN_ID + " = " + id;
-                updateCount = db.update(DogBeachesContract.Locations.LOCATIONS_TABLE,
+                updateCount = db.update(DogBeachesContract.Locations.TABLE_NAME,
                         contentValues, where, selectionArgs);
                 break;
             case ANIMALS:
-                updateCount = db.update(DogBeachesContract.Animals.ANIMALS_TABLE, contentValues,
+                updateCount = db.update(DogBeachesContract.Animals.TABLE_NAME, contentValues,
                         selection, selectionArgs);
                 break;
             case ANIMAL_ID:
                 id = uri.getLastPathSegment();
                 where = DogBeachesContract.Animals.COLUMN_ID + " = " + id;
-                updateCount = db.update(DogBeachesContract.Animals.ANIMALS_TABLE,
+                updateCount = db.update(DogBeachesContract.Animals.TABLE_NAME,
                         contentValues, where, selectionArgs);
                 break;
             default:

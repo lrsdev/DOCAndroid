@@ -5,22 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Created by sam on 14/08/15.
  */
-public class LocationTable
+public class LocationTable implements ILocationTableConstants
 {
-    public static final String TABLE_LOCATIONS = "locations";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_CATEGORY = "category";
-    public static final String COLUMN_ANIMAL_BLURB = "animal_blurb";
-    public static final String COLUMN_DOG_STATUS = "dog_status";
-    public static final String COLUMN_DOG_GUIDELINES = "dog_guidelines";
-    public static final String COLUMN_IMAGE_THUMBNAIL = "image_thumbnail";
-    public static final String COLUMN_IMAGE_MEDIUM = "image_medium";
-    public static final String COLUMN_IMAGE_MEDIUM_LOCAL = "image_medium_local";
-    public static final String COLUMN_LATITUDE = "latitude";
-    public static final String COLUMN_LONGITUDE = "longitude";
-
-    private static final String TABLE_CREATE = "create table " + TABLE_LOCATIONS + "(" +
+    private static final String TABLE_CREATE = "create table " + TABLE_NAME + "(" +
             COLUMN_ID + " integer primary key, " +
             COLUMN_NAME + " text not null, " +
             COLUMN_CATEGORY + " text not null, " +
@@ -40,7 +27,7 @@ public class LocationTable
 
     public static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 }
