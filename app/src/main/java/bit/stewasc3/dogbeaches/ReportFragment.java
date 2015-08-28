@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -14,16 +13,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -38,14 +34,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import UserAPI.RestClient;
-import UserAPI.Sighting;
+
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
-import fr.ganfra.materialspinner.MaterialSpinner;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedFile;
 
 public class ReportFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor>
@@ -61,7 +51,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         ToDo: Backup plan if user location not available
      */
 
-    private ArrayList<UserAPI.Location> mLocations;
+    private ArrayList<bit.stewasc3.dogbeaches.sync.UserAPI.Location> mLocations;
     private ImageButton mImageButton;
     private ProgressDialog pd;
     private LocationCursorAdapter mLocationAdapter;

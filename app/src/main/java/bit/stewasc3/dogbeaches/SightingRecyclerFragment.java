@@ -1,7 +1,6 @@
 package bit.stewasc3.dogbeaches;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,8 +12,8 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import UserAPI.RestClient;
-import UserAPI.Sighting;
+import bit.stewasc3.dogbeaches.sync.UserAPI.RestClient;
+import bit.stewasc3.dogbeaches.sync.UserAPI.Sighting;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

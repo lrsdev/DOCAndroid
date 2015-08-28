@@ -1,4 +1,4 @@
-package UserAPI;
+package bit.stewasc3.dogbeaches.sync.UserAPI;
 
 import java.util.ArrayList;
 

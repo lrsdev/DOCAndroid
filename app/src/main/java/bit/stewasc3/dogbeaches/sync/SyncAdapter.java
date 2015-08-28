@@ -25,10 +25,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import UserAPI.Animal;
-import UserAPI.Location;
-import UserAPI.RestClient;
-import UserAPI.Sync;
+import bit.stewasc3.dogbeaches.sync.UserAPI.Animal;
+import bit.stewasc3.dogbeaches.sync.UserAPI.Location;
+import bit.stewasc3.dogbeaches.sync.UserAPI.RestClient;
+import bit.stewasc3.dogbeaches.sync.UserAPI.Sync;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.db.DBHelper;
 import bit.stewasc3.dogbeaches.db.SyncTable;
@@ -280,18 +280,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             File f = createImageFile(mLocationImagePath, Integer.toString(l.getId()) + ".jpg");
             downloadImageToFile(f, l.getImageMedium());
             filesCreated.add(f.getAbsolutePath());
-            batch.add(ContentProviderOperation.newInsert(DogBeachesContract.Locations.CONTENT_URI)
-                    .withValue(DogBeachesContract.Locations.COLUMN_ID, l.getId())
-                    .withValue(DogBeachesContract.Locations.COLUMN_NAME, l.getName())
-                    .withValue(DogBeachesContract.Locations.COLUMN_CATEGORY, l.getCategory())
-                    .withValue(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getAnimalBlurb())
-                    .withValue(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus())
-                    .withValue(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES, l.getDogGuidelines())
-                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE, f.getAbsolutePath())
-                    .withValue(DogBeachesContract.Locations.COLUMN_IMAGE_URL, l.getImageMedium())
-                    .withValue(DogBeachesContract.Locations.COLUMN_LATITUDE, l.getLatitude())
-                    .withValue(DogBeachesContract.Locations.COLUMN_LONGITUDE, l.getLongitude())
-                    .withYieldAllowed(true).build());
+            batch.add(ContentProviderOperation.newInsert(DogBeachesContract.Locations.CONTENT_URI).withValue(DogBeachesContract.Locations.COLUMN_ID, l.getId()).withValue(DogBeachesContract.Locations.COLUMN_NAME, l.getName()).withValue(DogBeachesContract.Locations.COLUMN_CATEGORY, l.getCategory()).withValue(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getAnimalBlurb()).withValue(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus()).withValue(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES, l.getDogGuidelines()).withValue(DogBeachesContract.Locations.COLUMN_IMAGE, f.getAbsolutePath()).withValue(DogBeachesContract.Locations.COLUMN_IMAGE_URL, l.getImageMedium()).withValue(DogBeachesContract.Locations.COLUMN_LATITUDE, l.getLatitude()).withValue(DogBeachesContract.Locations.COLUMN_LONGITUDE, l.getLongitude()).withYieldAllowed(true).build());
         }
     }
 

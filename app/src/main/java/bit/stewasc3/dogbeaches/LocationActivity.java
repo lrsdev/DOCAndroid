@@ -3,14 +3,11 @@ package bit.stewasc3.dogbeaches;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,7 +16,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import UserAPI.Location;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 
 
