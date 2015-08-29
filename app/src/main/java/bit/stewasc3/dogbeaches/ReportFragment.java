@@ -328,9 +328,9 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
                 Toast.makeText(getActivity(), "Please take a photo", Toast.LENGTH_SHORT).show();
             }
 
-            /*else if(mLastLocation == null)
-                Toast.makeText(ReportFragment.this, "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)
-                       .show();*/
+            else if(mLastLocation == null)
+                Toast.makeText(getActivity(), "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)
+                       .show();
             else
                 submitReport();
         }

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final String AUTHORITY = DogBeachesContract.AUTHORITY;
     public static final String ACCOUNT_TYPE = "bit.stewasc3.dogbeaches";
-    public static final String ACCOUNT = "dummyaccount";
+    public static final String ACCOUNT = "Sync Account";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity
 
         fm = getSupportFragmentManager();
         mContentContainer = (FrameLayout) findViewById(R.id.content_container);
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // As we're using a Toolbar, we should retrieve it and set it
@@ -64,22 +63,15 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
-        if (navigationView != null) {
+        if (navigationView != null)
+        {
             setupDrawerContent(navigationView);
         }
 
-        // Create a dummy account for synchronisation, add a periodic sync for two hour intervals.
         mAccount = CreateSyncAccount(this);
-        //ContentResolver.addPeriodicSync(mAccount, AUTHORITY, Bundle.EMPTY, SYNC_INTERVAL);
         ContentResolver.setSyncAutomatically(mAccount, AUTHORITY, true);
 
-        // Set initial content fragment to home
         setContentFragment(new HomeFragment());
-
-        // Some testing
-        File f = Environment.getExternalStorageDirectory();
-        File j = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
     }
 
     public static Account CreateSyncAccount(Context context)
@@ -99,7 +91,6 @@ public class MainActivity extends AppCompatActivity
         }
         return newAccount;
     }
-
 
     private void setupDrawerContent(NavigationView nv)
     {
@@ -126,13 +117,11 @@ public class MainActivity extends AppCompatActivity
                         setContentFragment(new ReportFragment());
                         break;
                     case R.id.drawer_donate: // Donate was clicked
-                        //setContentFragment(new DonateFragment());
-                        //getSupportActionBar().setTitle("Donate");
+                        notImplemented();
                         break;
                     case R.id.drawer_safety: // Safety was clicked
                         setContentFragment(new SafetyFragment());
                         break;
-
                 }
                 menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
