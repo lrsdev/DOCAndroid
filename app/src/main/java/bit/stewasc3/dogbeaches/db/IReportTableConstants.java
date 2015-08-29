@@ -10,9 +10,12 @@ public interface IReportTableConstants
     public static final String COLUMN_LOCATION_ID = "location_id";
     public static final String COLUMN_ANIMAL_ID = "animal_id";
     public static final String COLUMN_BLURB = "blurb";
-    public static final String COLUMN_IMAGE_URI = "image";
+    public static final String COLUMN_IMAGE = "image";
+    public static final String COLUMN_LATITUDE = "latitude";
+    public static final String COLUMN_LONGITUDE = "longitude";
     public static final String COLUMN_CREATED_AT = "timestamp";
 
     public static final String[] PROJECTION_ALL = {COLUMN_ID, COLUMN_LOCATION_ID, COLUMN_ANIMAL_ID,
-            COLUMN_LOCATION_ID, COLUMN_BLURB, COLUMN_IMAGE_URI, COLUMN_CREATED_AT};
+            COLUMN_LOCATION_ID, COLUMN_BLURB, COLUMN_IMAGE, COLUMN_LATITUDE,
+            COLUMN_LONGITUDE, COLUMN_CREATED_AT};
 }

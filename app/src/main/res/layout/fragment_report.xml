@@ -1,113 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="8dp"
-              android:background="@color/windowBackground"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
-    <!-- Stops edit text being auto selected -->
-
-    <!-- Image View -->
-    <ImageButton
-        android:id="@+id/reportImageButton"
-        android:layout_width="match_parent"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true"
-        android:layout_weight="3"
-        android:src="@drawable/reportimageplaceholder"/>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackground"
+    android:layout_width="match_parent" >
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="4" >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:text="*Please endeavour to center your subject in image" />
-
-        <!-- Location Label -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:layout_height="48dp">
-
-            <TextView
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Location"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
-
-            <Spinner
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:id="@+id/reportLocationSpinner"
-                android:layout_height="wrap_content"
-                android:layout_width="0px"
-                android:layout_weight="1"
-                android:layout_gravity="right"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:layout_height="48dp">
-
-            <TextView
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Species"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
-
-            <Spinner
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:id="@+id/reportAnimalSpinner"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="right"/>
-
-        </LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        <!-- Stops edit text being auto selected -->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:orientation="vertical">
+            android:orientation="vertical" >
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/reportNotesTextInputLayout"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
 
-                <EditText
-                    style="@style/Widget.AppCompat.EditText"
-                    android:id="@+id/reportNotesEditText"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="24dp"
+                    android:alpha="0.54"
+                    android:src="@drawable/marker"
+                    />
+
+                <Spinner
+                    style="@style/Widget.AppCompat.Spinner"
+                    android:id="@+id/reportLocationSpinner"
                     android:layout_height="wrap_content"
-                    android:maxLength="140"
-                    android:hint="Notes"/>
+                    android:layout_width="wrap_content"
+                    />
 
-            </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="48dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="24dp"
+                    android:alpha="0.54"
+                    android:src="@drawable/penguin"
+                    />
+
+                <Spinner
+                    style="@style/Widget.AppCompat.Spinner"
+                    android:id="@+id/reportAnimalSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/reportNotesTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <EditText
+                        style="@style/Widget.AppCompat.EditText"
+                        android:id="@+id/reportNotesEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="140"
+                        android:hint="Notes"/>
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/photoButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:text="Take Photo"/>
+
+                <Button
+                    android:id="@+id/reportSubmitButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:text="Submit"/>
+
+            </LinearLayout>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/reportSubmitButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            style="@style/Widget.AppCompat.Button"
-            android:text="Submit"/>
-
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

@@ -24,4 +24,11 @@ public class HomeFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         return view;
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getActivity().getActionBar().setTitle("Home");
+    }
 }

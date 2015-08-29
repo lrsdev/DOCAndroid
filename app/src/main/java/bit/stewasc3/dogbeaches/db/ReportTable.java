@@ -14,7 +14,9 @@ public class ReportTable implements IReportTableConstants
             COLUMN_LOCATION_ID + " integer, " +
             COLUMN_ANIMAL_ID + " integer, " +
             COLUMN_BLURB + " text, " +
-            COLUMN_IMAGE_URI + " text, " +
+            COLUMN_IMAGE + " text, " +
+            COLUMN_LATITUDE + " real, " +
+            COLUMN_LONGITUDE + " real, " +
             COLUMN_CREATED_AT + " timestamp);";
 
     public static void onCreate(SQLiteDatabase db)

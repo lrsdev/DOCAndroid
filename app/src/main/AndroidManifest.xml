@@ -54,6 +54,11 @@
             android:screenOrientation="portrait" >
         </activity>
 
+        <activity android:name=".ReportFragment"
+                  android:label="ReportActivity"
+                  android:screenOrientation="portrait" >
+        </activity>
+
         <provider
             android:name=".contentprovider.DogBeachesProvider"
             android:authorities="bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider"

@@ -23,6 +23,7 @@ public class DBHelper extends SQLiteOpenHelper
         LocationTable.onCreate(sqLiteDatabase);
         AnimalTable.onCreate(sqLiteDatabase);
         SyncTable.onCreate(sqLiteDatabase);
+        ReportTable.onCreate(sqLiteDatabase);
     }
 
     @Override

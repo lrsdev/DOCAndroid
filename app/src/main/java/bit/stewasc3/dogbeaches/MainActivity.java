@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -186,9 +187,8 @@ public class MainActivity extends AppCompatActivity
     public void onReportAction(MenuItem mi)
     {
         //handle onClick of camera here
-        setContentFragment(new ReportFragment());
-        getSupportActionBar().setTitle("Wildlife Report");
-
+        Intent i = new Intent(MainActivity.this, ReportFragment.class);
+        startActivity(i);
     }
 
     protected synchronized void buildGoogleApiClient()

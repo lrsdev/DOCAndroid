@@ -3,23 +3,26 @@ package bit.stewasc3.dogbeaches;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -27,19 +30,24 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
+import bit.stewasc3.dogbeaches.db.DBHelper;
+import bit.stewasc3.dogbeaches.db.ReportTable;
 
 public class ReportFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor>
 {
+    private static final String TAG = "Report";
     private static final int REQUEST_IMAGE_CODE = 100;
     private static final int LOADER_ANIMAL = 1;
     private static final int LOADER_LOCATION = 2;
@@ -51,9 +59,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         ToDo: Backup plan if user location not available
      */
 
-    private ArrayList<bit.stewasc3.dogbeaches.sync.API.Location> mLocations;
-    private ImageButton mImageButton;
-    private ProgressDialog pd;
+    private ImageView mImageView;
     private LocationCursorAdapter mLocationAdapter;
     private AnimalCursorAdapter mAnimalAdapter;
     private Location mLastLocation;
@@ -61,7 +67,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     private Spinner mAnimalSpinner;
     private EditText mBlurbEditText;
     private GoogleApiClient mGoogleApiClient;
-    private File mPhotoFile;
+    private String mCurrentPhotoPath;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -73,63 +79,101 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
                 .addApi(LocationServices.API)
                 .build();
         mGoogleApiClient.connect();
-        mLocations = new ArrayList<>();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        final View view = inflater.inflate(R.layout.fragment_report, container, false);
-
-
-        mLocationSpinner = (Spinner) view.findViewById(R.id.reportLocationSpinner);
-        mLocationAdapter = new LocationCursorAdapter();
-        mLocationSpinner.setAdapter(mLocationAdapter);
-
-        mAnimalSpinner = (Spinner) view.findViewById(R.id.reportAnimalSpinner);
-        mAnimalAdapter = new AnimalCursorAdapter();
-        mAnimalSpinner.setAdapter(mAnimalAdapter);
-
-        mBlurbEditText = (EditText) view.findViewById(R.id.reportNotesEditText);
-
-        mImageButton = (ImageButton) view.findViewById(R.id.reportImageButton);
-        mImageButton.setOnClickListener(new ImageButtonClick());
-
-        Button submitButton = (Button) view.findViewById(R.id.reportSubmitButton);
-        submitButton.setOnClickListener(new SubmitButtonClick());
 
         getLoaderManager().initLoader(LOADER_LOCATION, null, this);
         getLoaderManager().initLoader(LOADER_ANIMAL, null, this);
+    }
 
-        return view;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View v = inflater.inflate(R.layout.fragment_report, container, false);
+
+        mLocationSpinner = (Spinner) v.findViewById(R.id.reportLocationSpinner);
+        mLocationAdapter = new LocationCursorAdapter();
+        mLocationSpinner.setAdapter(mLocationAdapter);
+
+        mAnimalSpinner = (Spinner) v.findViewById(R.id.reportAnimalSpinner);
+        mAnimalAdapter = new AnimalCursorAdapter();
+        mAnimalSpinner.setAdapter(mAnimalAdapter);
+
+        mBlurbEditText = (EditText) v.findViewById(R.id.reportNotesEditText);
+
+        Button submitButton = (Button) v.findViewById(R.id.reportSubmitButton);
+        submitButton.setOnClickListener(new SubmitButtonClick());
+
+        Button photoButton = (Button) v.findViewById(R.id.photoButton);
+        photoButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                takeAPhoto();
+            }
+        });
+
+        return v;
     }
 
     private void submitReport()
     {
+        // ToDo: Show a confirmation dialog
+        if(mGoogleApiClient.isConnected() &&
+            LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null)
+        {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+
         long locationId = mLocationSpinner.getSelectedItemId();
         long animalId = mAnimalSpinner.getSelectedItemId();
         double lat = mLastLocation.getLatitude();
         double lon = mLastLocation.getLongitude();
         String blurb = mBlurbEditText.getText().toString();
-        String submitted = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").format(new Date());
+        String created_at = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").format(new Date());
+
+        // Copy image to internal dir so user cannot accidentally delete the image before sync
+        // back to server.
+        String imagePath = copyImage();
+
+        SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(ReportTable.COLUMN_ANIMAL_ID, animalId);
+        cv.put(ReportTable.COLUMN_LOCATION_ID, locationId);
+        cv.put(ReportTable.COLUMN_BLURB, blurb);
+        cv.put(ReportTable.COLUMN_IMAGE, imagePath);
+        cv.put(ReportTable.COLUMN_LATITUDE, lat);
+        cv.put(ReportTable.COLUMN_LONGITUDE, lon);
+        cv.put(ReportTable.COLUMN_CREATED_AT, created_at);
+
+        db.insert(ReportTable.TABLE_NAME, null, cv);
+
+        Toast.makeText(getActivity(), "Thank you, your report will be uploaded on next sync", Toast.LENGTH_LONG).show();
+
+        getFragmentManager().popBackStackImmediate();
     }
 
     private void takeAPhoto()
     {
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        try
-        {
-            mPhotoFile = createImageFile();
-        }
-        catch (IOException e)
-        {
-            Log.d("Image File", e.toString());
-        }
 
-        if (mPhotoFile != null)
+        if(i.resolveActivity(getActivity().getPackageManager()) != null)
         {
-            i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhotoFile));
-            startActivityForResult(i, REQUEST_IMAGE_CODE);
+            File photoFile = null;
+            try
+            {
+                photoFile = createImageFile();
+            }
+            catch (IOException e)
+            {
+                Log.d("Image File", e.toString());
+            }
+            if (photoFile != null)
+            {
+                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                startActivityForResult(i, REQUEST_IMAGE_CODE);
+            }
         }
     }
 
@@ -138,25 +182,65 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     {
         if(requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK)
         {
-            Picasso.with(getActivity()).load(mPhotoFile)
-                    .resize(mImageButton.getWidth(), mImageButton.getHeight()).into(mImageButton);
+            Toast.makeText(getActivity(), "Photo Taken", Toast.LENGTH_SHORT).show();
         }
     }
 
+    public String copyImage()
+    {
+        InputStream in = null;
+        OutputStream out = null;
+        File current = new File(mCurrentPhotoPath);
+        File newFile = new File(getActivity().getFilesDir(), current.getName());
+        try
+        {
+
+            in = new FileInputStream(current);
+            out = new FileOutputStream(newFile);
+
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0)
+            {
+                out.write(buf, 0, len);
+            }
+        }
+        catch(IOException e)
+        {
+            Log.d(TAG, e.toString());
+        }
+        finally
+        {
+            try
+            {
+                in.close();
+                out.close();
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+        return newFile.getAbsolutePath();
+    }
+
     /**
-     * Creates a file to save captured image to. Image made available in public image directory.
+     * Creates a file to save captured image to
+     * synchronising by adapter.
      * @return File
      * @throws IOException
      */
     private File createImageFile() throws IOException
     {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String fileName = "REPORT_" + timeStamp + "_";
+        String fileName = "REPORT_" + timeStamp + ".jpg";
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         if (!storageDir.exists())
             storageDir.mkdir();
-        File image = new File(storageDir, fileName);
-        return image;
+        File f = new File(storageDir, fileName);
+        mCurrentPhotoPath = f.getAbsolutePath();
+        return f;
     }
 
     @Override
@@ -238,25 +322,16 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         @Override
         public void onClick(View v)
         {
-            if(mPhotoFile== null)
+            if(mCurrentPhotoPath == null)
             {
                 Toast.makeText(getActivity(), "Please take a photo", Toast.LENGTH_SHORT).show();
             }
 
-            else if(mLastLocation == null)
-                Toast.makeText(getActivity(), "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)
-                        .show();
+            /*else if(mLastLocation == null)
+                Toast.makeText(ReportFragment.this, "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)
+                       .show();*/
             else
                 submitReport();
-        }
-    }
-
-    private class ImageButtonClick implements View.OnClickListener
-    {
-        @Override
-        public void onClick(View v)
-        {
-            takeAPhoto();
         }
     }
 
@@ -265,12 +340,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
 
         public AnimalCursorAdapter()
         {
-            super(getActivity(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    null,
-                    new String[] {DogBeachesContract.Animals.COLUMN_NAME},
-                    new int[] {android.R.id.text1},
-                    SimpleCursorAdapter.NO_SELECTION);
+            super(getActivity(), android.R.layout.simple_spinner_dropdown_item, null, new String[]{DogBeachesContract.Animals.COLUMN_NAME}, new int[]{android.R.id.text1}, SimpleCursorAdapter.NO_SELECTION);
         }
     }
 
