@@ -5,12 +5,6 @@ import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-<<<<<<< HEAD
-import android.os.Environment;
-=======
-import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
->>>>>>> e216d44b1720cbaeeb6f07a38f5b51a65492ccb1
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
