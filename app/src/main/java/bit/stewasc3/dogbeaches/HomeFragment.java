@@ -1,7 +1,6 @@
 package bit.stewasc3.dogbeaches;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +28,6 @@ public class HomeFragment extends Fragment
     public void onResume()
     {
         super.onResume();
-        getActivity().getActionBar().setTitle("Home");
+        getActivity().setTitle("Home");
     }
 }

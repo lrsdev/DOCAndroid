@@ -111,25 +111,19 @@ public class MainActivity extends AppCompatActivity
                 switch (menuItem.getItemId())
                 {
                     case R.id.drawer_home: // Home was clicked
-                        getSupportActionBar().setTitle("Home");
                         setContentFragment(new HomeFragment());
                         break;
                     case R.id.drawer_map: // Map was clicked
-                        getSupportActionBar().setTitle("Map");
                         setContentFragment(MapDisplayFragment.newInstance());
                         break;
                     case R.id.drawer_locations: // Locations was clicked
                         setContentFragment(new LocationRecyclerFragment());
-                        getSupportActionBar().setTitle("Location List");
                         break;
                     case R.id.drawer_wildlife: // Wildlife was clicked
                         notImplemented();
-                        //setContentFragment(new WildlifeFragment());
-                        //getSupportActionBar().setTitle("Wildlife");
                         break;
                     case R.id.drawer_report: // Report was clicked
                         setContentFragment(new ReportFragment());
-                        getSupportActionBar().setTitle("Wildlife Report");
                         break;
                     case R.id.drawer_donate: // Donate was clicked
                         //setContentFragment(new DonateFragment());
@@ -137,7 +131,6 @@ public class MainActivity extends AppCompatActivity
                         break;
                     case R.id.drawer_safety: // Safety was clicked
                         setContentFragment(new SafetyFragment());
-                        getSupportActionBar().setTitle("Dog Safety");
                         break;
 
                 }

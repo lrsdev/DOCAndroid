@@ -17,4 +17,11 @@ public class SafetyFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_safety, container, false);
         return v;
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getActivity().setTitle("Dog Safety Info");
+    }
 }

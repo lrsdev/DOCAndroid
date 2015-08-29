@@ -110,6 +110,13 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         return v;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getActivity().setTitle("Report Wildlife");
+    }
+
     private void submitReport()
     {
         // ToDo: Show a confirmation dialog

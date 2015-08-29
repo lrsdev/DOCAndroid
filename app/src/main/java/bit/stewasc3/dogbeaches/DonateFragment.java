@@ -21,6 +21,10 @@ public class DonateFragment extends Fragment
         return v;
     }
 
-
-
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getActivity().setTitle("Donate");
+    }
 }

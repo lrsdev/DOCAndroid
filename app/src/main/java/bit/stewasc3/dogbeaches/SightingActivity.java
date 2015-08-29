@@ -1,8 +1,8 @@
 package bit.stewasc3.dogbeaches;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +23,7 @@ public class SightingActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sighting);
 
-        fm = getFragmentManager();
+        fm = getSupportFragmentManager();
         mContentContainer = (FrameLayout) findViewById(R.id.sightingActivityContentContainer);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.sightingActivityToolbar);

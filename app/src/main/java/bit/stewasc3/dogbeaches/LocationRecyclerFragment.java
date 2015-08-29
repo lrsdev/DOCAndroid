@@ -74,6 +74,13 @@ public class LocationRecyclerFragment extends Fragment
         super.onDestroyView();
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getActivity().setTitle("Location List");
+    }
+
     private class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder>
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
     {

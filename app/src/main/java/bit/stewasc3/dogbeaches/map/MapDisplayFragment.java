@@ -103,4 +103,11 @@ public class MapDisplayFragment extends Fragment
         }
         return getResources().getDrawable(icon);
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getActivity().setTitle("Location Map");
+    }
 }
