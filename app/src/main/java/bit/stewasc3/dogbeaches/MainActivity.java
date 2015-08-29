@@ -2,13 +2,13 @@ package bit.stewasc3.dogbeaches;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fm = getFragmentManager();
+        fm = getSupportFragmentManager();
         mContentContainer = (FrameLayout) findViewById(R.id.content_container);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

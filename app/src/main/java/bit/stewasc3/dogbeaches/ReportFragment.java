@@ -1,12 +1,8 @@
 package bit.stewasc3.dogbeaches;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
@@ -15,22 +11,22 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -39,7 +35,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.db.DBHelper;
 import bit.stewasc3.dogbeaches.db.ReportTable;
@@ -59,7 +54,6 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         ToDo: Backup plan if user location not available
      */
 
-    private ImageView mImageView;
     private LocationCursorAdapter mLocationAdapter;
     private AnimalCursorAdapter mAnimalAdapter;
     private Location mLastLocation;
@@ -290,7 +284,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     @Override
-    public void onLoadFinished(Loader loader, Cursor c)
+    public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor c)
     {
         switch(loader.getId())
         {
@@ -304,7 +298,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     @Override
-    public void onLoaderReset(Loader loader)
+    public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader)
     {
         switch(loader.getId())
         {
