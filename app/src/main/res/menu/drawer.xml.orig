@@ -24,16 +24,23 @@
             android:title="Dog Safety" />
         <item
             android:id="@+id/drawer_report"
+<<<<<<< HEAD
+            android:icon="@drawable/binoculars"
+=======
             android:icon="@drawable/ic_binoculars"
+>>>>>>> e216d44b1720cbaeeb6f07a38f5b51a65492ccb1
             android:title="Report Sighting" />
         <item
             android:id="@+id/drawer_donate"
             android:icon="@drawable/ic_money_bag"
             android:title="Donate" />
+<<<<<<< HEAD
+=======
         <item
             android:id="@+id/drawer_safety"
             android:icon="@drawable/ic_info"
             android:title="Dog Safety" />
 
+>>>>>>> e216d44b1720cbaeeb6f07a38f5b51a65492ccb1
     </group>
 </menu>

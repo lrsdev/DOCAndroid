@@ -60,6 +60,7 @@
     <string name="contactText">Report roaming or uncontrolled dogs to <b>Dunedin City Council, Animal Services 03 477 4000</b>, or
 Call DOC for sick or injured wildlife</string>
     <string name="title_activity_wildlife">Wildlife</string>
+<<<<<<< HEAD
     <string name="title_activity_location">LocationActivity</string>
 
     <string name="dataOn">dataOn</string>
@@ -75,7 +76,11 @@ Call DOC for sick or injured wildlife</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_maps_acitivty">MapsAcitivty</string>
 
+=======
+
+
 <!-- Hotline Telephone Number -->
     <string name="hot">tel:0800362468</string>
+>>>>>>> e216d44b1720cbaeeb6f07a38f5b51a65492ccb1
 </resources>
 

@@ -59,7 +59,12 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+<<<<<<< HEAD
         fm = getSupportFragmentManager();
+=======
+
+        fm = getFragmentManager();
+>>>>>>> e216d44b1720cbaeeb6f07a38f5b51a65492ccb1
         mContentContainer = (FrameLayout) findViewById(R.id.content_container);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
