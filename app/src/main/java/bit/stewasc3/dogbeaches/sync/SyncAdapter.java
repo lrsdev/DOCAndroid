@@ -1,13 +1,16 @@
 package bit.stewasc3.dogbeaches.sync;
 
 import android.accounts.Account;
+import android.app.Activity;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
+import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,19 +28,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import bit.stewasc3.dogbeaches.MainActivity;
+import bit.stewasc3.dogbeaches.db.ReportTable;
 import bit.stewasc3.dogbeaches.sync.API.Animal;
 import bit.stewasc3.dogbeaches.sync.API.Location;
 import bit.stewasc3.dogbeaches.sync.API.RestClient;
+import bit.stewasc3.dogbeaches.sync.API.Sighting;
 import bit.stewasc3.dogbeaches.sync.API.Sync;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.db.DBHelper;
 import bit.stewasc3.dogbeaches.db.SyncTable;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by sam on 16/08/15.
  */
 public class SyncAdapter extends AbstractThreadedSyncAdapter
 {
+    public static final String FIRST_SYNC_FINISHED = "bit.stewasc3.FIRST_SYNC_FINISHED";
     private static String LOCATION_IMAGE_PATH = "/images/locations";
     private static String ANIMAL_IMAGE_PATH = "/images/animals";
     private static final String TAG = "SyncAdapter";
@@ -45,6 +55,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
     private DBHelper mDbHelper;
     private String mLocationImagePath;
     private String mAnimalImagePath;
+    private SQLiteDatabase mDb;
 
     public SyncAdapter(Context context, boolean autoInitialize)
     {
@@ -70,6 +81,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
     public void onPerformSync(Account account, Bundle bundle, String s,
                               ContentProviderClient contentProviderClient, SyncResult syncResult)
     {
+        mDb = mDbHelper.getWritableDatabase();
+        SyncReports();
         ArrayList<String> filesCreated = new ArrayList<>();
         ArrayList<String> filesToDelete = new ArrayList<>();
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
@@ -77,8 +90,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         Cursor animalCursor = null;
         Cursor reportCursor = null;
         Boolean success = false;
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        String timestamp = getLastSyncTimestamp(db);
+        String timestamp = getLastSyncTimestamp(mDb);
 
         try
         {
@@ -106,8 +118,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             // Write timestamp to db
             ContentValues cv = new ContentValues();
             cv.put(SyncTable.LAST_SYNC, syncObject.getSyncedAt());
-            db.execSQL("DELETE FROM " + SyncTable.TABLE_NAME);
-            db.insert(SyncTable.TABLE_NAME, null, cv);
+            mDb.execSQL("DELETE FROM " + SyncTable.TABLE_NAME);
+            mDb.insert(SyncTable.TABLE_NAME, null, cv);
         }
         catch(RemoteException|OperationApplicationException e)
         {
@@ -135,6 +147,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                 animalCursor.close();
         }
 
+        // Send a broadcast to let application know sync is finished (used on first run)
+        SharedPreferences prefs = getContext().getSharedPreferences("bit.stewasc3.dogbeaches", Activity.MODE_PRIVATE);
+        if (!prefs.getBoolean("first_sync_completed", false))
+        {
+            Intent i = new Intent(FIRST_SYNC_FINISHED);
+            getContext().sendBroadcast(i);
+            prefs.edit().putBoolean("first_sync_completed", true).apply();
+        }
     }
 
     private void updateAnimals(Sync syncObject, ArrayList<ContentProviderOperation> batch, Cursor c,
@@ -281,6 +301,52 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             downloadImageToFile(f, l.getImageMedium());
             filesCreated.add(f.getAbsolutePath());
             batch.add(ContentProviderOperation.newInsert(DogBeachesContract.Locations.CONTENT_URI).withValue(DogBeachesContract.Locations.COLUMN_ID, l.getId()).withValue(DogBeachesContract.Locations.COLUMN_NAME, l.getName()).withValue(DogBeachesContract.Locations.COLUMN_CATEGORY, l.getCategory()).withValue(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getAnimalBlurb()).withValue(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus()).withValue(DogBeachesContract.Locations.COLUMN_DOG_GUIDELINES, l.getDogGuidelines()).withValue(DogBeachesContract.Locations.COLUMN_IMAGE, f.getAbsolutePath()).withValue(DogBeachesContract.Locations.COLUMN_IMAGE_URL, l.getImageMedium()).withValue(DogBeachesContract.Locations.COLUMN_LATITUDE, l.getLatitude()).withValue(DogBeachesContract.Locations.COLUMN_LONGITUDE, l.getLongitude()).withYieldAllowed(true).build());
+        }
+    }
+
+    private void SyncReports()
+    {
+        Cursor c = null;
+        try
+        {
+            c = mDb.query(ReportTable.TABLE_NAME, ReportTable.PROJECTION_ALL, null, null, null, null, null);
+
+            if (c.getCount() != 0)
+            {
+                while (c.moveToNext())
+                {
+                    int localId = c.getInt(c.getColumnIndex(ReportTable.COLUMN_ID));
+                    int locationId = c.getInt(c.getColumnIndex(ReportTable.COLUMN_LOCATION_ID));
+                    int animalId = c.getInt(c.getColumnIndex(ReportTable.COLUMN_ANIMAL_ID));
+                    String blurb = c.getString(c.getColumnIndex(ReportTable.COLUMN_BLURB));
+                    double latitude = c.getDouble(c.getColumnIndex(ReportTable.COLUMN_LATITUDE));
+                    double longitude = c.getDouble(c.getColumnIndex(ReportTable.COLUMN_LONGITUDE));
+                    String createdAt = c.getString(c.getColumnIndex(ReportTable.COLUMN_CREATED_AT));
+                    TypedFile image = new TypedFile("image/jpeg", new File(c.getString(c.getColumnIndex(ReportTable.COLUMN_IMAGE))));
+
+                    Response r = null;
+                    try
+                    {
+                        r = RestClient.get().createReport(locationId, animalId, blurb, image, latitude, longitude, createdAt);
+                    }
+                    catch (RetrofitError e)
+                    {
+                        Log.e(TAG, e.toString());
+                    }
+
+                    // Post request has returned a 201 created code, delete local data.
+                    if (r != null && r.getStatus() == 201)
+                    {
+                        image.file().delete();
+                        mDb.delete(ReportTable.TABLE_NAME, "_id=" + localId, null);
+                    }
+                }
+            }
+        }
+        finally
+        {
+            if(c != null)
+                c.close();
         }
     }
 

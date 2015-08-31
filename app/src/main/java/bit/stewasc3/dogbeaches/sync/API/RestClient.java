@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import bit.stewasc3.dogbeaches.BuildConfig;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
@@ -24,10 +25,13 @@ import retrofit.converter.GsonConverter;
 public class RestClient
 {
     private static UserApi REST_CLIENT;
-    private static String ROOT = "http://dev.docuser.stewpot.nz";
+    private static String ROOT = "http://production.docuser.stewpot.nz";
 
     private RestClient()
     {
+        if (BuildConfig.DEBUG)
+            ROOT = "http://dev.docuser.stewpot.nz";
+
         // Custom deserializer to convert UTC time to device local time zone
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)

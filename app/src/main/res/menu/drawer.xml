@@ -20,7 +20,7 @@
             android:title="Wildlife" />
         <item
             android:id="@+id/drawer_safety"
-            android:icon="@drawable/info"
+            android:icon="@drawable/ic_info"
             android:title="Dog Safety" />
         <item
             android:id="@+id/drawer_report"
@@ -30,10 +30,5 @@
             android:id="@+id/drawer_donate"
             android:icon="@drawable/ic_money_bag"
             android:title="Donate" />
-        <item
-            android:id="@+id/drawer_safety"
-            android:icon="@drawable/ic_info"
-            android:title="Dog Safety" />
-
     </group>
 </menu>

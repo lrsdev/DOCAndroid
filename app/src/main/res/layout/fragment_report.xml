@@ -33,7 +33,7 @@
                     android:layout_height="24dp"
                     android:layout_marginRight="24dp"
                     android:alpha="0.54"
-                    android:src="@drawable/marker"
+                    android:src="@drawable/ic_marker"
                     />
 
                 <Spinner
@@ -56,7 +56,7 @@
                     android:layout_height="24dp"
                     android:layout_marginRight="24dp"
                     android:alpha="0.54"
-                    android:src="@drawable/penguin"
+                    android:src="@drawable/ic_penguin"
                     />
 
                 <Spinner

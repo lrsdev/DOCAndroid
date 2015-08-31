@@ -2,9 +2,13 @@ package bit.stewasc3.dogbeaches;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,24 +20,19 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-import android.view.View.OnClickListener;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-
-import java.io.File;
-
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.map.MapDisplayFragment;
+import bit.stewasc3.dogbeaches.sync.SyncAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
+    private static String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private FrameLayout mContentContainer;
@@ -41,8 +40,11 @@ public class MainActivity extends AppCompatActivity
     private Account mAccount;
     private android.location.Location mLastLocation;
     private GoogleApiClient mGoogleApiClient;
+    private SharedPreferences prefs;
+    private ProgressDialog syncProgress;
 
-
+    //private static IntentFilter syncIntentFilter = new IntentFilter(ACTION_FINISHED_SYNC);
+    private BroadcastReceiver syncFinishedReceiver;
     public static final String AUTHORITY = DogBeachesContract.AUTHORITY;
     public static final String ACCOUNT_TYPE = "bit.stewasc3.dogbeaches";
     public static final String ACCOUNT = "Sync Account";
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        prefs = getSharedPreferences("bit.stewasc3.dogbeaches", MODE_PRIVATE);
 
         fm = getSupportFragmentManager();
         mContentContainer = (FrameLayout) findViewById(R.id.content_container);
@@ -72,10 +75,41 @@ public class MainActivity extends AppCompatActivity
         }
 
         mAccount = CreateSyncAccount(this);
-        ContentResolver.setSyncAutomatically(mAccount, AUTHORITY, true);
+        ContentResolver resolver = getContentResolver();
+        resolver.setSyncAutomatically(mAccount, AUTHORITY, true);
 
         setContentFragment(new HomeFragment());
+    }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (!prefs.getBoolean("first_sync_completed", false))
+        {
+            firstSync();
+        }
+    }
+
+    public void firstSync()
+    {
+        syncFinishedReceiver = new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                Log.d(TAG, "Sync finished received");
+                syncProgress.dismiss();
+            }
+        };
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+
+        syncProgress = ProgressDialog.show(this, "Sync Progress", "Performing first run data sync " +
+                "You should only see this window once.", true);
+        registerReceiver(syncFinishedReceiver, new IntentFilter(SyncAdapter.FIRST_SYNC_FINISHED));
+        ContentResolver.requestSync(null, AUTHORITY, bundle);
     }
 
     public static Account CreateSyncAccount(Context context)
@@ -85,9 +119,7 @@ public class MainActivity extends AppCompatActivity
 
         if (accountManager.addAccountExplicitly(newAccount, null, null))
         {
-            // Inform the system this account supports sync
             ContentResolver.setIsSyncable(newAccount, DogBeachesContract.AUTHORITY, 1);
-            // Inform the system this account is eligible for auto sync when the network is up
         }
         else
         {

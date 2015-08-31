@@ -51,7 +51,6 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
         locations close to the user. At the moment, this will jsut pull in the entire location list
         for testing purposes. Populate wildlife list with options. Take a photo, down sample the
         photo for transmission. Submit to server.
-        ToDo: Backup plan if user location not available
      */
 
     private LocationCursorAdapter mLocationAdapter;
@@ -228,7 +227,6 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
 
     /**
      * Creates a file to save captured image to
-     * synchronising by adapter.
      * @return File
      * @throws IOException
      */

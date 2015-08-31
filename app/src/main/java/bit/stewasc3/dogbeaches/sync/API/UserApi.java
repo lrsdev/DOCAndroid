@@ -3,6 +3,7 @@ package bit.stewasc3.dogbeaches.sync.API;
 import java.util.ArrayList;
 
 import retrofit.Callback;
+import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
@@ -27,12 +28,13 @@ public interface UserApi
 
     @Multipart
     @POST("/reports")
-    public void createReport(@Part("image") TypedFile file,
-                             @Part("location_id") Integer id,
-                             @Part("created_at") String date,
+    public Response createReport(
+                             @Part("location_id") Integer locationId,
+                             @Part("animal_id") Integer animalId,
                              @Part("blurb") String blurb,
+                             @Part("image") TypedFile file,
                              @Part("latitude") Double latitude,
                              @Part("longitude") Double longitude,
-                             @Part("animal_type") String animalType,
-                             Callback<Sighting> cb);
+                             @Part("created_at") String date
+                             );
 }
