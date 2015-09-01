@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/hotlineColor">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+    android:text="@string/donation_heading"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/donation_intro"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="16dp"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/donationRecyclerView"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp" />
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/donations"
-            android:textColor="#ffffff"
-            android:layout_marginLeft="16dp"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            />
-
-    </LinearLayout>
 
 
-
-
-</RelativeLayout>
+</LinearLayout>
