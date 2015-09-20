@@ -32,6 +32,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".DogBeachesApplication"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
@@ -87,10 +88,6 @@
         <activity
             android:name=".LocationActivity"
             android:label="@string/title_activity_location" >
-        </activity>
-        <activity
-            android:name=".MapsAcitivty"
-            android:label="@string/title_activity_maps_acitivty" >
         </activity>
     </application>
 

@@ -29,8 +29,8 @@ public class RestClient
 
     private RestClient()
     {
-        if (BuildConfig.DEBUG)
-            ROOT = "http://dev.docuser.stewpot.nz";
+        //if (BuildConfig.DEBUG)
+         //   ROOT = "http://dev.docuser.stewpot.nz";
 
         // Custom deserializer to convert UTC time to device local time zone
         Gson gson = new GsonBuilder()

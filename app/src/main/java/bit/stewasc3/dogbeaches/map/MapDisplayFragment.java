@@ -1,14 +1,21 @@
 package bit.stewasc3.dogbeaches.map;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mapbox.mapboxsdk.tileprovider.tilesource.ITileLayer;
+import com.mapbox.mapboxsdk.tileprovider.tilesource.MBTilesLayer;
+import com.mapbox.mapboxsdk.tileprovider.tilesource.MapboxTileLayer;
+import com.mapbox.mapboxsdk.tileprovider.tilesource.TileLayer;
 import com.mapbox.mapboxsdk.views.MapView;
 
 import bit.stewasc3.dogbeaches.R;
@@ -43,11 +50,24 @@ public class MapDisplayFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_map_display, container, false);
         mv = (MapView) v.findViewById(R.id.mapActivityMap);
 
-        /* For using local mmbtiles
-        TileLayer mbTileLayer = new MBTilesLayer(getActivity().getDatabasePath("dunedin2.mbtiles"));
-        mv.setTileSource(new ITileLayer[]{mbTileLayer});
-        mv.setScrollableAreaLimit(mbTileLayer.getBoundingBox());
-        */
+        ConnectivityManager cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        if(isConnected)
+        {
+            mv.setTileSource(new MapboxTileLayer(getResources().getString(R.string.mapbox_map_id)));
+        }
+        else
+        {
+            TileLayer mbTileLayer = new MBTilesLayer(getActivity().getDatabasePath("southisland.mbtiles"));
+            mv.setTileSource(new ITileLayer[]{mbTileLayer});
+            mv.setMaxZoomLevel(11);
+            mv.setMinZoomLevel(11);
+            mv.setScrollableAreaLimit(mbTileLayer.getBoundingBox());
+        }
 
         mv.setUserLocationEnabled(true);
         mv.goToUserLocation(true);

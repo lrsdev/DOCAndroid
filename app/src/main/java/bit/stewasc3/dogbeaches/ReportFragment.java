@@ -271,6 +271,8 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     {
         String[] projection = null;
         Uri uri = null;
+        String orderBy = null;
+
         switch(i)
         {
             case LOADER_ANIMAL:
@@ -282,10 +284,14 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
                 projection = new String[] { DogBeachesContract.Locations.COLUMN_ID,
                     DogBeachesContract.Locations.COLUMN_NAME };
                 uri = DogBeachesContract.Locations.CONTENT_URI;
+                Double lat = mLastLocation.getLatitude();
+                Double lon = mLastLocation.getLongitude();
+                orderBy = "abs(latitude - " + Double.toString(lat) + ") " +
+                        "+ abs(longitude - " + Double.toString(lon) + " LIMIT 5)";
                 break;
         }
 
-       return new CursorLoader(getActivity(), uri, projection, null, null, null);
+       return new CursorLoader(getActivity(), uri, projection, null, null, orderBy);
     }
 
     @Override
