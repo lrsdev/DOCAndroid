@@ -39,8 +39,7 @@ import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.db.DBHelper;
 import bit.stewasc3.dogbeaches.db.ReportTable;
 
-public class ReportFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LoaderManager.LoaderCallbacks<Cursor>
+public class ReportFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
     private static final String TAG = "Report";
     private static final int REQUEST_IMAGE_CODE = 100;
@@ -59,19 +58,13 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     private Spinner mLocationSpinner;
     private Spinner mAnimalSpinner;
     private EditText mBlurbEditText;
-    private GoogleApiClient mGoogleApiClient;
     private String mCurrentPhotoPath;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
+        mLastLocation = LocationManager.get(getActivity()).getLocation();
 
         getLoaderManager().initLoader(LOADER_LOCATION, null, this);
         getLoaderManager().initLoader(LOADER_ANIMAL, null, this);
@@ -119,11 +112,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     private void submitReport()
     {
         // ToDo: Show a confirmation dialog
-        if(mGoogleApiClient.isConnected() &&
-            LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null)
-        {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        }
+        mLastLocation = LocationManager.get(getActivity()).getLocation();
 
         long locationId = mLocationSpinner.getSelectedItemId();
         long animalId = mAnimalSpinner.getSelectedItemId();
@@ -249,24 +238,6 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     @Override
-    public void onConnected(Bundle bundle)
-    {
-       mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i)
-    {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult)
-    {
-
-    }
-
-    @Override
     public Loader onCreateLoader(int i, Bundle bundle)
     {
         String[] projection = null;
@@ -287,7 +258,7 @@ public class ReportFragment extends Fragment implements GoogleApiClient.Connecti
                 Double lat = mLastLocation.getLatitude();
                 Double lon = mLastLocation.getLongitude();
                 orderBy = "abs(latitude - " + Double.toString(lat) + ") " +
-                        "+ abs(longitude - " + Double.toString(lon) + " LIMIT 5)";
+                        "+ abs(longitude - " + Double.toString(lon) + ") LIMIT 5";
                 break;
         }
 

@@ -25,12 +25,12 @@ import retrofit.converter.GsonConverter;
 public class RestClient
 {
     private static UserApi REST_CLIENT;
-    private static String ROOT = "http://production.docuser.stewpot.nz";
+    private static String ROOT = "http://docuser.stewpot.nz";
 
     private RestClient()
     {
-        //if (BuildConfig.DEBUG)
-         //   ROOT = "http://dev.docuser.stewpot.nz";
+        if (BuildConfig.DEBUG)
+           ROOT = "http://dev.docuser.stewpot.nz";
 
         // Custom deserializer to convert UTC time to device local time zone
         Gson gson = new GsonBuilder()
