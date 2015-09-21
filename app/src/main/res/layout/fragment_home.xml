@@ -10,10 +10,15 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:id="@+id/framelayout">
+
+        <ImageButton
+            android:id="@+id/Btnfeedback"
+            android:layout_width="520dp"
+            android:layout_height="520dp"
+            android:background="#80000000"
+            android:onClick="onFeedbackAction"
+            />
 
         <ImageView
             android:id="@+id/hotlineImage"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Dog And Beaches</string>
+    <string name="app_name">Otago Dog Beaches</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -23,6 +23,18 @@
         <item>Penguin</item>
         <item>Other</item>
     </string-array>
+
+    <!-- FeedBack Button/Panel -->
+    <string name="feedback_quest">Please provide feedback on the following areas via email:</string>
+    <string name="feedbck_1">&#8226; Easy of use </string>
+    <string name="feedbck_2">&#8226; Ease of Navigating the App </string>
+    <string name="feedbck_3">&#8226; Any Errors that you have come across </string>
+    <string name="feedbck_4">&#8226; Ideas on future features </string>
+    <string name="feedbckContact">Send your feedback to:</string>
+    <string name="emailAddress">email:   lrs.dev@gmail.com</string>
+    <string name="emailSubject">subject: Mobile App Feedback</string>
+    <string name="feedbackNote">(Please note: this app is still underconstruction and not all features have been implemented)</string>
+
 
     <!-- Navigation drawer open/closed strings -->
     <string name="drawer_open">Drawer Open</string>
@@ -70,12 +82,14 @@ Call DOC for sick or injured wildlife</string>
     <string name="deleteMapsButtonText">Delete Map</string>
     <string name="resetMapButtonText">Reset</string>
 
-    <string name="mapbox_access_token">sk.eyJ1Ijoic2FtdWVsY3N0ZXdhcnQiLCJhIjoiY2llbWE5amxxMDAyZXNta3FmdDQydG0xbCJ9.aqGk6zMLzCVhx5JoAiR-jQ</string>
-    <string name="mapbox_map_id">mapbox.streets-satellite</string>
+    <string name="mapbox_access_token">sk.eyJ1Ijoic2FtdWVsY3N0ZXdhcnQiLCJhIjoiNTk4MWFmNDNjNzk4ZDYzM2VmNzA0OGY1YTQ2N2Q0NDYifQ.OeeXYK1S33i_KCyW3VzZiA</string>
+    <string name="mapbox_map_id">samuelcstewart.n8pi63c5</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_maps_activity">MapsActivity</string>
+    <string name="title_activity_maps_acitivty">MapsAcitivty</string>
 
 <!-- Hotline Telephone Number -->
     <string name="hot">tel:0800362468</string>
+
+
 </resources>
 

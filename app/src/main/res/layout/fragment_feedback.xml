@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/FeedbackRequest"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/windowBackground"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/feedback_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/feedback_quest"
+        android:background="@color/windowBackground"
+        android:layout_margin="16dp"
+        android:padding="8dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/feedbck1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/feedbck_1"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/feedbck2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/feedbck_2"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/feedbck3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/feedbck_3"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/feedbck4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/feedbck_4"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/contactDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="16dp"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:padding="8dp"
+        android:text="@string/feedbckContact"
+        />
+
+    <TextView
+        android:id="@+id/contactEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_marginLeft="24dp"
+        android:text="@string/emailAddress"
+        />
+
+    <TextView
+        android:id="@+id/contactSubject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_marginLeft="24dp"
+        android:text="@string/emailSubject"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/feedbackNote"
+        android:layout_marginTop="72dp"
+        android:padding="16dp"
+        android:textStyle="italic"
+        android:id="@+id/textView"/>
+</LinearLayout>

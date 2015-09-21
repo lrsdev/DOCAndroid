@@ -30,5 +30,9 @@
             android:id="@+id/drawer_donate"
             android:icon="@drawable/ic_money_bag"
             android:title="Donate" />
+        <item
+            android:id="@+id/drawer_feedback"
+            android:icon="@drawable/ic_call"
+            android:title="Feedback" />
     </group>
 </menu>
