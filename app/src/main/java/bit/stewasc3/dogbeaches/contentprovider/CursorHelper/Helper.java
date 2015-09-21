@@ -1,4 +1,4 @@
-package bit.stewasc3.dogbeaches.db.CursorHelper;
+package bit.stewasc3.dogbeaches.contentprovider.CursorHelper;
 
 /**
  * A class containing static methods which accept a cursor and a projection and returns an

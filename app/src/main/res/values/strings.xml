@@ -70,10 +70,10 @@ Call DOC for sick or injured wildlife</string>
     <string name="deleteMapsButtonText">Delete Map</string>
     <string name="resetMapButtonText">Reset</string>
 
-    <string name="mapbox_access_token">sk.eyJ1Ijoic2FtdWVsY3N0ZXdhcnQiLCJhIjoiNTk4MWFmNDNjNzk4ZDYzM2VmNzA0OGY1YTQ2N2Q0NDYifQ.OeeXYK1S33i_KCyW3VzZiA</string>
-    <string name="mapbox_map_id">samuelcstewart.n8pi63c5</string>
+    <string name="mapbox_access_token">sk.eyJ1Ijoic2FtdWVsY3N0ZXdhcnQiLCJhIjoiY2llbWE5amxxMDAyZXNta3FmdDQydG0xbCJ9.aqGk6zMLzCVhx5JoAiR-jQ</string>
+    <string name="mapbox_map_id">mapbox.streets-satellite</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_maps_acitivty">MapsAcitivty</string>
+    <string name="title_activity_maps_activity">MapsActivity</string>
 
 <!-- Hotline Telephone Number -->
     <string name="hot">tel:0800362468</string>

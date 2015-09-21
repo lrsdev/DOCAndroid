@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -41,6 +42,7 @@ public class LocationRecyclerFragment extends Fragment
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private Location mLastLocation;
     private Cursor mCursor;
 
     @Override
@@ -54,17 +56,32 @@ public class LocationRecyclerFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.fragment_location_recycler, container, false);
-
-        mCursor = getActivity().getContentResolver().query(DogBeachesContract.Locations.CONTENT_URI,
-                DogBeachesContract.Locations.PROJECTION_ALL, null, null, null);
-
         mRecyclerView = (RecyclerView) v.findViewById(R.id.locationRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        queryLocations();
         mAdapter = new LocationRecyclerAdapter(mCursor, getActivity());
         mRecyclerView.setAdapter(mAdapter);
+
         return v;
+    }
+
+    /**
+     * Query content provider for a location cursor. If location is available, order by location.
+     */
+    public void queryLocations()
+    {
+        mLastLocation = LocationManager.get(getActivity()).getLocation();
+        String orderBy = "";
+        if(mLastLocation != null)
+        {
+            orderBy = "abs(latitude - " + Double.toString(mLastLocation.getLatitude()) + ") " +
+                    "+ abs(longitude - " + Double.toString(mLastLocation.getLongitude()) + ")";
+        }
+        // 'Manhatten' formula will order collection roughly by distance (but not perfectly).
+        mCursor = getActivity().getContentResolver().query(DogBeachesContract.Locations.CONTENT_URI,
+                DogBeachesContract.Locations.PROJECTION_ALL, null, null, orderBy);
     }
 
     @Override
@@ -82,12 +99,10 @@ public class LocationRecyclerFragment extends Fragment
     }
 
     private class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder>
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+
     {
         private Cursor mLocationCursor;
         private Context mContext;
-        private Location mLastLocation;
-        private GoogleApiClient mGoogleApiClient;
         private int mNameIndex;
         private int mIdIndex;
         private int mDogGuidelinesIndex;
@@ -102,7 +117,6 @@ public class LocationRecyclerFragment extends Fragment
             public TextView distanceTextView;
             public ImageView imageView;
             public Button moreInfoButton;
-            public Button sightingsButton;
             public Location coordinates;
             public Integer locationId;
 
@@ -113,19 +127,7 @@ public class LocationRecyclerFragment extends Fragment
                 imageView = (ImageView) recyclerView.findViewById(R.id.locationCardImageView);
                 guidelinesTextView = (TextView) recyclerView.findViewById(R.id.locationCardDogGuidelines);
                 moreInfoButton = (Button) recyclerView.findViewById(R.id.locationCardMoreInfoButton);
-                sightingsButton = (Button) recyclerView.findViewById(R.id.locationCardSightingsButton);
                 distanceTextView = (TextView) recyclerView.findViewById(R.id.locationCardDistanceTextView);
-
-                sightingsButton.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v)
-                    {
-                        //Intent i = new Intent(mContext, SightingActivity.class);
-                        //i.putExtra(SightingActivity.KEY_LOCATIONID, mLocations.get(getLayoutPosition()).getId());
-                        //mContext.startActivity(i);
-                        //mSightingsCallback.onSightingsSelected(mLocations.get(getLayoutPosition()).getId());
-                    }
-                });
 
                 moreInfoButton.setOnClickListener(new View.OnClickListener()
                 {
@@ -137,8 +139,6 @@ public class LocationRecyclerFragment extends Fragment
                         startActivity(i);
                     }
                 });
-
-
             }
         }
 
@@ -152,8 +152,6 @@ public class LocationRecyclerFragment extends Fragment
             mLocalMediumImageIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_IMAGE);
             mLatitudeIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_LATITUDE);
             mLongitudeIndex = locationCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_LONGITUDE);
-            buildGoogleApiClient();
-            mGoogleApiClient.connect();
         }
 
         @Override
@@ -176,7 +174,6 @@ public class LocationRecyclerFragment extends Fragment
                 String kms = String.format("%.2f", (distance/1000)) + " Kms away";
                 holder.distanceTextView.setText(kms);
             }
-            holder.sightingsButton.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -193,38 +190,6 @@ public class LocationRecyclerFragment extends Fragment
         public int getItemCount()
         {
             return mLocationCursor.getCount();
-        }
-
-        protected synchronized void buildGoogleApiClient()
-        {
-            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
-
-        @Override
-        public void onConnected(Bundle bundle)
-        {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if(mLastLocation != null)
-            {
-                mAdapter.notifyDataSetChanged();
-            }
-        }
-
-
-        @Override
-        public void onConnectionSuspended(int i)
-        {
-
-        }
-
-        @Override
-        public void onConnectionFailed(ConnectionResult connectionResult)
-        {
-
         }
     }
 }
