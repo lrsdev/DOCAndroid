@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
@@ -153,11 +154,17 @@ public class MainActivity extends AppCompatActivity
                         setContentFragment(new ReportFragment());
                         break;
                     case R.id.drawer_donate: // Donate was clicked
+                        //setContentFragment(new DonateFragment());
                         notImplemented();
                         break;
                     case R.id.drawer_safety: // Safety was clicked
                         setContentFragment(new SafetyFragment());
                         break;
+                    case R.id.drawer_feedback: // Feedback was clicked
+                        setContentFragment(new FeedbackFragment());
+                        //notImplemented();
+                        break;
+
                 }
                 menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
@@ -207,6 +214,16 @@ public class MainActivity extends AppCompatActivity
         //handle onClick of camera here
         Intent i = new Intent(MainActivity.this, ReportFragment.class);
         startActivity(i);
+    }
+
+    public void onFeedbackAction(View v)
+    {
+        //handle onClick of Feedback Button
+        if(v.getId()==R.id.Btnfeedback)
+        {
+            setContentFragment(new FeedbackFragment());
+            //notImplemented();
+        }
     }
 
     protected synchronized void buildGoogleApiClient()
