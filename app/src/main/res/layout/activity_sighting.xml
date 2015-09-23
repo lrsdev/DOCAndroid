@@ -5,7 +5,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:fitsSystemWindows="true"
-                tools:context="bit.stewasc3.dogbeaches.SightingActivity">
+                tools:context="io.github.lrsdev.dogbeaches.SightingActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/sightingActivityAppBar"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="bit.stewasc3.dogbeaches" >
+    package="io.github.lrsdev.dogbeaches" >
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -32,10 +32,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".DogBeachesApplication"
+        android:name="io.github.lrsdev.dogbeaches.DogBeachesApplication"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="io.github.lrsdev.dogbeaches.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -55,7 +55,7 @@
             android:value="@string/google_maps_key" /> -->
 
         <activity
-            android:name=".SightingActivity"
+            android:name="io.github.lrsdev.dogbeaches.SightingActivity"
             android:label="@string/title_activity_sighting"
             android:screenOrientation="portrait" >
         </activity>
@@ -88,7 +88,7 @@
         </service>
 
         <activity
-            android:name=".LocationActivity"
+            android:name="io.github.lrsdev.dogbeaches.LocationActivity"
             android:label="@string/title_activity_location" >
         </activity>
     </application>

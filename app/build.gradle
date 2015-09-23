@@ -14,11 +14,11 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
     defaultConfig {
-        applicationId "bit.stewasc3.dogbeaches"
-        resValue "string", "authority", "bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider"
-        resValue "string", "account_type", "bit.stewasc3.dogbeaches"
-        buildConfigField "String", "SYNC_ACCOUNT_TYPE", "bit.stewasc3.dogbeaches"
-        buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeachescontentprovider.DogBeachesProvider"'
+        applicationId 'io.github.lrsdev.dogbeaches'
+        resValue "string", "authority", "io.github.lrsdev.dogbeaches.contentprovider.DogBeachesProvider"
+        resValue "string", "account_type", "io.github.lrsdev.dogbeaches"
+        buildConfigField "String", "SYNC_ACCOUNT_TYPE", "io.github.lrsdev.dogbeaches"
+        buildConfigField "String", "AUTHORITY", '"io.github.lrsdev.dogbeaches.contentprovider.DogBeachesProvider"'
         buildConfigField 'String', 'API_END_POINT', '"http://doguser.stewpot.nz"'
         minSdkVersion 15
         targetSdkVersion 22
@@ -35,10 +35,10 @@ android {
             debuggable true
             signingConfig signingConfigs.debug
             applicationIdSuffix ".debug"
-            resValue "string", "authority", "bit.stewasc3.dogbeaches.debug.contentprovider.DogBeachesProvider"
-            resValue "string", "account_type", "bit.stewasc3.dogbeaches.debug"
-            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"bit.stewasc3.dogbeaches.debug"'
-            buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeaches.debug.contentprovider.DogBeachesProvider"'
+            resValue "string", "authority", "io.github.lrsdev.dogbeaches.debug.contentprovider.DogBeachesProvider"
+            resValue "string", "account_type", "io.github.lrsdev.dogbeaches.debug"
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"io.github.lrsdev.dogbeaches.debug"'
+            buildConfigField "String", "AUTHORITY", '"io.github.lrsdev.dogbeaches.debug.contentprovider.DogBeachesProvider"'
             buildConfigField 'String', 'API_END_POINT', '"http://dev.doguser.stewpot.nz"'
         }
 
@@ -46,32 +46,33 @@ android {
             debuggable true
             signingConfig signingConfigs.debug
             applicationIdSuffix ".debug.prodapi"
-            resValue "string", "authority", "bit.stewasc3.dogbeaches.debug.prodapi.contentprovider.DogBeachesProvider"
-            resValue "string", "account_type", "bit.stewasc3.dogbeaches.debug.prodapi"
-            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"bit.stewasc3.dogbeaches.debug.prodapi"'
-            buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeaches.debug.prodapi.contentprovider.DogBeachesProvider"'
+            resValue "string", "authority", "io.github.lrsdev.dogbeaches.debug.prodapi.contentprovider.DogBeachesProvider"
+            resValue "string", "account_type", "io.github.lrsdev.dogbeaches.debug.prodapi"
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"io.github.lrsdev.dogbeaches.debug.prodapi"'
+            buildConfigField "String", "AUTHORITY", '"io.github.lrsdev.dogbeaches.debug.prodapi.contentprovider.DogBeachesProvider"'
         }
     }
-
     /*
     productFlavors {
         develapi {
-            applicationId "bit.stewasc3.dogbeaches.develapi"
+            applicationId "io.github.lrsdev.dogbeaches.develapi"
             resValue "string", "authority", applicationId + ".contentprovider.DogBeachesProvider"
             resValue "string", "account_type", applicationId
-            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"bit.stewasc3.dogbeaches.develapi"'
-            buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeaches.develapi.contentprovider.DogBeachesProvider"'
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"io.github.lrsdev.dogbeaches.develapi"'
+            buildConfigField "String", "AUTHORITY", '"io.github.lrsdev.dogbeaches.develapi.contentprovider.DogBeachesProvider"'
             buildConfigField 'String', 'API_END_POINT', '"http://dev.doguser.stewpot.nz"'
         }
         prodapi {
-            applicationId "bit.stewasc3.dogbeaches.prodapi"
+            applicationId "io.github.lrsdev.dogbeaches.prodapi"
             resValue "string", "authority", applicationId + ".contentprovider.DogBeachesProvider"
             resValue "string", "account_type", applicationId
-            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"bit.stewasc3.dogbeaches.prodapi"'
-            buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeaches.prodapi.contentprovider.DogBeachesProvider"'
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"io.github.lrsdev.dogbeaches.prodapi"'
+            buildConfigField "String", "AUTHORITY", '"io.github.lrsdev.dogbeaches.prodapi.contentprovider.DogBeachesProvider"'
             buildConfigField 'String', 'API_END_POINT', '"http://doguser.stewpot.nz"'
         }
     }*/
+    productFlavors {
+    }
 }
 
 dependencies {
