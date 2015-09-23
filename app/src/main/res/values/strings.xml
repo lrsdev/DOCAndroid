@@ -1,7 +1,4 @@
 <resources>
-    <string name="app_name">Otago Dog Beaches</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_report">Report</string>
     <string name="donations">Donations</string>

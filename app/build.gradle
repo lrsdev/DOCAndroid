@@ -15,6 +15,7 @@ android {
     buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId 'io.github.lrsdev.dogbeaches'
+        resValue "string", "app_name", "Dogs & Beaches"
         resValue "string", "authority", "io.github.lrsdev.dogbeaches.contentprovider.DogBeachesProvider"
         resValue "string", "account_type", "io.github.lrsdev.dogbeaches"
         buildConfigField "String", "SYNC_ACCOUNT_TYPE", "io.github.lrsdev.dogbeaches"
@@ -37,6 +38,7 @@ android {
             applicationIdSuffix ".debug"
             resValue "string", "authority", "io.github.lrsdev.dogbeaches.debug.contentprovider.DogBeachesProvider"
             resValue "string", "account_type", "io.github.lrsdev.dogbeaches.debug"
+            resValue "string", "app_name", "D&O Debug"
             buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"io.github.lrsdev.dogbeaches.debug"'
             buildConfigField "String", "AUTHORITY", '"io.github.lrsdev.dogbeaches.debug.contentprovider.DogBeachesProvider"'
             buildConfigField 'String', 'API_END_POINT', '"http://dev.doguser.stewpot.nz"'
@@ -48,6 +50,7 @@ android {
             applicationIdSuffix ".debug.prodapi"
             resValue "string", "authority", "io.github.lrsdev.dogbeaches.debug.prodapi.contentprovider.DogBeachesProvider"
             resValue "string", "account_type", "io.github.lrsdev.dogbeaches.debug.prodapi"
+            resValue "string", "app_name", "D&O Debug Prod"
             buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"io.github.lrsdev.dogbeaches.debug.prodapi"'
             buildConfigField "String", "AUTHORITY", '"io.github.lrsdev.dogbeaches.debug.prodapi.contentprovider.DogBeachesProvider"'
         }
