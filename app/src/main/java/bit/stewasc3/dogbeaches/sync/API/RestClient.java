@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import bit.stewasc3.dogbeaches.BuildConfig;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
@@ -24,7 +25,7 @@ import retrofit.converter.GsonConverter;
 public class RestClient
 {
     private static UserApi REST_CLIENT;
-    private static String ROOT = "http://docuser.stewpot.nz";
+    private static String ROOT = BuildConfig.API_END_POINT;
 
     private RestClient()
     {

@@ -17,6 +17,19 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            versionNameSuffix " dev"
+        }
+    }
+    productFlavors {
+        develapi {
+            applicationId "bit.stewasc3.dogbeaches.develapi"
+            buildConfigField 'String', 'API_END_POINT', '"http://dev.doguser.stewpot.nz"'
+        }
+        prodapi {
+            applicationId "bit.stewasc3.dogbeaches"
+            buildConfigField 'String', 'API_END_POINT', '"http://doguser.stewpot.nz"'
+        }
     }
 }
 
