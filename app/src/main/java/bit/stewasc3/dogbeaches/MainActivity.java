@@ -44,11 +44,11 @@ public class MainActivity extends AppCompatActivity
     //private static IntentFilter syncIntentFilter = new IntentFilter(ACTION_FINISHED_SYNC);
     private BroadcastReceiver syncFinishedReceiver;
     public static final String AUTHORITY = DogBeachesContract.AUTHORITY;
-    public static final String ACCOUNT_TYPE = "bit.stewasc3.dogbeaches";
+    public static final String ACCOUNT_TYPE = BuildConfig.SYNC_ACCOUNT_TYPE;
     public static final String ACCOUNT = "Sync Account";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
+
+    @Override protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity
         fm = getSupportFragmentManager();
         mContentContainer = (FrameLayout) findViewById(R.id.content_container);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        Log.d(TAG, AUTHORITY);
 
         // As we're using a Toolbar, we should retrieve it and set it
         // to be our ActionBar

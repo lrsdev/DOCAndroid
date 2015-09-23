@@ -3,6 +3,7 @@ package bit.stewasc3.dogbeaches.contentprovider;
 import android.content.ContentResolver;
 import android.net.Uri;
 
+import bit.stewasc3.dogbeaches.BuildConfig;
 import bit.stewasc3.dogbeaches.db.IAnimalTableConstants;
 import bit.stewasc3.dogbeaches.db.ILocationTableConstants;
 
@@ -11,7 +12,7 @@ import bit.stewasc3.dogbeaches.db.ILocationTableConstants;
  */
 public class DogBeachesContract
 {
-    public static final String AUTHORITY = "bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider";
+    public static final String AUTHORITY = BuildConfig.AUTHORITY;
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     /**

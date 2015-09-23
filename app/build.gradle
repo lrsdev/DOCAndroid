@@ -18,16 +18,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            versionNameSuffix " dev"
         }
     }
     productFlavors {
         develapi {
             applicationId "bit.stewasc3.dogbeaches.develapi"
+            resValue "string", "authority", applicationId + ".contentprovider.DogBeachesProvider"
+            resValue "string", "account_type", applicationId
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"bit.stewasc3.dogbeaches.develapi"'
+            buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeaches.develapi.contentprovider.DogBeachesProvider"'
             buildConfigField 'String', 'API_END_POINT', '"http://dev.doguser.stewpot.nz"'
         }
         prodapi {
-            applicationId "bit.stewasc3.dogbeaches"
+            applicationId "bit.stewasc3.dogbeaches.prodapi"
+            resValue "string", "authority", applicationId + ".contentprovider.DogBeachesProvider"
+            resValue "string", "account_type", applicationId
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"bit.stewasc3.dogbeaches.prodapi"'
+            buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeaches.prodapi.contentprovider.DogBeachesProvider"'
             buildConfigField 'String', 'API_END_POINT', '"http://doguser.stewpot.nz"'
         }
     }

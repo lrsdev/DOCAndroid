@@ -60,8 +60,8 @@
 
         <provider
             android:name=".contentprovider.DogBeachesProvider"
-            android:authorities="bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider"
-            android:exported="true"
+            android:authorities="${applicationId}.contentprovider.DogBeachesProvider"
+            android:exported="false"
             android:syncable="true" />
 
         <service android:name=".sync.AuthenticatorService" >
