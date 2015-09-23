@@ -31,7 +31,6 @@ import bit.stewasc3.dogbeaches.map.MapDisplayFragment;
 import bit.stewasc3.dogbeaches.sync.SyncAdapter;
 
 public class MainActivity extends AppCompatActivity
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 {
     private static String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
@@ -39,8 +38,6 @@ public class MainActivity extends AppCompatActivity
     private FrameLayout mContentContainer;
     private FragmentManager fm;
     private Account mAccount;
-    private android.location.Location mLastLocation;
-    private GoogleApiClient mGoogleApiClient;
     private SharedPreferences prefs;
     private ProgressDialog syncProgress;
 
@@ -107,8 +104,8 @@ public class MainActivity extends AppCompatActivity
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
 
-        syncProgress = ProgressDialog.show(this, "Sync Progress", "Performing first run data sync " +
-                "You should only see this window once.", true);
+        syncProgress = ProgressDialog.show(this, "Sync Progress", "Performing first run data sync, " +
+                "you should only see this window once.", true);
         registerReceiver(syncFinishedReceiver, new IntentFilter(SyncAdapter.FIRST_SYNC_FINISHED));
         ContentResolver.requestSync(null, AUTHORITY, bundle);
     }
@@ -225,33 +222,4 @@ public class MainActivity extends AppCompatActivity
             //notImplemented();
         }
     }
-
-    protected synchronized void buildGoogleApiClient()
-    {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle)
-    {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-    }
-
-
-    @Override
-    public void onConnectionSuspended(int i)
-    {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult)
-    {
-
-    }
-
 }
