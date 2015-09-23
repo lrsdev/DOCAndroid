@@ -1,5 +1,4 @@
 package bit.stewasc3.dogbeaches;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
@@ -23,16 +22,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import bit.stewasc3.dogbeaches.contentprovider.DogBeachesContract;
 import bit.stewasc3.dogbeaches.map.MapDisplayFragment;
 import bit.stewasc3.dogbeaches.sync.SyncAdapter;
 
 public class MainActivity extends AppCompatActivity
 {
-    private static String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private FrameLayout mContentContainer;
@@ -41,12 +37,11 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences prefs;
     private ProgressDialog syncProgress;
 
-    //private static IntentFilter syncIntentFilter = new IntentFilter(ACTION_FINISHED_SYNC);
+    private static IntentFilter syncIntentFilter = new IntentFilter(SyncAdapter.FIRST_SYNC_FINISHED);
     private BroadcastReceiver syncFinishedReceiver;
     public static final String AUTHORITY = DogBeachesContract.AUTHORITY;
     public static final String ACCOUNT_TYPE = BuildConfig.SYNC_ACCOUNT_TYPE;
     public static final String ACCOUNT = "Sync Account";
-
 
     @Override protected void onCreate(Bundle savedInstanceState)
     {

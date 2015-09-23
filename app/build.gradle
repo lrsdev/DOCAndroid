@@ -1,5 +1,13 @@
 apply plugin: 'com.android.application'
 
+/**
+ *  Extra build type added called debugProdApi. This allows the building of two self signed debug
+ *  versions which hit the development and production API end points. String resources and BuildConfig
+ *  variables are set for content provider authorities, and synchronisation account types. This allows
+ *  the DogBeachesContract authority, and sync adapter/authenticator account details to be set at
+ *  runtime in the main activity and their respective XML resources.
+ */
+
 android {
     signingConfigs {
     }
@@ -7,6 +15,11 @@ android {
     buildToolsVersion "21.1.2"
     defaultConfig {
         applicationId "bit.stewasc3.dogbeaches"
+        resValue "string", "authority", "bit.stewasc3.dogbeaches.contentprovider.DogBeachesProvider"
+        resValue "string", "account_type", "bit.stewasc3.dogbeaches"
+        buildConfigField "String", "SYNC_ACCOUNT_TYPE", "bit.stewasc3.dogbeaches"
+        buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeachescontentprovider.DogBeachesProvider"'
+        buildConfigField 'String', 'API_END_POINT', '"http://doguser.stewpot.nz"'
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
@@ -17,9 +30,30 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
         debug {
+            debuggable true
+            signingConfig signingConfigs.debug
+            applicationIdSuffix ".debug"
+            resValue "string", "authority", "bit.stewasc3.dogbeaches.debug.contentprovider.DogBeachesProvider"
+            resValue "string", "account_type", "bit.stewasc3.dogbeaches.debug"
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"bit.stewasc3.dogbeaches.debug"'
+            buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeaches.debug.contentprovider.DogBeachesProvider"'
+            buildConfigField 'String', 'API_END_POINT', '"http://dev.doguser.stewpot.nz"'
+        }
+
+        debugProdAPI {
+            debuggable true
+            signingConfig signingConfigs.debug
+            applicationIdSuffix ".debug.prodapi"
+            resValue "string", "authority", "bit.stewasc3.dogbeaches.debug.prodapi.contentprovider.DogBeachesProvider"
+            resValue "string", "account_type", "bit.stewasc3.dogbeaches.debug.prodapi"
+            buildConfigField "String", "SYNC_ACCOUNT_TYPE", '"bit.stewasc3.dogbeaches.debug.prodapi"'
+            buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeaches.debug.prodapi.contentprovider.DogBeachesProvider"'
         }
     }
+
+    /*
     productFlavors {
         develapi {
             applicationId "bit.stewasc3.dogbeaches.develapi"
@@ -37,7 +71,7 @@ android {
             buildConfigField "String", "AUTHORITY", '"bit.stewasc3.dogbeaches.prodapi.contentprovider.DogBeachesProvider"'
             buildConfigField 'String', 'API_END_POINT', '"http://doguser.stewpot.nz"'
         }
-    }
+    }*/
 }
 
 dependencies {
