@@ -87,15 +87,6 @@
                 android:layout_marginRight="8dp"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored" />
 
-            <!-- Button programmatically set to visible when a location has reports -->
-            <Button
-                android:id="@+id/locationCardSightingsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                android:text="Sightings"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored" />
-
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
