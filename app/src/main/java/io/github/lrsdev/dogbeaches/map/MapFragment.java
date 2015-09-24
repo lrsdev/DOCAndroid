@@ -28,7 +28,7 @@ public class MapFragment extends Fragment
     private static final Integer MAX_ZOOM = 13;
     private static final Integer MIN_ZOOM = 11;
     private Button mapButton;
-    private MapView mv;
+    private MapView mapView;
     private boolean displayingOffline;
 
     public static MapFragment newInstance()
@@ -51,7 +51,7 @@ public class MapFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.fragment_map_display, container, false);
-        mv = (MapView) v.findViewById(R.id.map_view);
+        mapView = (MapView) v.findViewById(R.id.map_view);
         mapButton = (Button) v.findViewById(R.id.map_fragment_button);
         mapButton.setOnClickListener(new View.OnClickListener()
         {
@@ -76,8 +76,8 @@ public class MapFragment extends Fragment
         else
             setOfflineMap();
 
-        mv.setUserLocationEnabled(true);
-        mv.goToUserLocation(true);
+        mapView.setUserLocationEnabled(true);
+        mapView.goToUserLocation(true);
         addLocationMarkers();
         return v;
     }
@@ -85,17 +85,17 @@ public class MapFragment extends Fragment
     private void setOfflineMap()
     {
         TileLayer mbTileLayer = new MBTilesLayer(getActivity().getDatabasePath("otago.mbtiles"));
-        mv.setTileSource(new ITileLayer[]{mbTileLayer});
-        mv.setMaxZoomLevel(11);
-        mv.setMinZoomLevel(11);
-        mv.setScrollableAreaLimit(mbTileLayer.getBoundingBox());
+        mapView.setTileSource(new ITileLayer[]{mbTileLayer});
+        mapView.setMaxZoomLevel(11);
+        mapView.setMinZoomLevel(11);
+        mapView.setScrollableAreaLimit(mbTileLayer.getBoundingBox());
         mapButton.setText(R.string.map_change_online);
         displayingOffline = true;
     }
 
     private void setOnlineMap()
     {
-        mv.setTileSource(new MapboxTileLayer(getResources().getString(R.string.mapbox_map_id)));
+        mapView.setTileSource(new MapboxTileLayer(getResources().getString(R.string.mapbox_map_id)));
         mapButton.setText(R.string.map_change_offline);
         displayingOffline = false;
     }
@@ -128,8 +128,8 @@ public class MapFragment extends Fragment
                     c.getDouble(longIndex)));
             m.setMarker(getIconBitmap(c.getString(statusIndex)));
             m.setAnchor(new PointF(0.5f, 0.5f));
-            m.setToolTip(new LocationInfoWindow(mv, c.getInt(idIndex), c.getString(imageIndex)));
-            mv.addMarker(m);
+            m.setToolTip(new LocationInfoWindow(mapView, c.getInt(idIndex), c.getString(imageIndex)));
+            mapView.addMarker(m);
         }
         c.close();
     }

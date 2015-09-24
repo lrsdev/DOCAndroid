@@ -1,9 +1,32 @@
 <resources>
     <string name="action_settings">Settings</string>
     <string name="action_report">Report</string>
-    <string name="donations">Donations</string>
 
-    <!-- Navigation drawer menu item strings -->
+    <!-- MainActivity -->
+    <!-- End MainActivity -->
+
+    <!--LocationActivity -->
+    <string name="title_activity_location">LocationActivity</string>
+    <!-- End LocationActivity -->
+
+    <!--SightingActivity -->
+    <!-- End SightingActivity -->
+
+    <!-- FeedbackFragment -->
+    <string name="feedback_request">Please provide feedback on the following areas via email:</string>
+    <string name="feedback_1">&#8226; Easy of use </string>
+    <string name="feedback_2">&#8226; Ease of Navigating the App </string>
+    <string name="feedback_3">&#8226; Any Errors that you have come across </string>
+    <string name="feedback_4">&#8226; Ideas on future features </string>
+    <string name="feedback_contact">Send your feedback to:</string>
+    <string name="feedback_email_address">email:   lrs.dev@gmail.com</string>
+    <string name="feedback_email_subject">subject: Mobile App Feedback</string>
+    <string name="feedback_note">(Please note: this app is still underconstruction and not all features have been implemented)</string>
+    <!-- End FeedbackFragment -->
+
+    <!-- Navigation drawer -->
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_closed">Drawer Closed</string>
     <string-array name="navigation_array">
         <item>Home</item>
         <item>Map</item>
@@ -13,73 +36,23 @@
         <item>Report Wildlife</item>
         <item>Donate</item>
     </string-array>
+    <!-- End Navigation Drawer -->
 
-    <string-array name="wildlife_array">
-        <item>Seal</item>
-        <item>Sea Lion</item>
-        <item>Penguin</item>
-        <item>Other</item>
-    </string-array>
-
-    <!-- FeedBack Button/Panel -->
-    <string name="feedback_quest">Please provide feedback on the following areas via email:</string>
-    <string name="feedbck_1">&#8226; Easy of use </string>
-    <string name="feedbck_2">&#8226; Ease of Navigating the App </string>
-    <string name="feedbck_3">&#8226; Any Errors that you have come across </string>
-    <string name="feedbck_4">&#8226; Ideas on future features </string>
-    <string name="feedbckContact">Send your feedback to:</string>
-    <string name="emailAddress">email:   lrs.dev@gmail.com</string>
-    <string name="emailSubject">subject: Mobile App Feedback</string>
-    <string name="feedbackNote">(Please note: this app is still underconstruction and not all features have been implemented)</string>
-
-
-    <!-- Navigation drawer open/closed strings -->
-    <string name="drawer_open">Drawer Open</string>
-    <string name="drawer_closed">Drawer Closed</string>
-    <string name="title_activity_location_pager">LocationPagerActivity</string>
-    <string name="title_activity_sighting_pager">SightingPagerActivity</string>
-    <string name="title_activity_map">Map</string>
-
-    <string name="preference_sync_key">SyncSharedPrefs</string>
-    <string name="preference_sync_last_sync">SyncSharedPrefsLastSync</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- SightingActivity -->
     <string name="title_activity_sighting">SightingActivity</string>
+    <!-- End SightingActivity -->
 
-
-<!-- Donation Page Content -->
-    <!-- Intro -->
+    <!-- DonationFragment -->
     <string name="donation_intro"></string>
+    <!-- End DonationFragment -->
 
-    <!-- Yellow-Eyed Penguin Trust -->
-
-
-    <!-- NZ Sealion Trust -->
-
-
-    <!-- Otago Peninsula Trust -->
-
-
-<!-- Safety Page Text Content -->
-    <string name="safetyHeader">Keep your dog safe on the beach</string>
-    <string name="safetyText">Some Marine wildlife move fast and have big sharp teeth. Ensure you are aware of what’s ahead of you and what your dog could start sniffing around. It’s easier to call a dog to you before its interacting with wildlife than after.</string>
-    <string name="safetyToDoHeadText">If you come across widlife on our beaches:</string>
-    <string name="safetyToDoList">  </string>
-    <string name="contactText">Report roaming or uncontrolled dogs to <b>Dunedin City Council, Animal Services 03 477 4000</b>, or
-Call DOC for sick or injured wildlife</string>
-    <string name="title_activity_wildlife">Wildlife</string>
-    <string name="title_activity_location">LocationActivity</string>
-
-    <!--
-    <string name="dataOn">dataOn</string>
-    <string name="dataOff">dataOff</string>
-
-    <string name="saveMapButtonText">Save Map</string>
-    <string name="loadMapButtonText">Load Map</string>
-    <string name="deleteMapsButtonText">Delete Map</string>
-    <string name="resetMapButtonText">Reset</string>
-    -->
+    <!-- SafetyFragment -->
+    <string name="safety_header">Keep your dog safe on the beach</string>
+    <string name="safety_text">Some Marine wildlife move fast and have big sharp teeth. Ensure you are aware of what’s ahead of you and what your dog could start sniffing around. It’s easier to call a dog to you before its interacting with wildlife than after.</string>
+    <string name="safety_todo_header">If you come across widlife on our beaches:</string>
+    <string name="safety_todo_list">  </string>
+    <string name="safety_contact_text">Report roaming or uncontrolled dogs to <b>Dunedin City Council, Animal Services 03 477 4000</b>, or Call DOC for sick or injured wildlife</string>
+    <!-- End SafetyFragment -->
 
     <!-- Map MapFragment -->
     <string name="mapbox_access_token">sk.eyJ1IjoiZG9nYmVhY2hlcyIsImEiOiJjaWV3c2NiZ2IwNzVkc2trcXhvdjV4NDIxIn0.XDzJIvDIf_Jkistks-e0yw</string>
@@ -88,9 +61,7 @@ Call DOC for sick or injured wildlife</string>
     <string name="map_change_online">View Online Map</string>
     <!-- End MapFragment -->
 
-<!-- Hotline Telephone Number -->
+    <!-- Hotline Telephone Number -->
     <string name="hot">tel:0800362468</string>
-
-
 </resources>
 

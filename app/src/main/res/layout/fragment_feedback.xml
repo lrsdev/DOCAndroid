@@ -12,7 +12,7 @@
         android:id="@+id/feedback_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/feedback_quest"
+        android:text="@string/feedback_request"
         android:background="@color/windowBackground"
         android:layout_margin="16dp"
         android:padding="8dp"
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:text="@string/feedbck_1"
+        android:text="@string/feedback_1"
         android:gravity="center"
         />
 
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:text="@string/feedbck_2"
+        android:text="@string/feedback_2"
         android:gravity="center"
         />
 
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:text="@string/feedbck_3"
+        android:text="@string/feedback_3"
         android:gravity="center"
         />
 
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:text="@string/feedbck_4"
+        android:text="@string/feedback_4"
         android:gravity="center"
         />
 
@@ -65,7 +65,7 @@
         android:textStyle="bold"
         android:textSize="20dp"
         android:padding="8dp"
-        android:text="@string/feedbckContact"
+        android:text="@string/feedback_contact"
         />
 
     <TextView
@@ -75,7 +75,7 @@
         android:textStyle="bold"
         android:textSize="20dp"
         android:layout_marginLeft="24dp"
-        android:text="@string/emailAddress"
+        android:text="@string/feedback_email_address"
         />
 
     <TextView
@@ -85,13 +85,13 @@
         android:textStyle="bold"
         android:textSize="20dp"
         android:layout_marginLeft="24dp"
-        android:text="@string/emailSubject"
+        android:text="@string/feedback_email_subject"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/feedbackNote"
+        android:text="@string/feedback_note"
         android:layout_marginTop="72dp"
         android:padding="16dp"
         android:textStyle="italic"
