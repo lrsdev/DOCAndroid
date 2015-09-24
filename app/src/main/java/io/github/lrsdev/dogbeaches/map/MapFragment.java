@@ -25,8 +25,8 @@ import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 
 public class MapFragment extends Fragment
 {
-    private static final Integer MAX_ZOOM = 13;
-    private static final Integer MIN_ZOOM = 11;
+    private static final Integer OFFLINE_MAX_ZOOM = 11;
+    private static final Integer OFFLINE_MIN_ZOOM = 11;
     private Button mapButton;
     private MapView mapView;
     private boolean displayingOffline;
@@ -86,8 +86,9 @@ public class MapFragment extends Fragment
     {
         TileLayer mbTileLayer = new MBTilesLayer(getActivity().getDatabasePath("otago.mbtiles"));
         mapView.setTileSource(new ITileLayer[]{mbTileLayer});
-        mapView.setMaxZoomLevel(11);
-        mapView.setMinZoomLevel(11);
+        mapView.setMaxZoomLevel(OFFLINE_MAX_ZOOM);
+        mapView.setMinZoomLevel(OFFLINE_MIN_ZOOM);
+        mapView.setZoom(OFFLINE_MIN_ZOOM);
         mapView.setScrollableAreaLimit(mbTileLayer.getBoundingBox());
         mapButton.setText(R.string.map_change_online);
         displayingOffline = true;
