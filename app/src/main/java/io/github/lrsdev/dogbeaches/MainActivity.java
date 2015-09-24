@@ -23,10 +23,16 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import io.github.lrsdev.dogbeaches.BuildConfig;
-import io.github.lrsdev.dogbeaches.R;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
-import io.github.lrsdev.dogbeaches.map.MapDisplayFragment;
+import io.github.lrsdev.dogbeaches.map.MapFragment;
 import io.github.lrsdev.dogbeaches.sync.SyncAdapter;
 
 public class MainActivity extends AppCompatActivity
@@ -87,9 +93,52 @@ public class MainActivity extends AppCompatActivity
         {
             firstSync();
         }
+        if(prefs.getBoolean("first_run", true))
+        {
+            unzipAssets();
+            prefs.edit().putBoolean("first_run", false);
+        }
     }
 
-    public void firstSync()
+    private void unzipAssets()
+    {
+        InputStream is;
+        ZipInputStream zis;
+        try
+        {
+            String filename;
+            is = getAssets().open("assets.zip");
+            zis = new ZipInputStream(new BufferedInputStream(is));
+            ZipEntry ze;
+            byte[] buffer = new byte[1024];
+            int count;
+
+            while ((ze = zis.getNextEntry()) != null)
+            {
+                filename = ze.getName();
+                if (ze.isDirectory())
+                {
+                    File d = new File(getApplicationInfo().dataDir + "/" + filename);
+                    d.mkdirs();
+                    continue;
+                }
+                FileOutputStream fos = new FileOutputStream(getApplicationInfo().dataDir + "/" + filename);
+
+                while ((count = zis.read(buffer)) != -1)
+                {
+                    fos.write(buffer, 0, count);
+                }
+                fos.close();
+                zis.closeEntry();
+            }
+        }
+        catch (IOException e)
+        {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+    private void firstSync()
     {
         syncFinishedReceiver = new BroadcastReceiver()
         {
@@ -97,15 +146,12 @@ public class MainActivity extends AppCompatActivity
             public void onReceive(Context context, Intent intent)
             {
                 Log.d(TAG, "Sync finished received");
-                syncProgress.dismiss();
             }
         };
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
 
-        syncProgress = ProgressDialog.show(this, "Sync Progress", "Performing first run data sync, " +
-                "you should only see this window once.", true);
         registerReceiver(syncFinishedReceiver, new IntentFilter(SyncAdapter.FIRST_SYNC_FINISHED));
         ContentResolver.requestSync(null, AUTHORITY, bundle);
     }
@@ -139,7 +185,7 @@ public class MainActivity extends AppCompatActivity
                         setContentFragment(new HomeFragment());
                         break;
                     case R.id.drawer_map: // Map was clicked
-                        setContentFragment(MapDisplayFragment.newInstance());
+                        setContentFragment(MapFragment.newInstance());
                         break;
                     case R.id.drawer_locations: // Locations was clicked
                         setContentFragment(new LocationRecyclerFragment());

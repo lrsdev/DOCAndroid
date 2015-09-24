@@ -6,10 +6,21 @@
              android:layout_height="match_parent">
 
     <com.mapbox.mapboxsdk.views.MapView
-        android:id="@+id/mapActivityMap"
+        android:id="@+id/map_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        mapbox:mapid="mapbox.streets-satellite"
+        mapbox:mapid="@string/mapbox_map_id"
         mapbox:accessToken="@string/mapbox_access_token"/>
+
+    <Button
+        android:id="@+id/map_fragment_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:textColor="@color/white"
+        android:background="#5000"
+        android:layout_margin="4dp"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:text="@string/map_change_offline"/>
 
 </FrameLayout>

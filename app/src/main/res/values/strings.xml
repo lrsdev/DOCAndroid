@@ -71,6 +71,7 @@ Call DOC for sick or injured wildlife</string>
     <string name="title_activity_wildlife">Wildlife</string>
     <string name="title_activity_location">LocationActivity</string>
 
+    <!--
     <string name="dataOn">dataOn</string>
     <string name="dataOff">dataOff</string>
 
@@ -78,11 +79,14 @@ Call DOC for sick or injured wildlife</string>
     <string name="loadMapButtonText">Load Map</string>
     <string name="deleteMapsButtonText">Delete Map</string>
     <string name="resetMapButtonText">Reset</string>
+    -->
 
-    <string name="mapbox_access_token">sk.eyJ1Ijoic2FtdWVsY3N0ZXdhcnQiLCJhIjoiNTk4MWFmNDNjNzk4ZDYzM2VmNzA0OGY1YTQ2N2Q0NDYifQ.OeeXYK1S33i_KCyW3VzZiA</string>
-    <string name="mapbox_map_id">samuelcstewart.n8pi63c5</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="title_activity_maps_acitivty">MapsAcitivty</string>
+    <!-- Map MapFragment -->
+    <string name="mapbox_access_token">sk.eyJ1IjoiZG9nYmVhY2hlcyIsImEiOiJjaWV3c2NiZ2IwNzVkc2trcXhvdjV4NDIxIn0.XDzJIvDIf_Jkistks-e0yw</string>
+    <string name="mapbox_map_id">mapbox.streets-satellite</string>
+    <string name="map_change_offline">View Offline Map</string>
+    <string name="map_change_online">View Online Map</string>
+    <!-- End MapFragment -->
 
 <!-- Hotline Telephone Number -->
     <string name="hot">tel:0800362468</string>
