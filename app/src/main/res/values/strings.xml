@@ -7,6 +7,9 @@
 
     <!--LocationActivity -->
     <string name="title_activity_location">LocationActivity</string>
+    <string name="location_dog_guidelines">Dog Guidelines</string>
+    <string name="location_wildlife_guidelines">Wildlife Guidelines</string>
+    <string name="location_directions">Get Directions</string>
     <!-- End LocationActivity -->
 
     <!--SightingActivity -->
@@ -63,5 +66,5 @@
 
     <!-- Hotline Telephone Number -->
     <string name="hot">tel:0800362468</string>
-</resources>
+</>
 

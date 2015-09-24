@@ -2,7 +2,7 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/locationActivityInfoScrollView"
+    android:id="@+id/location_scroll_view"
     android:background="@color/windowBackground"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -16,17 +16,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:id="@+id/locationActivityHeaderContainer">
+            android:id="@+id/location_header_container">
 
             <ImageView
-                android:id="@+id/locationActivityImage"
+                android:id="@+id/location_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_alignParentTop="true"
                 android:scaleType="fitXY"/>
 
             <TextView
-                android:id="@+id/locationActivityNameTextView"
+                android:id="@+id/location_name_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -51,12 +51,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/locationActivityIconImage"
+                    android:id="@+id/location_icon_imageview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id = "@+id/locationActivityStatusTextView"
+                    android:id = "@+id/location_status_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="4dp"
@@ -74,10 +74,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:text="Dog Guidelines"/>
+                    android:text="@string/location_dog_guidelines"/>
 
                 <TextView
-                    android:id="@+id/locationActivityDogGuidelinesTextView"
+                    android:id="@+id/location_dog_guidelines_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -94,10 +94,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:text="Wildlife Information"/>
+                    android:text="@string/location_wildlife_guidelines"/>
 
                 <TextView
-                    android:id="@+id/locationActivityAnimalBlurbTextView"
+                    android:id="@+id/location_animal_blurb_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -109,10 +109,10 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/locationActivityDirectionsButton"
+                    android:id="@+id/location_directions_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Get Directions"
+                    android:text="@string/location_directions"
                     style="@style/Widget.AppCompat.Button" />
 
             </LinearLayout>

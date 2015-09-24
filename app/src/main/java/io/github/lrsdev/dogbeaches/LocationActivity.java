@@ -16,7 +16,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import io.github.lrsdev.dogbeaches.R;
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 
 
@@ -68,13 +67,13 @@ public class LocationActivity extends AppCompatActivity
         mLatitudeIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_LATITUDE);
         mLongitudeIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Locations.COLUMN_LONGITUDE);
 
-        imageView = (ImageView) findViewById(R.id.locationActivityImage);
-        iconImageView = (ImageView) findViewById(R.id.locationActivityIconImage);
-        dogStatusTextView = (TextView) findViewById(R.id.locationActivityStatusTextView);
-        nameTextView = (TextView) findViewById(R.id.locationActivityNameTextView);
-        animalBlurbTextView = (TextView) findViewById(R.id.locationActivityAnimalBlurbTextView);
-        dogGuidelinesTextView = (TextView) findViewById(R.id.locationActivityDogGuidelinesTextView);
-        directionsButton = (Button) findViewById(R.id.locationActivityDirectionsButton);
+        imageView = (ImageView) findViewById(R.id.location_imageview);
+        iconImageView = (ImageView) findViewById(R.id.location_icon_imageview);
+        dogStatusTextView = (TextView) findViewById(R.id.location_status_textview);
+        nameTextView = (TextView) findViewById(R.id.location_name_textview);
+        animalBlurbTextView = (TextView) findViewById(R.id.location_animal_blurb_textview);
+        dogGuidelinesTextView = (TextView) findViewById(R.id.location_dog_guidelines_textview);
+        directionsButton = (Button) findViewById(R.id.location_directions_button);
 
         File f = new File(mCursor.getString(mLocalMediumImageIndex));
         Picasso.with(this).load(f).into(imageView);
