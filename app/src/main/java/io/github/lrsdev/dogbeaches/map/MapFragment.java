@@ -50,7 +50,7 @@ public class MapFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View v = inflater.inflate(R.layout.fragment_map_display, container, false);
+        View v = inflater.inflate(R.layout.fragment_map, container, false);
         mapView = (MapView) v.findViewById(R.id.map_view);
         mapButton = (Button) v.findViewById(R.id.map_fragment_button);
         mapButton.setOnClickListener(new View.OnClickListener()

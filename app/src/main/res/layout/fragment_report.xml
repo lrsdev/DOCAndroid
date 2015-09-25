@@ -40,7 +40,7 @@
                     style="@style/Widget.AppCompat.Spinner"
                     android:id="@+id/reportLocationSpinner"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     />
 
             </LinearLayout>
@@ -62,7 +62,7 @@
                 <Spinner
                     style="@style/Widget.AppCompat.Spinner"
                     android:id="@+id/reportAnimalSpinner"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />
 

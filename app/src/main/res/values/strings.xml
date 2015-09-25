@@ -60,8 +60,8 @@
     <!-- Map MapFragment -->
     <string name="mapbox_access_token">sk.eyJ1IjoiZG9nYmVhY2hlcyIsImEiOiJjaWV3c2NiZ2IwNzVkc2trcXhvdjV4NDIxIn0.XDzJIvDIf_Jkistks-e0yw</string>
     <string name="mapbox_map_id">mapbox.streets-satellite</string>
-    <string name="map_change_offline">View Offline Map</string>
-    <string name="map_change_online">View Online Map</string>
+    <string name="map_change_offline">Show Offline Map</string>
+    <string name="map_change_online">Show Online Map</string>
     <!-- End MapFragment -->
 
     <!-- Hotline Telephone Number -->

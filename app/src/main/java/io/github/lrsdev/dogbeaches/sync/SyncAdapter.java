@@ -18,6 +18,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.squareup.picasso.Picasso;
@@ -26,7 +27,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import io.github.lrsdev.dogbeaches.db.ReportTable;
 import io.github.lrsdev.dogbeaches.sync.API.Animal;
@@ -313,9 +317,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             {
                 while (c.moveToNext())
                 {
+                    HashMap<String, Integer> ids = new HashMap<>();
                     int localId = c.getInt(c.getColumnIndex(ReportTable.COLUMN_ID));
                     int locationId = c.getInt(c.getColumnIndex(ReportTable.COLUMN_LOCATION_ID));
+
+                    // HashMap for optional id parameters. Leaves values out of request to API if
+                    // the user did not define a location or animal type.
+                    if (locationId != 0)
+                        ids.put("location_id", locationId);
                     int animalId = c.getInt(c.getColumnIndex(ReportTable.COLUMN_ANIMAL_ID));
+                    if (animalId != 0)
+                        ids.put("animal_id", animalId);
                     String blurb = c.getString(c.getColumnIndex(ReportTable.COLUMN_BLURB));
                     double latitude = c.getDouble(c.getColumnIndex(ReportTable.COLUMN_LATITUDE));
                     double longitude = c.getDouble(c.getColumnIndex(ReportTable.COLUMN_LONGITUDE));
@@ -325,7 +337,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                     Response r = null;
                     try
                     {
-                        r = RestClient.get().createReport(locationId, animalId, blurb, image, latitude, longitude, createdAt);
+                        r = RestClient.get().createReport(ids, blurb, image, latitude, longitude, createdAt);
                     }
                     catch (RetrofitError e)
                     {

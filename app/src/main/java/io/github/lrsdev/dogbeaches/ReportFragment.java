@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.net.Uri;
@@ -45,13 +47,6 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int REQUEST_IMAGE_CODE = 100;
     private static final int LOADER_ANIMAL = 1;
     private static final int LOADER_LOCATION = 2;
-
-    /* Start obtaining users location when fragment instantiates. Populate Location list with
-        locations close to the user. At the moment, this will jsut pull in the entire location list
-        for testing purposes. Populate wildlife list with options. Take a photo, down sample the
-        photo for transmission. Submit to server.
-     */
-
     private LocationCursorAdapter mLocationAdapter;
     private AnimalCursorAdapter mAnimalAdapter;
     private Location mLastLocation;
@@ -65,7 +60,6 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
     {
         super.onCreate(savedInstanceState);
         mLastLocation = LocationManager.get(getActivity()).getLocation();
-
         getLoaderManager().initLoader(LOADER_LOCATION, null, this);
         getLoaderManager().initLoader(LOADER_ANIMAL, null, this);
     }
@@ -128,8 +122,10 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
         SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(ReportTable.COLUMN_ANIMAL_ID, animalId);
-        cv.put(ReportTable.COLUMN_LOCATION_ID, locationId);
+        if(animalId != 0)
+            cv.put(ReportTable.COLUMN_ANIMAL_ID, animalId);
+        if(locationId != 0)
+            cv.put(ReportTable.COLUMN_LOCATION_ID, locationId);
         cv.put(ReportTable.COLUMN_BLURB, blurb);
         cv.put(ReportTable.COLUMN_IMAGE, imagePath);
         cv.put(ReportTable.COLUMN_LATITUDE, lat);
@@ -183,7 +179,6 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
         File newFile = new File(getActivity().getFilesDir(), current.getName());
         try
         {
-
             in = new FileInputStream(current);
             out = new FileOutputStream(newFile);
 
@@ -268,13 +263,14 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor c)
     {
+        Cursor otherCursor = addOtherToCursor(c);
         switch(loader.getId())
         {
             case LOADER_ANIMAL:
-                mAnimalAdapter.changeCursor(c);
+                mAnimalAdapter.changeCursor(otherCursor);
                 break;
             case LOADER_LOCATION:
-                mLocationAdapter.changeCursor(c);
+                mLocationAdapter.changeCursor(otherCursor);
                 break;
         }
     }
@@ -291,6 +287,14 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
                 mLocationAdapter.changeCursor(null);
                 break;
         }
+    }
+
+    private Cursor addOtherToCursor(Cursor c)
+    {
+        MatrixCursor other = new MatrixCursor(new String[] {"_id", "name"});
+        other.addRow(new String[] {null, "Other"});
+        Cursor[] cursors = { c, other };
+        return new MergeCursor(cursors);
     }
 
     private class SubmitButtonClick implements View.OnClickListener
