@@ -79,7 +79,7 @@ public class LocationActivity extends AppCompatActivity
         Picasso.with(this).load(f).into(imageView);
 
         nameTextView.setText(mCursor.getString(mNameIndex));
-        iconImageView.setImageDrawable(getResources().getDrawable(R.drawable.dogonlead));
+        iconImageView.setImageDrawable(getResources().getDrawable(Helpers.getIconResId(mCursor.getString(mDogStatusIndex))));
         dogStatusTextView.setText(getDogStatusString(mCursor.getString(mDogStatusIndex)));
         dogGuidelinesTextView.setText(mCursor.getString(mDogGuidelinesIndex));
         animalBlurbTextView.setText(mCursor.getString(mAnimalBlurbIndex));
