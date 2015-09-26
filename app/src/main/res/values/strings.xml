@@ -41,10 +41,6 @@
     </string-array>
     <!-- End Navigation Drawer -->
 
-    <!-- SightingActivity -->
-    <string name="title_activity_sighting">SightingActivity</string>
-    <!-- End SightingActivity -->
-
     <!-- DonationFragment -->
     <string name="donation_intro"></string>
     <!-- End DonationFragment -->
@@ -62,6 +58,8 @@
     <string name="mapbox_map_id">mapbox.streets-satellite</string>
     <string name="map_change_offline">Show Offline Map</string>
     <string name="map_change_online">Show Online Map</string>
+    <string name="map_no_location_alert">We\'re currently unable to determine your location. Centering map on Dunedin, New Zealand.</string>
+    <string name="map_offline_alert">"We\'re either unable to determine your location or you're outside the range of the offline map. Centering the map in Dunedin, New Zealand.</string>
     <!-- End MapFragment -->
 
     <!-- Hotline Telephone Number -->

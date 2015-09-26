@@ -133,7 +133,8 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
 
         db.insert(ReportTable.TABLE_NAME, null, cv);
 
-        Toast.makeText(getActivity(), "Thank you, your report will be uploaded on next sync", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Thank you, we will notify you once your report has been uploaded.",
+                Toast.LENGTH_LONG).show();
 
         getFragmentManager().popBackStackImmediate();
     }
