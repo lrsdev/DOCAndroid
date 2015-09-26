@@ -7,15 +7,18 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.squareup.okhttp.OkHttpClient;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import io.github.lrsdev.dogbeaches.BuildConfig;
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 /**
@@ -50,8 +53,16 @@ public class RestClient
                 })
                 .create();
 
+        // Increase the timeout time. Occasionally remote API was responding too slow after a report
+        // upload and local data was not getting removed despite a successful upload, therefore
+        // uploading more than once
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setReadTimeout(30 * 1000, TimeUnit.MILLISECONDS);
+        okHttpClient.setWriteTimeout(30 * 1000, TimeUnit.MILLISECONDS);
+
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(ROOT)
+                .setClient(new OkClient(okHttpClient))
                 .setConverter(new GsonConverter(gson))
                 .setLogLevel(RestAdapter.LogLevel.FULL);
 

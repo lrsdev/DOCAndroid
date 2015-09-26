@@ -2,6 +2,7 @@ package io.github.lrsdev.dogbeaches.sync;
 
 import android.accounts.Account;
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentProviderOperation;
@@ -18,21 +19,16 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
 import com.squareup.picasso.Picasso;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import io.github.lrsdev.dogbeaches.BuildConfig;
+import io.github.lrsdev.dogbeaches.R;
 import io.github.lrsdev.dogbeaches.db.ReportTable;
 import io.github.lrsdev.dogbeaches.sync.API.Animal;
 import io.github.lrsdev.dogbeaches.sync.API.Location;
@@ -59,6 +55,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
     private String mLocationImagePath;
     private String mAnimalImagePath;
     private SQLiteDatabase mDb;
+    private Context mContext;
 
     public SyncAdapter(Context context, boolean autoInitialize)
     {
@@ -70,6 +67,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         super(context, autoInitialize, allowParallelSyncs);
         mContentResolver = context.getContentResolver();
         mDbHelper = new DBHelper(context);
+        mContext = context;
         mLocationImagePath = context.getFilesDir().toString() + LOCATION_IMAGE_PATH;
         mAnimalImagePath = context.getFilesDir().toString() + ANIMAL_IMAGE_PATH;
         File f = new File(mLocationImagePath);
@@ -350,6 +348,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                     {
                         image.file().delete();
                         mDb.delete(ReportTable.TABLE_NAME, "_id=" + localId, null);
+                        NotificationCompat.Builder mBuilder =
+                                new NotificationCompat.Builder(mContext)
+                                        .setSmallIcon(R.drawable.ic_action_dog_paw)
+                                        .setContentTitle("Report Uploaded")
+                                        .setContentText("Thank you for submitting your report!");
+                        NotificationManager mNotificationManager =
+                                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(0, mBuilder.build());
                     }
                 }
             }
