@@ -2,9 +2,9 @@ package io.github.lrsdev.dogbeaches.map;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.PointF;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,11 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.location.Location;
+
+import com.mapbox.mapboxsdk.api.ILatLng;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.overlay.Marker;
 import com.mapbox.mapboxsdk.tileprovider.tilesource.MBTilesLayer;
 import com.mapbox.mapboxsdk.tileprovider.tilesource.MapboxTileLayer;
 import com.mapbox.mapboxsdk.tileprovider.tilesource.TileLayer;
 import com.mapbox.mapboxsdk.views.MapView;
+import com.mapbox.mapboxsdk.views.MapViewListener;
+
+import java.util.HashMap;
+
+import io.github.lrsdev.dogbeaches.Helpers;
+import io.github.lrsdev.dogbeaches.LocationActivity;
 import io.github.lrsdev.dogbeaches.LocationManager;
 import io.github.lrsdev.dogbeaches.R;
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
@@ -34,6 +43,7 @@ public class MapFragment extends Fragment
     private MapView mapView;
     private boolean displayingOffline;
     private Location mLastLocation;
+    private HashMap<Marker, Integer> markerMap;
     TileLayer mOfflineTileLayer;
 
     public static MapFragment newInstance()
@@ -65,10 +75,8 @@ public class MapFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-               if(displayingOffline)
-                   setOnlineMap();
-               else
-                  setOfflineMap();
+                if (displayingOffline) setOnlineMap();
+                else setOfflineMap();
             }
         });
 
@@ -84,7 +92,10 @@ public class MapFragment extends Fragment
         else
             setOfflineMap();
 
+        markerMap = new HashMap<>();
+
         addLocationMarkers();
+        mapView.setMapViewListener(new MarkerClickListener());
         return v;
     }
 
@@ -131,9 +142,10 @@ public class MapFragment extends Fragment
     {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setMessage(message);
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
                         dialog.dismiss();
                     }
                 });
@@ -146,9 +158,6 @@ public class MapFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
     }
 
-    public void setupMap()
-    {
-    }
     public void addLocationMarkers()
     {
         Cursor c = getActivity().getContentResolver().query(DogBeachesContract.Locations.CONTENT_URI,
@@ -166,27 +175,12 @@ public class MapFragment extends Fragment
             com.mapbox.mapboxsdk.overlay.Marker m = new com.mapbox.mapboxsdk.overlay.Marker(c.getString(nameIndex), "",
                     new com.mapbox.mapboxsdk.geometry.LatLng(c.getDouble(latIndex),
                     c.getDouble(longIndex)));
-            m.setMarker(getIconBitmap(c.getString(statusIndex)));
-            m.setAnchor(new PointF(0.5f, 0.5f));
-            m.setToolTip(new LocationInfoWindow(mapView, c.getInt(idIndex), c.getString(imageIndex)));
+            m.setMarker(Helpers.getDogIconDrawable(c.getString(statusIndex), getActivity()));
+                    m.setAnchor(new PointF(0.5f, 0.5f));
+            //m.setToolTip(new LocationInfoWindow(mapView, c.getInt(idIndex), c.getString(imageIndex)));
             mapView.addMarker(m);
+            markerMap.put(m, c.getInt(idIndex));
         }
-        c.close();
-    }
-
-    private Drawable getIconBitmap(String status)
-    {
-        int icon = 0;
-        switch(status)
-        {
-            case "on_lead" : icon = R.drawable.dogonlead;
-                break;
-            case "off_lead" : icon = R.drawable.dogofflead;
-                break;
-            case "no_dogs" : icon = R.drawable.nodogs;
-                break;
-        }
-        return getResources().getDrawable(icon);
     }
 
     @Override
@@ -194,5 +188,46 @@ public class MapFragment extends Fragment
     {
         super.onResume();
         getActivity().setTitle("Location Map");
+    }
+
+    private class MarkerClickListener implements MapViewListener
+    {
+        @Override
+        public void onShowMarker(MapView mapView, Marker marker)
+        {
+
+        }
+
+        @Override
+        public void onHideMarker(MapView mapView, Marker marker)
+        {
+
+        }
+
+        @Override
+        public void onTapMarker(MapView mapView, Marker marker)
+        {
+            Intent i = new Intent(getActivity(), LocationActivity.class);
+            i.putExtra(LocationActivity.KEY_LOCATION_ID, markerMap.get(marker));
+            startActivity(i);
+        }
+
+        @Override
+        public void onLongPressMarker(MapView mapView, Marker marker)
+        {
+
+        }
+
+        @Override
+        public void onTapMap(MapView mapView, ILatLng iLatLng)
+        {
+
+        }
+
+        @Override
+        public void onLongPressMap(MapView mapView, ILatLng iLatLng)
+        {
+
+        }
     }
 }

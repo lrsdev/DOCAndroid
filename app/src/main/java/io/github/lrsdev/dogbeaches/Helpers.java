@@ -1,5 +1,7 @@
 package io.github.lrsdev.dogbeaches;
 
+
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 /**
@@ -7,18 +9,18 @@ import android.graphics.drawable.Drawable;
  */
 public class Helpers
 {
-    public static int getIconResId(String dogStatus)
+    public static Drawable getDogIconDrawable(String dogStatus, Context c)
     {
         switch (dogStatus)
         {
             case "no_dogs":
-                return R.drawable.nodogs;
+                return c.getResources().getDrawable(R.drawable.nodogs);
             case "on_lead":
-                return R.drawable.dogonlead;
+                return c.getResources().getDrawable(R.drawable.dogonlead);
             case "off_lead":
-                return R.drawable.dogofflead;
+                return c.getResources().getDrawable(R.drawable.dogofflead);
             default:
-                return 0;
+                return null;
         }
     }
 }
