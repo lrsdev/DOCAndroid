@@ -95,8 +95,13 @@ public class MainActivity extends AppCompatActivity
         }
         if(prefs.getBoolean("first_run", true))
         {
-            unzipAssets();
-            prefs.edit().putBoolean("first_run", false);
+            // Preinstall maps db and a snapshot of the remote server so the application doesn't
+            // have to synchronise from scratch.
+            if(!BuildConfig.DEBUG)
+            {
+                unzipAssets();
+            }
+            prefs.edit().putBoolean("first_run", false).commit();
         }
     }
 

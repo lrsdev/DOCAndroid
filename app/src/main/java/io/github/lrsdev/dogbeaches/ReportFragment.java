@@ -54,6 +54,7 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
     private Spinner mAnimalSpinner;
     private EditText mBlurbEditText;
     private String mCurrentPhotoPath;
+    private Button mPhotoButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -83,8 +84,8 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
         Button submitButton = (Button) v.findViewById(R.id.reportSubmitButton);
         submitButton.setOnClickListener(new SubmitButtonClick());
 
-        Button photoButton = (Button) v.findViewById(R.id.photoButton);
-        photoButton.setOnClickListener(new View.OnClickListener()
+        mPhotoButton = (Button) v.findViewById(R.id.photoButton);
+        mPhotoButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -122,10 +123,8 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
         SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        if(animalId != 0)
-            cv.put(ReportTable.COLUMN_ANIMAL_ID, animalId);
-        if(locationId != 0)
-            cv.put(ReportTable.COLUMN_LOCATION_ID, locationId);
+        cv.put(ReportTable.COLUMN_ANIMAL_ID, animalId);
+        cv.put(ReportTable.COLUMN_LOCATION_ID, locationId);
         cv.put(ReportTable.COLUMN_BLURB, blurb);
         cv.put(ReportTable.COLUMN_IMAGE, imagePath);
         cv.put(ReportTable.COLUMN_LATITUDE, lat);
@@ -168,6 +167,7 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
         if(requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK)
         {
             Toast.makeText(getActivity(), "Photo Taken", Toast.LENGTH_SHORT).show();
+            mPhotoButton.setText("Retake Photo");
         }
     }
 
