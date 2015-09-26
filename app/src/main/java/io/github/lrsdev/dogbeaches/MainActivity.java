@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity
     private NavigationView mNavigationView;
     private FrameLayout mContentContainer;
     private FragmentManager fm;
-    private Account mAccount;
     private SharedPreferences prefs;
     private ProgressDialog syncProgress;
 
@@ -55,14 +54,16 @@ public class MainActivity extends AppCompatActivity
     @Override protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        prefs = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
+        if(prefs.getBoolean("first_run", true))
+        {
+           firstRun();
+        }
         setContentView(R.layout.activity_main);
-        prefs = getSharedPreferences("io.github.lrsdev.dogbeaches", MODE_PRIVATE);
 
         fm = getSupportFragmentManager();
         mContentContainer = (FrameLayout) findViewById(R.id.content_container);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        Log.d(TAG, AUTHORITY);
 
         // As we're using a Toolbar, we should retrieve it and set it
         // to be our ActionBar
@@ -77,11 +78,6 @@ public class MainActivity extends AppCompatActivity
         {
             setupDrawerContent(navigationView);
         }
-
-        mAccount = CreateSyncAccount(this);
-        ContentResolver resolver = getContentResolver();
-        resolver.setSyncAutomatically(mAccount, AUTHORITY, true);
-
         setContentFragment(new HomeFragment());
     }
 
@@ -89,20 +85,19 @@ public class MainActivity extends AppCompatActivity
     public void onResume()
     {
         super.onResume();
+        /*
         if (!prefs.getBoolean("first_sync_completed", false))
         {
-            firstSync();
-        }
-        if(prefs.getBoolean("first_run", true))
-        {
-            // Preinstall maps db and a snapshot of the remote server so the application doesn't
-            // have to synchronise from scratch.
-            if(!BuildConfig.DEBUG)
-            {
-                unzipAssets();
-            }
-            prefs.edit().putBoolean("first_run", false).commit();
-        }
+            performManualSync();
+        }*/
+    }
+
+    private void firstRun()
+    {
+        unzipAssets();
+        setupAutoSync();
+        performManualSync();
+        prefs.edit().putBoolean("first_run", false).apply();
     }
 
     private void unzipAssets()
@@ -143,21 +138,28 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void firstSync()
+    private void setupAutoSync()
     {
+        Account account = CreateSyncAccount(this);
+        ContentResolver resolver = getContentResolver();
+        resolver.setSyncAutomatically(account, AUTHORITY, true);
+    }
+
+    private void performManualSync()
+    {
+        /*
         syncFinishedReceiver = new BroadcastReceiver()
         {
             @Override
             public void onReceive(Context context, Intent intent)
             {
-                Log.d(TAG, "Sync finished received");
             }
-        };
+        };*/
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
 
-        registerReceiver(syncFinishedReceiver, new IntentFilter(SyncAdapter.FIRST_SYNC_FINISHED));
+        //registerReceiver(syncFinishedReceiver, new IntentFilter(SyncAdapter.FIRST_SYNC_FINISHED));
         ContentResolver.requestSync(null, AUTHORITY, bundle);
     }
 

@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import io.github.lrsdev.dogbeaches.BuildConfig;
 import io.github.lrsdev.dogbeaches.db.ReportTable;
 import io.github.lrsdev.dogbeaches.sync.API.Animal;
 import io.github.lrsdev.dogbeaches.sync.API.Location;
@@ -149,8 +150,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                 animalCursor.close();
         }
 
-        // Send a broadcast to let application know sync is finished (used on first run)
-        SharedPreferences prefs = getContext().getSharedPreferences("io.github.lrsdev.dogbeaches", Activity.MODE_PRIVATE);
+        // Send a broadcast to let application know sync is finished (used on first run).
+        SharedPreferences prefs = getContext().getSharedPreferences(BuildConfig.APPLICATION_ID, Activity.MODE_PRIVATE);
         if (!prefs.getBoolean("first_sync_completed", false))
         {
             Intent i = new Intent(FIRST_SYNC_FINISHED);
