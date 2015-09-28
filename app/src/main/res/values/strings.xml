@@ -12,6 +12,12 @@
     <string name="location_directions">Get Directions</string>
     <!-- End LocationActivity -->
 
+    <!-- AnimalActivity -->
+    <string name="animal_basic_info">Basic Information</string>
+    <string name="animal_guidelines">Guidelines</string>
+    <string name="animal_website_button">View Website</string>
+    <!-- End AnimalActivity -->
+
     <!--SightingActivity -->
     <!-- End SightingActivity -->
 

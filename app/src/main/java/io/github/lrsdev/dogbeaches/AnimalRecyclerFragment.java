@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import io.github.lrsdev.dogbeaches.AnimalActivity;
 import io.github.lrsdev.dogbeaches.R;
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 
@@ -110,8 +111,8 @@ public class AnimalRecyclerFragment extends Fragment
                     @Override
                     public void onClick(View view)
                     {
-                        Intent i = new Intent(mContext, LocationActivity.class);
-                        i.putExtra(LocationActivity.KEY_LOCATION_ID, animalId);
+                        Intent i = new Intent(mContext, AnimalActivity.class);
+                        i.putExtra(AnimalActivity.KEY_ANIMAL_ID, animalId);
                         startActivity(i);
                     }
                 });

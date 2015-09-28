@@ -85,6 +85,9 @@
             android:name="io.github.lrsdev.dogbeaches.LocationActivity"
             android:label="@string/title_activity_location" >
         </activity>
+
+        <activity android:name=".AnimalActivity" >
+        </activity>
     </application>
 
 </manifest>
