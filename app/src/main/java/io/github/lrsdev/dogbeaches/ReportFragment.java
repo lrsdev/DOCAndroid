@@ -1,6 +1,7 @@
 package io.github.lrsdev.dogbeaches;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -132,6 +133,11 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
         cv.put(ReportTable.COLUMN_CREATED_AT, created_at);
 
         db.insert(ReportTable.TABLE_NAME, null, cv);
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        ContentResolver.requestSync(null, BuildConfig.AUTHORITY, bundle);
 
         Toast.makeText(getActivity(), "Thank you, we will notify you once your report has been uploaded.",
                 Toast.LENGTH_LONG).show();
