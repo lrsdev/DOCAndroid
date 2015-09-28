@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity
         }
         else
         {
-            Log.d("Account", "Error adding account");
+            Log.e("Account", "Error adding account");
         }
         return newAccount;
     }
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity
                         setContentFragment(new LocationRecyclerFragment());
                         break;
                     case R.id.drawer_wildlife: // Wildlife was clicked
-                        notImplemented();
+                        setContentFragment(new AnimalRecyclerFragment());
                         break;
                     case R.id.drawer_report: // Report was clicked
                         setContentFragment(new ReportFragment());

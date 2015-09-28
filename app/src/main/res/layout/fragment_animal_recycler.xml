@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/windowBackground">
+
+    <!-- Padding values adhere to material design guidelines of 8dp space between screen edges
+         a margin_bottom attribute defined ont he card itself spaces the cards. -->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/animal_recyclerview"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:paddingLeft="8dp" />
+</LinearLayout>

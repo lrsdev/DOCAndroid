@@ -64,5 +64,8 @@
 
     <!-- Hotline Telephone Number -->
     <string name="hot">tel:0800362468</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
 
