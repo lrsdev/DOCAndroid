@@ -1,12 +1,14 @@
 package io.github.lrsdev.dogbeaches;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -23,6 +25,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Result;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,8 +42,9 @@ import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 import io.github.lrsdev.dogbeaches.map.MapFragment;
 import io.github.lrsdev.dogbeaches.sync.SyncAdapter;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements ResultCallback
 {
+    private static final int REQUEST_CHECK_SETTINGS = 100;
     private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -44,6 +52,7 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fm;
     private SharedPreferences prefs;
     private ProgressDialog syncProgress;
+    private boolean mLocationServicesEnabled = false;
 
     private static IntentFilter syncIntentFilter = new IntentFilter(SyncAdapter.FIRST_SYNC_FINISHED);
     private BroadcastReceiver syncFinishedReceiver;
@@ -79,6 +88,8 @@ public class MainActivity extends AppCompatActivity
             setupDrawerContent(navigationView);
         }
         setContentFragment(new HomeFragment());
+
+        LocationManager.get(MainActivity.this).checkServicesEnabled(MainActivity.this);
     }
 
     @Override
@@ -201,7 +212,13 @@ public class MainActivity extends AppCompatActivity
                         setContentFragment(new AnimalRecyclerFragment());
                         break;
                     case R.id.drawer_report: // Report was clicked
-                        setContentFragment(new ReportFragment());
+                        if (LocationManager.get(MainActivity.this).getLocation() != null)
+                            setContentFragment(new ReportFragment());
+                        else
+                        {
+                           Toast.makeText(MainActivity.this,
+                                   "Cannot determine location for reporting. Please check settings.", Toast.LENGTH_LONG).show();
+                        }
                         break;
                     case R.id.drawer_donate: // Donate was clicked
                         //setContentFragment(new DonateFragment());
@@ -215,12 +232,62 @@ public class MainActivity extends AppCompatActivity
                         //notImplemented();
                         break;
 
-                }
-                menuItem.setChecked(true);
+                } menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onResult(Result locationSettingsResult)
+    {
+        final Status status = locationSettingsResult.getStatus();
+        switch (status.getStatusCode())
+        {
+            case LocationSettingsStatusCodes.SUCCESS:
+                Log.i(TAG, "All location settings are satisfied.");
+                mLocationServicesEnabled = true;
+                break;
+            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                Log.i(TAG, "Location settings are not satisfied. Show the user a dialog to" + "upgrade location settings ");
+
+                try
+                {
+                    // Show the dialog by calling startResolutionForResult(), and check the result
+                    // in onActivityResult().
+                    status.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
+                }
+                catch (IntentSender.SendIntentException e)
+                {
+                    Log.i(TAG, "PendingIntent unable to execute request.");
+                }
+                break;
+            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                Log.i(TAG, "Location settings are inadequate, and cannot be fixed here. Dialog " + "not created.");
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        switch (requestCode)
+        {
+            // Check for the integer request code originally supplied to startResolutionForResult().
+            case REQUEST_CHECK_SETTINGS:
+                switch (resultCode)
+                {
+                    case RESULT_OK:
+                        Log.i(TAG, "User agreed to make required location settings changes.");
+                        mLocationServicesEnabled = true;
+                        break;
+                    case RESULT_CANCELED:
+                        Log.i(TAG, "User chose not to make required location settings changes.");
+                        break;
+                }
+                break;
+        }
     }
 
     @Override
