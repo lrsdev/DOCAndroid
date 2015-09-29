@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -14,9 +14,12 @@
 
         <ImageButton
             android:id="@+id/Btnfeedback"
-            android:layout_width="520dp"
-            android:layout_height="520dp"
+            android:layout_width="260dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center_horizontal"
             android:background="#80000000"
+            android:src="@drawable/btn_feedback"
+            android:scaleType="centerInside"
             android:onClick="onFeedbackAction"
             />
 
@@ -30,16 +33,36 @@
             android:layout_gravity="bottom"
             android:background="@color/hotlineColor"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/homeFab"
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/menu1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_call"
             android:layout_marginBottom="35dp"
             android:layout_marginRight="16dp"
             android:layout_gravity="bottom|right"
-            app:fabSize="normal"
-            />
+            fab:fabSize="normal"
+            fab:menu_labels_ellipsize="end"
+            fab:menu_labels_singleLine="true"
+            fab:menu_fab_label="Menu label"
+            >
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_call"
+                fab:fab_size="mini"
+                fab:fab_label="Call DCC Dog Control" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_call"
+                fab:fab_size="mini"
+                fab:fab_label="Call DoC Hotline" />
+
+        </com.github.clans.fab.FloatingActionMenu>
 
     </FrameLayout>
 

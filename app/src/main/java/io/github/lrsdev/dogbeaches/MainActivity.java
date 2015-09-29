@@ -204,8 +204,8 @@ public class MainActivity extends AppCompatActivity
                         setContentFragment(new ReportFragment());
                         break;
                     case R.id.drawer_donate: // Donate was clicked
-                        //setContentFragment(new DonateFragment());
-                        notImplemented();
+                        setContentFragment(new DonateFragment());
+                        //notImplemented();
                         break;
                     case R.id.drawer_safety: // Safety was clicked
                         setContentFragment(new SafetyFragment());
@@ -214,7 +214,6 @@ public class MainActivity extends AppCompatActivity
                         setContentFragment(new FeedbackFragment());
                         //notImplemented();
                         break;
-
                 }
                 menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
