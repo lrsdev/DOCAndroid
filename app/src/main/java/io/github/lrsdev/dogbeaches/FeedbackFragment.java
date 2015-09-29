@@ -1,6 +1,7 @@
 package io.github.lrsdev.dogbeaches;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,9 +27,7 @@ public class FeedbackFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("message/rfc822");
-                intent.putExtra(Intent.EXTRA_EMAIL, "lrsdev.op@gmail.com");
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:lrsdev.op@gmail.com"));
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Mobile App Feedback");
                 startActivity(Intent.createChooser(intent, "Send Email Feedback"));
             }
