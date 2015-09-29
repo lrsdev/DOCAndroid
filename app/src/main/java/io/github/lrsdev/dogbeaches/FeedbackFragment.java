@@ -1,10 +1,12 @@
 package io.github.lrsdev.dogbeaches;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import io.github.lrsdev.dogbeaches.R;
 
@@ -13,10 +15,24 @@ import io.github.lrsdev.dogbeaches.R;
  */
 public class FeedbackFragment extends Fragment
 {
+    Button sendEmail;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View v = inflater.inflate(R.layout.fragment_feedback, container, false);
+        sendEmail = (Button) v.findViewById(R.id.feedback_email_button);
+        sendEmail.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL, "lrsdev.op@gmail.com");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Mobile App Feedback");
+                startActivity(Intent.createChooser(intent, "Send Email Feedback"));
+            }
+        });
         return v;
     }
 

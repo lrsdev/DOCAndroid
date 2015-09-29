@@ -6,6 +6,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="@color/windowBackground"
+    android:padding="8sp"
     android:weightSum="1">
 
     <TextView
@@ -14,57 +15,63 @@
         android:layout_height="wrap_content"
         android:text="@string/feedback_request"
         android:background="@color/windowBackground"
-        android:layout_margin="16dp"
-        android:padding="8dp"
-        android:textSize="20dp"
+        android:textSize="16sp"
         android:textStyle="bold"
+        android:paddingBottom="8dp"
         />
 
     <TextView
         android:id="@+id/feedbck1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:layout_marginLeft="8dp"
+        android:textSize="16sp"
         android:text="@string/feedback_1"
-        android:gravity="center"
         />
 
     <TextView
         android:id="@+id/feedbck2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:layout_marginLeft="8dp"
+        android:textSize="16sp"
         android:text="@string/feedback_2"
-        android:gravity="center"
         />
 
     <TextView
         android:id="@+id/feedbck3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:layout_marginLeft="8dp"
+        android:textSize="16sp"
         android:text="@string/feedback_3"
-        android:gravity="center"
         />
 
     <TextView
         android:id="@+id/feedbck4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:layout_marginLeft="8dp"
+        android:textSize="16sp"
         android:text="@string/feedback_4"
-        android:gravity="center"
+        />
+
+    <Button
+        android:id="@+id/feedback_email_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/feedback_email_button"
+        style="@style/Widget.AppCompat.Button.Small"
         />
 
     <TextView
-        android:id="@+id/contactDetails"
+        android:id="@+id/feedback_contact_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginLeft="16dp"
         android:textStyle="bold"
-        android:textSize="20dp"
-        android:padding="8dp"
+        android:textSize="14sp"
         android:text="@string/feedback_contact"
         />
 
@@ -72,28 +79,18 @@
         android:id="@+id/contactEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_marginLeft="24dp"
+        android:textSize="14sp"
         android:text="@string/feedback_email_address"
         />
 
     <TextView
-        android:id="@+id/contactSubject"
+        android:id="@+id/feedback_contact_subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:layout_marginLeft="24dp"
+        android:textSize="14sp"
         android:text="@string/feedback_email_subject"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/feedback_note"
-        android:layout_marginTop="72dp"
-        android:padding="16dp"
-        android:textStyle="italic"
-        android:id="@+id/textView"/>
+
+
 </LinearLayout>

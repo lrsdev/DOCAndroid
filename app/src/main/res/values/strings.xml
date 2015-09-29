@@ -22,15 +22,15 @@
     <!-- End SightingActivity -->
 
     <!-- FeedbackFragment -->
-    <string name="feedback_request">Please provide feedback on the following areas via email:</string>
-    <string name="feedback_1">&#8226; Easy of use </string>
-    <string name="feedback_2">&#8226; Ease of Navigating the App </string>
-    <string name="feedback_3">&#8226; Any Errors that you have come across </string>
-    <string name="feedback_4">&#8226; Ideas on future features </string>
-    <string name="feedback_contact">Send your feedback to:</string>
-    <string name="feedback_email_address">email:   lrs.dev@gmail.com</string>
+    <string name="feedback_request">We would love to hear from you concerning any suggestions you may have, for example:</string>
+    <string name="feedback_1">&#8226; General usability </string>
+    <string name="feedback_2">&#8226; Bugs </string>
+    <string name="feedback_3">&#8226; Errors (Typos, Information) </string>
+    <string name="feedback_4">&#8226; Feature requests </string>
+    <string name="feedback_contact">If you\'d prefer to send an email from a computer, use the following details:</string>
+    <string name="feedback_email_address">email:   lrsdev.op@gmail.com</string>
     <string name="feedback_email_subject">subject: Mobile App Feedback</string>
-    <string name="feedback_note">(Please note: this app is still underconstruction and not all features have been implemented)</string>
+    <string name="feedback_email_button">Email Us</string>
     <!-- End FeedbackFragment -->
 
     <!-- Navigation drawer -->
