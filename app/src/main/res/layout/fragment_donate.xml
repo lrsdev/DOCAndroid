@@ -29,33 +29,81 @@
             android:padding="8dp"
             />
 
-        <ImageButton
-            android:id="@+id/yept_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/donateintro"
-            android:layout_marginTop="24dp"
-            android:layout_marginLeft="8dp"
-            android:src="@drawable/ic_yept"
-            android:background="#80000000"
-            android:onClick="onFeedbackAction"
-            />
+    <!-- Yellow-Eyed penguin Trust Button -->
+            <ImageButton
+                android:id="@+id/yept_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/donateintro"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_yept"
+                />
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="72dp"
-            android:layout_alignTop="@+id/yept_icon"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_toRightOf="@+id/yept_icon"
-            android:layout_toEndOf="@+id/yept_icon"
-            android:padding="8dp"
-            android:text="Yellow-Eyed Penguin Trust"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#ffffff"
-            />
+            <TextView
+                android:id="@+id/yept_head"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/yept_icon"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/yept_icon"
+                android:layout_toEndOf="@+id/yept_icon"
+                android:padding="8dp"
+                android:text="Yellow-Eyed Penguin Trust"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:text="www.yellow-eyedpenguin.org.nz"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:textColor="#ffffff"
+                android:layout_below="@+id/yept_head"
+                android:layout_toRightOf="@+id/yept_icon"
+                android:layout_toEndOf="@+id/yept_icon"/>
 
+    <!-- NZ Sealion Trust Button -->
 
+            <ImageButton
+                android:id="@+id/sea_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/yept_icon"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_sea"
+                />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/sea_head"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/sea_icon"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/sea_icon"
+                android:layout_toEndOf="@+id/sea_icon"
+                android:padding="8dp"
+                android:text="NZ Sealion Trust"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:text="www.sealiontrust.org.nz"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:textColor="#ffffff"
+                android:layout_below="@+id/sea_head"
+                android:layout_toRightOf="@+id/sea_icon"
+                android:layout_toEndOf="@+id/sea_icon"/>
+
+    </RelativeLayout>
