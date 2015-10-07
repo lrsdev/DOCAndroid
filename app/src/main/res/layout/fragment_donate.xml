@@ -1,36 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/hotlineColor">
+    android:background="@color/hotlineColor"
+    android:padding="8dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/donation_intro"
-        android:textColor="#ffffff"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        />
+        <TextView
+            android:id="@+id/donateheader"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:gravity="center_horizontal"
+            android:text="Donations"
+            android:textColor="#ffffff"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/donation_intro"
-        android:textColor="#ffffff"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="16dp"
-        />
+        <TextView
+            android:id="@+id/donateintro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donateheader"
+            android:text="@string/donate_intro"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:padding="8dp"
+            />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/donationRecyclerView"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp" />
-</LinearLayout>
+    <!-- Yellow-Eyed penguin Trust Button -->
+            <ImageButton
+                android:id="@+id/yept_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/donateintro"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_yept"
+                />
+
+            <TextView
+                android:id="@+id/yept_head"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/yept_icon"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/yept_icon"
+                android:layout_toEndOf="@+id/yept_icon"
+                android:padding="8dp"
+                android:text="Yellow-Eyed Penguin Trust"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:text="www.yellow-eyedpenguin.org.nz"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:textColor="#ffffff"
+                android:layout_below="@+id/yept_head"
+                android:layout_toRightOf="@+id/yept_icon"
+                android:layout_toEndOf="@+id/yept_icon"/>
+
+    <!-- NZ Sealion Trust Button -->
+
+            <ImageButton
+                android:id="@+id/sea_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/yept_icon"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_sea"
+                />
+
+            <TextView
+                android:id="@+id/sea_head"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/sea_icon"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/sea_icon"
+                android:layout_toEndOf="@+id/sea_icon"
+                android:padding="8dp"
+                android:text="NZ Sealion Trust"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:text="www.sealiontrust.org.nz"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:textColor="#ffffff"
+                android:layout_below="@+id/sea_head"
+                android:layout_toRightOf="@+id/sea_icon"
+                android:layout_toEndOf="@+id/sea_icon"/>
+
+    </RelativeLayout>

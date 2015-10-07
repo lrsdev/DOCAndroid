@@ -70,8 +70,9 @@
 
     <!-- Hotline Telephone Number -->
     <string name="hot">tel:0800362468</string>
+    <string name="dcc">tel:03477400</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Donation Intro -->
+    <string name="donate_intro">There a number of organisations that are always looking for supporters and for donations. If you want to help in anyway please contact them directly via the below buttons</string>
 </resources>
 
