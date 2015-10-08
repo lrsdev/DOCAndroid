@@ -35,51 +35,63 @@ public class Location implements Serializable
     @SerializedName("reports")
     private ArrayList<Sighting> sightings;
 
-    public String getDogStatus() {
+    public String getDogStatus()
+    {
         return dogStatus;
     }
 
-    public void setDogStatus(String dogStatus) {
+    public void setDogStatus(String dogStatus)
+    {
         this.dogStatus = dogStatus;
     }
 
-    public String getDogGuidelines() {
+    public String getDogGuidelines()
+    {
         return dogGuidelines;
     }
 
-    public void setDogGuidelines(String dogGuidelines) {
+    public void setDogGuidelines(String dogGuidelines)
+    {
         this.dogGuidelines = dogGuidelines;
     }
 
-    public double getLongitude() {
+    public double getLongitude()
+    {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(double longitude)
+    {
         this.longitude = longitude;
     }
 
-    public String getImageThumbnail() {
+    public String getImageThumbnail()
+    {
         return imageThumbnail;
     }
 
-    public void setImageThumbnail(String imageThumb) {
+    public void setImageThumbnail(String imageThumb)
+    {
         this.imageThumbnail = imageThumb;
     }
 
-    public String getImageMedium() {
+    public String getImageMedium()
+    {
         return imageMedium;
     }
 
-    public void setImageMedium(String imageMedium) {
+    public void setImageMedium(String imageMedium)
+    {
         this.imageMedium = imageMedium;
     }
 
-    public double getLatitude() {
+    public double getLatitude()
+    {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(double latitude)
+    {
         this.latitude = latitude;
     }
 

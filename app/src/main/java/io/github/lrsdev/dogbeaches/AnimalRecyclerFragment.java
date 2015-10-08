@@ -3,7 +3,6 @@ package io.github.lrsdev.dogbeaches;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,8 +19,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import io.github.lrsdev.dogbeaches.AnimalActivity;
-import io.github.lrsdev.dogbeaches.R;
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 
 /**

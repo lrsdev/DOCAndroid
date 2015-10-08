@@ -21,22 +21,25 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
 import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import io.github.lrsdev.dogbeaches.BuildConfig;
 import io.github.lrsdev.dogbeaches.R;
+import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
+import io.github.lrsdev.dogbeaches.db.DBHelper;
 import io.github.lrsdev.dogbeaches.db.ReportTable;
+import io.github.lrsdev.dogbeaches.db.SyncTable;
 import io.github.lrsdev.dogbeaches.sync.API.Animal;
 import io.github.lrsdev.dogbeaches.sync.API.Location;
 import io.github.lrsdev.dogbeaches.sync.API.RestClient;
 import io.github.lrsdev.dogbeaches.sync.API.Sync;
-import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
-import io.github.lrsdev.dogbeaches.db.DBHelper;
-import io.github.lrsdev.dogbeaches.db.SyncTable;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
@@ -99,7 +102,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
 
             // Get all required cursors
             locationCursor = mContentResolver.query(DogBeachesContract.Locations.CONTENT_URI,
-                DogBeachesContract.Locations.PROJECTION_ALL, null, null, null);
+                    DogBeachesContract.Locations.PROJECTION_ALL, null, null, null);
 
             animalCursor = mContentResolver.query(DogBeachesContract.Animals.CONTENT_URI,
                     DogBeachesContract.Animals.PROJECTION_ALL, null, null, null);
@@ -121,31 +124,33 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             cv.put(SyncTable.LAST_SYNC, syncObject.getSyncedAt());
             mDb.execSQL("DELETE FROM " + SyncTable.TABLE_NAME);
             mDb.insert(SyncTable.TABLE_NAME, null, cv);
-        }
-        catch(RemoteException|OperationApplicationException e)
+        } catch (RemoteException | OperationApplicationException e)
         {
             Log.e(TAG, "Database error: " + e.toString());
             return;
-        }
-        catch(IOException e)
+        } catch (IOException e)
         {
             Log.e(TAG, "I/O Error: " + e.toString());
             return;
-        }
-        catch(Exception e)
+        } catch (Exception e)
         {
             Log.e(TAG, "Error: " + e.toString());
             return;
-        }
-        finally
+        } finally
         {
             // Delete downloaded files if sync not success (database will stiff ref old files)
-            if(!success)
+            if (!success)
+            {
                 deleteFiles(filesCreated);
-            if(locationCursor != null)
+            }
+            if (locationCursor != null)
+            {
                 locationCursor.close();
-            if(animalCursor != null)
+            }
+            if (animalCursor != null)
+            {
                 animalCursor.close();
+            }
         }
 
         // Send a broadcast to let application know sync is finished (used on first run).
@@ -179,7 +184,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         {
             Integer currentId = c.getInt(idIndex);
 
-            if(deletedAnimals.contains(c.getInt(idIndex)))
+            if (deletedAnimals.contains(c.getInt(idIndex)))
             {
                 Uri deleteUri = DogBeachesContract.Animals.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(currentId)).build();
@@ -187,7 +192,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                 batch.add(ContentProviderOperation.newDelete(deleteUri).build());
             }
 
-            else if(entryMap.containsKey(currentId))
+            else if (entryMap.containsKey(currentId))
             {
                 Uri existingUri = DogBeachesContract.Animals.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(currentId)).build();
@@ -200,7 +205,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                         .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_URL, a.getImageMedium())
                         .withYieldAllowed(true);
 
-                if(a.getImageMedium().compareTo(c.getString(imageIndexURL)) != 0)
+                if (a.getImageMedium().compareTo(c.getString(imageIndexURL)) != 0)
                 {
                     File f = createImageFile(mAnimalImagePath, a.getId().toString() + ".jpg");
                     downloadImageToFile(f, a.getImageMedium());
@@ -218,15 +223,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             downloadImageToFile(f, a.getImageMedium());
             filesCreated.add(f.getAbsolutePath());
             batch.add(
-                ContentProviderOperation.newInsert(DogBeachesContract.Animals.CONTENT_URI)
-                    .withValue(DogBeachesContract.Animals.COLUMN_ID, a.getId())
-                    .withValue(DogBeachesContract.Animals.COLUMN_NAME, a.getName())
-                    .withValue(DogBeachesContract.Animals.COLUMN_BLURB, a.getBlurb())
-                    .withValue(DogBeachesContract.Animals.COLUMN_GUIDELINES, a.getGuidelines())
-                    .withValue(DogBeachesContract.Animals.COLUMN_EXT_URL, a.getExtUrl())
-                        .withValue(DogBeachesContract.Animals.COLUMN_IMAGE, f.getAbsolutePath())
-                        .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_URL, a.getImageMedium())
-                        .withYieldAllowed(true).build());
+                    ContentProviderOperation.newInsert(DogBeachesContract.Animals.CONTENT_URI)
+                            .withValue(DogBeachesContract.Animals.COLUMN_ID, a.getId())
+                            .withValue(DogBeachesContract.Animals.COLUMN_NAME, a.getName())
+                            .withValue(DogBeachesContract.Animals.COLUMN_BLURB, a.getBlurb())
+                            .withValue(DogBeachesContract.Animals.COLUMN_GUIDELINES, a.getGuidelines())
+                            .withValue(DogBeachesContract.Animals.COLUMN_EXT_URL, a.getExtUrl())
+                            .withValue(DogBeachesContract.Animals.COLUMN_IMAGE, f.getAbsolutePath())
+                            .withValue(DogBeachesContract.Animals.COLUMN_IMAGE_URL, a.getImageMedium())
+                            .withYieldAllowed(true).build());
         }
     }
 
@@ -255,7 +260,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         {
             Integer currentId = c.getInt(idIndex);
             // If current record ID is in deleted_ids, delete it.
-            if(deletedLocations.contains(c.getInt(idIndex)))
+            if (deletedLocations.contains(c.getInt(idIndex)))
             {
                 Uri deleteUri = DogBeachesContract.Locations.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(currentId)).build();
@@ -265,7 +270,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             }
 
             // If entry map contains key for location, update record, and remove from entry map.
-            else if(entryMap.containsKey(currentId))
+            else if (entryMap.containsKey(currentId))
             {
                 Uri existingUri = DogBeachesContract.Locations.CONTENT_URI.buildUpon()
                         .appendPath(Integer.toString(currentId)).build();
@@ -273,7 +278,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                 // Use id from current location in cursor to retrieve object from map
                 Location l = entryMap.get(currentId);
                 ContentProviderOperation.Builder op = ContentProviderOperation.newUpdate(existingUri)
-                    .withValue(DogBeachesContract.Locations.COLUMN_NAME, l.getName())
+                        .withValue(DogBeachesContract.Locations.COLUMN_NAME, l.getName())
                         .withValue(DogBeachesContract.Locations.COLUMN_CATEGORY, l.getCategory())
                         .withValue(DogBeachesContract.Locations.COLUMN_ANIMAL_BLURB, l.getAnimalBlurb())
                         .withValue(DogBeachesContract.Locations.COLUMN_DOG_STATUS, l.getDogStatus())
@@ -284,7 +289,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                         .withYieldAllowed(true);
 
                 // Get new medium image if URL's are different
-                if(l.getImageMedium().compareTo(c.getString(imageUrlIndex)) != 0)
+                if (l.getImageMedium().compareTo(c.getString(imageUrlIndex)) != 0)
                 {
                     File f = createImageFile(mLocationImagePath, Integer.toString(l.getId()) + ".jpg");
                     downloadImageToFile(f, l.getImageMedium());
@@ -323,10 +328,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                     // HashMap for optional id parameters. Leaves values out of request to API if
                     // the user did not define a location or animal type.
                     if (locationId != 0)
+                    {
                         ids.put("location_id", locationId);
+                    }
                     int animalId = c.getInt(c.getColumnIndex(ReportTable.COLUMN_ANIMAL_ID));
                     if (animalId != 0)
+                    {
                         ids.put("animal_id", animalId);
+                    }
                     String blurb = c.getString(c.getColumnIndex(ReportTable.COLUMN_BLURB));
                     double latitude = c.getDouble(c.getColumnIndex(ReportTable.COLUMN_LATITUDE));
                     double longitude = c.getDouble(c.getColumnIndex(ReportTable.COLUMN_LONGITUDE));
@@ -337,8 +346,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                     try
                     {
                         r = RestClient.get().createReport(ids, blurb, image, latitude, longitude, createdAt);
-                    }
-                    catch (RetrofitError e)
+                    } catch (RetrofitError e)
                     {
                         Log.e(TAG, e.toString());
                     }
@@ -359,11 +367,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                     }
                 }
             }
-        }
-        finally
+        } finally
         {
-            if(c != null)
+            if (c != null)
+            {
                 c.close();
+            }
         }
     }
 
@@ -380,7 +389,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         out = new FileOutputStream(file);
         bm.compress(Bitmap.CompressFormat.JPEG, 100, out);
         if (out != null)
+        {
             out.close();
+        }
     }
 
     private String getLastSyncTimestamp(SQLiteDatabase db)
@@ -389,7 +400,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         String[] projection = {SyncTable.LAST_SYNC};
         Cursor c = db.query(SyncTable.TABLE_NAME, projection, null, null, null, null, null);
         String timestamp = "1970-01-01T00:00:00.000Z";
-        if(c.getCount() != 0)
+        if (c.getCount() != 0)
         {
             c.moveToFirst();
             timestamp = c.getString(c.getColumnIndex(SyncTable.LAST_SYNC));

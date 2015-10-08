@@ -36,6 +36,7 @@ public class DogBeachesProvider extends ContentProvider
 
     /**
      * Instantiate and store a reference to the DB Helper.
+     *
      * @return
      */
     @Override
@@ -110,7 +111,7 @@ public class DogBeachesProvider extends ContentProvider
         String where;
         int uriType = sURIMatcher.match(uri);
 
-        switch(uriType)
+        switch (uriType)
         {
             case LOCATIONS:
                 delCount = db.delete(DogBeachesContract.Locations.TABLE_NAME, selection, selectionArgs);

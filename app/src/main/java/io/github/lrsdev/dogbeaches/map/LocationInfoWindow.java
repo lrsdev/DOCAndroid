@@ -34,7 +34,7 @@ public class LocationInfoWindow extends InfoWindow
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent)
             {
-                if(motionEvent.getAction() == MotionEvent.ACTION_UP)
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP)
                 {
                     Toast.makeText(mView.getContext(), "Info Window Pressed", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(mView.getContext(), LocationActivity.class);

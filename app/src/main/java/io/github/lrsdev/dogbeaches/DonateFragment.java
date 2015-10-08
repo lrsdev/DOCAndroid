@@ -28,11 +28,11 @@ public class DonateFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
 
-        View view = inflater.inflate(R.layout.fragment_donate,container, false);
+        View view = inflater.inflate(R.layout.fragment_donate, container, false);
 
         //Yellow-Eyed Penguin Trust & NZ Sealion Trust Intent(Open browser to donation url page)
-        yept = (ImageButton)view.findViewById(R.id.yept_icon);
-        sea = (ImageButton)view.findViewById(R.id.sea_icon);
+        yept = (ImageButton) view.findViewById(R.id.yept_icon);
+        sea = (ImageButton) view.findViewById(R.id.sea_icon);
 
         yept.setOnClickListener(clickListener);
         sea.setOnClickListener(clickListener);
@@ -40,7 +40,8 @@ public class DonateFragment extends Fragment
         return view;
     }
 
-    private View.OnClickListener clickListener = new View.OnClickListener() {
+    private View.OnClickListener clickListener = new View.OnClickListener()
+    {
         @Override
         public void onClick(View v)
         {

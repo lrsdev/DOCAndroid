@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.github.lrsdev.dogbeaches.R;
-
 /**
  * Created by rickiekewene on 14/08/15.
  */

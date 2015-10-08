@@ -2,14 +2,12 @@ package io.github.lrsdev.dogbeaches;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import io.github.lrsdev.dogbeaches.R;
 
 /**
  * Created by rickiekewene on 20/09/15.
@@ -17,6 +15,7 @@ import io.github.lrsdev.dogbeaches.R;
 public class FeedbackFragment extends Fragment
 {
     Button sendEmail;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {

@@ -9,8 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
+
 import java.io.File;
+
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 
 public class AnimalActivity extends AppCompatActivity
@@ -46,7 +49,7 @@ public class AnimalActivity extends AppCompatActivity
         mGuidelinesIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Animals.COLUMN_GUIDELINES);
         mLocalMediumImageIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Animals.COLUMN_IMAGE);
         mUrlIndex = mCursor.getColumnIndexOrThrow(DogBeachesContract.Animals.COLUMN_EXT_URL);
-        mUrl =  mCursor.getString(mUrlIndex);
+        mUrl = mCursor.getString(mUrlIndex);
 
         imageView = (ImageView) findViewById(R.id.animal_imageview);
         nameTextView = (TextView) findViewById(R.id.animal_name_textview);

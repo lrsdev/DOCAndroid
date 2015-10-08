@@ -38,14 +38,14 @@ public class RestClient
                 .registerTypeAdapter(Date.class, new JsonDeserializer<Date>()
                 {
                     @Override
-                    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException{
+                    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
+                    {
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                         format.setTimeZone(TimeZone.getTimeZone("UTC"));
                         try
                         {
                             return format.parse(json.getAsString());
-                        }
-                        catch (ParseException e)
+                        } catch (ParseException e)
                         {
                             return null;
                         }
@@ -72,10 +72,12 @@ public class RestClient
 
     public static UserApi get()
     {
-        if(REST_CLIENT == null)
+        if (REST_CLIENT == null)
         {
-            if(REST_CLIENT == null)
+            if (REST_CLIENT == null)
+            {
                 new RestClient();
+            }
         }
         return REST_CLIENT;
     }

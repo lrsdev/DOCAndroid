@@ -1,7 +1,7 @@
 package io.github.lrsdev.dogbeaches;
 
-import android.app.Activity;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -15,8 +15,6 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
-
-import android.location.Location;
 
 /**
  * Created by sam on 16/09/15.
@@ -48,26 +46,26 @@ public class LocationManager implements GoogleApiClient.ConnectionCallbacks,
 
     public static LocationManager get(Context c)
     {
-       if (lm == null)
-       {
-           lm = new LocationManager(c);
-       }
+        if (lm == null)
+        {
+            lm = new LocationManager(c);
+        }
         return lm;
     }
 
     public Location getLocation()
     {
-       return mCurrentLocation;
+        return mCurrentLocation;
     }
 
     private void createLocationRequests()
     {
-        mLocationRequestBalanced= new LocationRequest();
+        mLocationRequestBalanced = new LocationRequest();
         mLocationRequestBalanced.setInterval(10000);
         mLocationRequestBalanced.setFastestInterval(5000);
         mLocationRequestBalanced.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        mLocationRequestHighAccuracy= new LocationRequest();
+        mLocationRequestHighAccuracy = new LocationRequest();
         mLocationRequestHighAccuracy.setInterval(5000);
         mLocationRequestHighAccuracy.setFastestInterval(1000);
         mLocationRequestHighAccuracy.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);

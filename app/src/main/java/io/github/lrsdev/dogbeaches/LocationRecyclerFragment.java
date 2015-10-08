@@ -20,7 +20,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import io.github.lrsdev.dogbeaches.R;
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 
 /**
@@ -64,7 +63,7 @@ public class LocationRecyclerFragment extends Fragment
     {
         mLastLocation = LocationManager.get(getActivity()).getLocation();
         String orderBy = "";
-        if(mLastLocation != null)
+        if (mLastLocation != null)
         {
             orderBy = "abs(latitude - " + Double.toString(mLastLocation.getLatitude()) + ") " +
                     "+ abs(longitude - " + Double.toString(mLastLocation.getLongitude()) + ")";
@@ -161,7 +160,7 @@ public class LocationRecyclerFragment extends Fragment
             if (mLastLocation != null)
             {
                 Float distance = mLastLocation.distanceTo(holder.coordinates);
-                String kms = String.format("%.2f", (distance/1000)) + " Kms away";
+                String kms = String.format("%.2f", (distance / 1000)) + " Kms away";
                 holder.distanceTextView.setText(kms);
             }
         }

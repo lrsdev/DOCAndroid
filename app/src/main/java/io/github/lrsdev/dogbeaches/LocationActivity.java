@@ -80,7 +80,7 @@ public class LocationActivity extends AppCompatActivity
 
         nameTextView.setText(mCursor.getString(mNameIndex));
         iconImageView.setImageDrawable(Helpers.getDogIconDrawable(mCursor.getString(mDogStatusIndex), this));
-                dogStatusTextView.setText(getDogStatusString(mCursor.getString(mDogStatusIndex)));
+        dogStatusTextView.setText(getDogStatusString(mCursor.getString(mDogStatusIndex)));
         dogGuidelinesTextView.setText(mCursor.getString(mDogGuidelinesIndex));
         animalBlurbTextView.setText(mCursor.getString(mAnimalBlurbIndex));
 
@@ -105,7 +105,7 @@ public class LocationActivity extends AppCompatActivity
 
     private String getDogStatusString(String s)
     {
-        switch(s)
+        switch (s)
         {
             case "on_lead":
                 return "Dogs allowed on lead";

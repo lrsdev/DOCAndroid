@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.PointF;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.location.Location;
 
 import com.mapbox.mapboxsdk.api.ILatLng;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -38,7 +38,7 @@ public class MapFragment extends Fragment
 {
     private static final Integer OFFLINE_MAX_ZOOM = 11;
     private static final Integer OFFLINE_MIN_ZOOM = 11;
-    private static final LatLng  DUNEDIN_LATLNG = new LatLng(-45.874372, 170.504186);
+    private static final LatLng DUNEDIN_LATLNG = new LatLng(-45.874372, 170.504186);
     private Button mapButton;
     private MapView mapView;
     private boolean displayingOffline;
@@ -75,22 +75,32 @@ public class MapFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                if (displayingOffline) setOnlineMap();
-                else setOfflineMap();
+                if (displayingOffline)
+                {
+                    setOnlineMap();
+                }
+                else
+                {
+                    setOfflineMap();
+                }
             }
         });
 
         mLastLocation = LocationManager.get(getActivity()).getLocation();
-        ConnectivityManager cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnected();
 
-        if(isConnected)
+        if (isConnected)
+        {
             setOnlineMap();
+        }
         else
+        {
             setOfflineMap();
+        }
 
         markerMap = new HashMap<>();
 
@@ -110,8 +120,8 @@ public class MapFragment extends Fragment
         displayingOffline = true;
 
         if (mLastLocation != null &&
-                 mOfflineTileLayer.getBoundingBox().contains(new LatLng(mLastLocation.getLatitude(),
-                    mLastLocation.getLongitude())))
+                mOfflineTileLayer.getBoundingBox().contains(new LatLng(mLastLocation.getLatitude(),
+                        mLastLocation.getLongitude())))
         {
             mapView.goToUserLocation(true);
         }
@@ -124,7 +134,7 @@ public class MapFragment extends Fragment
 
     private void setOnlineMap()
     {
-        if(mLastLocation == null)
+        if (mLastLocation == null)
         {
             mapView.setCenter(DUNEDIN_LATLNG);
             showAlert(getResources().getString(R.string.map_no_location_alert));
@@ -143,12 +153,12 @@ public class MapFragment extends Fragment
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setMessage(message);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dialog.dismiss();
-                    }
-                });
+        {
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+            }
+        });
         alertDialog.show();
     }
 
@@ -170,13 +180,13 @@ public class MapFragment extends Fragment
         int statusIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_DOG_STATUS);
         int imageIndex = c.getColumnIndex(DogBeachesContract.Locations.COLUMN_IMAGE);
 
-        while(c.moveToNext())
+        while (c.moveToNext())
         {
             com.mapbox.mapboxsdk.overlay.Marker m = new com.mapbox.mapboxsdk.overlay.Marker(c.getString(nameIndex), "",
                     new com.mapbox.mapboxsdk.geometry.LatLng(c.getDouble(latIndex),
-                    c.getDouble(longIndex)));
+                            c.getDouble(longIndex)));
             m.setMarker(Helpers.getDogIconDrawable(c.getString(statusIndex), getActivity()));
-                    m.setAnchor(new PointF(0.5f, 0.5f));
+            m.setAnchor(new PointF(0.5f, 0.5f));
             //m.setToolTip(new LocationInfoWindow(mapView, c.getInt(idIndex), c.getString(imageIndex)));
             mapView.addMarker(m);
             markerMap.put(m, c.getInt(idIndex));

@@ -34,11 +34,11 @@ public interface UserApi
     @Multipart
     @POST("/reports")
     public Response createReport(
-                             @PartMap Map<String, Integer> ids,
-                             @Part("blurb") String blurb,
-                             @Part("image") TypedFile file,
-                             @Part("latitude") Double latitude,
-                             @Part("longitude") Double longitude,
-                             @Part("created_at") String date
-                             );
+            @PartMap Map<String, Integer> ids,
+            @Part("blurb") String blurb,
+            @Part("image") TypedFile file,
+            @Part("latitude") Double latitude,
+            @Part("longitude") Double longitude,
+            @Part("created_at") String date
+    );
 }

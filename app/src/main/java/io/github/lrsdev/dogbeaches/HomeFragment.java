@@ -1,16 +1,13 @@
 package io.github.lrsdev.dogbeaches;
 
 import android.animation.AnimatorSet;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import io.github.lrsdev.dogbeaches.R;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -36,46 +33,49 @@ public class HomeFragment extends Fragment
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-            //Hotline FAB direct dial
-            final FloatingActionMenu menu1 = (FloatingActionMenu)view.findViewById(R.id.menu1);
+        //Hotline FAB direct dial
+        final FloatingActionMenu menu1 = (FloatingActionMenu) view.findViewById(R.id.menu1);
 
-            menu1.setOnMenuButtonClickListener(new View.OnClickListener()
+        menu1.setOnMenuButtonClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
             {
-
-                @Override
-                public void onClick(View v)
+                if (menu1.isOpened())
                 {
-                    if (menu1.isOpened())
-                    {
-                        //Toast.makeText(menu1.getMenuButtonLabelText(), Toast.LENGTH_SHORT).show();
-                    }
-                    menu1.toggle(true);
+                    //Toast.makeText(menu1.getMenuButtonLabelText(), Toast.LENGTH_SHORT).show();
                 }
-            });
+                menu1.toggle(true);
+            }
+        });
 
-            fab1 = (FloatingActionButton) view.findViewById(R.id.fab1);
-            fab2 = (FloatingActionButton) view.findViewById(R.id.fab2);
+        fab1 = (FloatingActionButton) view.findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) view.findViewById(R.id.fab2);
 
-            fab1.setOnClickListener(clickListener);
-            fab2.setOnClickListener(clickListener);
+        fab1.setOnClickListener(clickListener);
+        fab2.setOnClickListener(clickListener);
 
-            createCustomAnimation();
+        createCustomAnimation();
 
-            return view;
-        }
+        return view;
+    }
 
-    private void createCustomAnimation(){
+    private void createCustomAnimation()
+    {
         AnimatorSet set = new AnimatorSet();
     }
 
-    private View.OnClickListener clickListener = new View.OnClickListener(){
+    private View.OnClickListener clickListener = new View.OnClickListener()
+    {
 
         @Override
         public void onClick(View v)
         {
             String text = "";
 
-            switch (v.getId()){
+            switch (v.getId())
+            {
                 case R.id.fab1:
                     text = fab1.getLabelText();
                     Intent callIntent1 = new Intent();

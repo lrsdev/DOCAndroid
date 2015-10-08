@@ -21,19 +21,23 @@ public class Sighting implements Serializable
     private double latitude;
     private double longitide;
 
-    public double getLatitude() {
+    public double getLatitude()
+    {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(double latitude)
+    {
         this.latitude = latitude;
     }
 
-    public double getLongitide() {
+    public double getLongitide()
+    {
         return longitide;
     }
 
-    public void setLongitide(double longitide) {
+    public void setLongitide(double longitide)
+    {
         this.longitide = longitide;
     }
 

@@ -37,7 +37,6 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import io.github.lrsdev.dogbeaches.R;
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 import io.github.lrsdev.dogbeaches.db.DBHelper;
 import io.github.lrsdev.dogbeaches.db.ReportTable;
@@ -149,14 +148,13 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
     {
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        if(i.resolveActivity(getActivity().getPackageManager()) != null)
+        if (i.resolveActivity(getActivity().getPackageManager()) != null)
         {
             File photoFile = null;
             try
             {
                 photoFile = createImageFile();
-            }
-            catch (IOException e)
+            } catch (IOException e)
             {
                 Log.d("Image File", e.toString());
             }
@@ -171,7 +169,7 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK)
+        if (requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK)
         {
             Toast.makeText(getActivity(), "Photo Taken", Toast.LENGTH_SHORT).show();
             mPhotoButton.setText("Retake Photo");
@@ -196,19 +194,16 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
             {
                 out.write(buf, 0, len);
             }
-        }
-        catch(IOException e)
+        } catch (IOException e)
         {
             Log.d(TAG, e.toString());
-        }
-        finally
+        } finally
         {
             try
             {
                 in.close();
                 out.close();
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
 
             }
@@ -218,6 +213,7 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
 
     /**
      * Creates a file to save captured image to
+     *
      * @return File
      * @throws IOException
      */
@@ -227,7 +223,9 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
         String fileName = "REPORT_" + timeStamp + ".jpg";
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         if (!storageDir.exists())
+        {
             storageDir.mkdir();
+        }
         File f = new File(storageDir, fileName);
         mCurrentPhotoPath = f.getAbsolutePath();
         return f;
@@ -246,16 +244,16 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
         Uri uri = null;
         String orderBy = null;
 
-        switch(i)
+        switch (i)
         {
             case LOADER_ANIMAL:
-                projection = new String[] { DogBeachesContract.Animals.COLUMN_ID,
-                    DogBeachesContract.Animals.COLUMN_NAME };
+                projection = new String[]{DogBeachesContract.Animals.COLUMN_ID,
+                        DogBeachesContract.Animals.COLUMN_NAME};
                 uri = DogBeachesContract.Animals.CONTENT_URI;
                 break;
             case LOADER_LOCATION:
-                projection = new String[] { DogBeachesContract.Locations.COLUMN_ID,
-                    DogBeachesContract.Locations.COLUMN_NAME };
+                projection = new String[]{DogBeachesContract.Locations.COLUMN_ID,
+                        DogBeachesContract.Locations.COLUMN_NAME};
                 uri = DogBeachesContract.Locations.CONTENT_URI;
                 Double lat = mLastLocation.getLatitude();
                 Double lon = mLastLocation.getLongitude();
@@ -264,14 +262,14 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
                 break;
         }
 
-       return new CursorLoader(getActivity(), uri, projection, null, null, orderBy);
+        return new CursorLoader(getActivity(), uri, projection, null, null, orderBy);
     }
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor c)
     {
         Cursor otherCursor = addOtherToCursor(c);
-        switch(loader.getId())
+        switch (loader.getId())
         {
             case LOADER_ANIMAL:
                 mAnimalAdapter.changeCursor(otherCursor);
@@ -285,7 +283,7 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader)
     {
-        switch(loader.getId())
+        switch (loader.getId())
         {
             case LOADER_ANIMAL:
                 mAnimalAdapter.changeCursor(null);
@@ -298,9 +296,9 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
 
     private Cursor addOtherToCursor(Cursor c)
     {
-        MatrixCursor other = new MatrixCursor(new String[] {"_id", "name"});
-        other.addRow(new String[] {null, "Other"});
-        Cursor[] cursors = { c, other };
+        MatrixCursor other = new MatrixCursor(new String[]{"_id", "name"});
+        other.addRow(new String[]{null, "Other"});
+        Cursor[] cursors = {c, other};
         return new MergeCursor(cursors);
     }
 
@@ -309,16 +307,20 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
         @Override
         public void onClick(View v)
         {
-            if(mCurrentPhotoPath == null)
+            if (mCurrentPhotoPath == null)
             {
                 Toast.makeText(getActivity(), "Please take a photo", Toast.LENGTH_SHORT).show();
             }
 
-            else if(mLastLocation == null)
+            else if (mLastLocation == null)
+            {
                 Toast.makeText(getActivity(), "Geo-Location cannot be obtained", Toast.LENGTH_SHORT)
-                       .show();
+                        .show();
+            }
             else
+            {
                 submitReport();
+            }
         }
     }
 
@@ -338,8 +340,8 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
             super(getActivity(),
                     android.R.layout.simple_spinner_dropdown_item,
                     null,
-                    new String[] {DogBeachesContract.Locations.COLUMN_NAME},
-                    new int[] {android.R.id.text1},
+                    new String[]{DogBeachesContract.Locations.COLUMN_NAME},
+                    new int[]{android.R.id.text1},
                     SimpleCursorAdapter.NO_SELECTION);
         }
     }
