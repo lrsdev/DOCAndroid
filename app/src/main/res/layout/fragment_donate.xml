@@ -4,27 +4,15 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/hotlineColor"
+    android:background="@color/windowBackground"
     android:padding="8dp">
-
-        <TextView
-            android:id="@+id/donateheader"
-            android:layout_width="match_parent"
-            android:layout_height="76dp"
-            android:gravity="center_horizontal"
-            android:text="Donations"
-            android:textColor="#ffffff"
-            android:textSize="48sp"
-            android:textStyle="bold"
-            />
 
         <TextView
             android:id="@+id/donateintro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/donateheader"
             android:text="@string/donate_intro"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:padding="8dp"
             />
@@ -53,7 +41,7 @@
                 android:text="Yellow-Eyed Penguin Trust"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#ffffff"
+                android:textColor="@color/black"
                 />
             <TextView
                 android:layout_width="fill_parent"
@@ -62,7 +50,7 @@
                 android:text="www.yellow-eyedpenguin.org.nz"
                 android:textSize="16sp"
                 android:textStyle="italic"
-                android:textColor="#ffffff"
+                android:textColor="@color/black"
                 android:layout_below="@+id/yept_head"
                 android:layout_toRightOf="@+id/yept_icon"
                 android:layout_toEndOf="@+id/yept_icon"/>
@@ -92,7 +80,7 @@
                 android:text="NZ Sealion Trust"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#ffffff"
+                android:textColor="@color/black"
                 />
             <TextView
                 android:layout_width="fill_parent"
@@ -101,7 +89,7 @@
                 android:text="www.sealiontrust.org.nz"
                 android:textSize="16sp"
                 android:textStyle="italic"
-                android:textColor="#ffffff"
+                android:textColor="@color/black"
                 android:layout_below="@+id/sea_head"
                 android:layout_toRightOf="@+id/sea_icon"
                 android:layout_toEndOf="@+id/sea_icon"/>
