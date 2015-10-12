@@ -25,7 +25,7 @@
     <string name="feedback_request">We would love to hear from you concerning any suggestions you may have, for example:</string>
     <string name="feedback_1">&#8226; General usability </string>
     <string name="feedback_2">&#8226; Bugs </string>
-    <string name="feedback_3">&#8226; Errors (Typos, Information) </string>
+    <string name="feedback_3">&#8226; Errors (typos, content) </string>
     <string name="feedback_4">&#8226; Feature requests </string>
     <string name="feedback_contact">If you\'d prefer to send an email from a computer, use the following details:</string>
     <string name="feedback_email_address">email:   lrsdev.op@gmail.com</string>
@@ -53,8 +53,8 @@
 
     <!-- SafetyFragment -->
     <string name="safety_header">Keep your dog safe on the beach</string>
-    <string name="safety_text">Some Marine wildlife move fast and have big sharp teeth. Ensure you are aware of what’s ahead of you and what your dog could start sniffing around. It’s easier to call a dog to you before its interacting with wildlife than after.</string>
-    <string name="safety_todo_header">If you come across widlife on our beaches:</string>
+    <string name="safety_text">Marine wildlife can move surprisingly fast and often have big sharp teeth. You should ensure that you are aware of what’s ahead of you and what your dog might be inclined to sniff around. It is easier to call your dog to you before it has an opportunity to interact with wildlife.</string>
+    <string name="safety_todo_header">If you come across wildlife on our beaches:</string>
     <string name="safety_todo_list">  </string>
     <string name="safety_contact_text">Report roaming or uncontrolled dogs to <b>Dunedin City Council, Animal Services 03 477 4000</b>, or Call DOC for sick or injured wildlife</string>
     <!-- End SafetyFragment -->
