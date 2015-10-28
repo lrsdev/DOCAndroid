@@ -35,7 +35,7 @@ android {
             applicationId appId + ".dev"
             buildConfigField "String", "SYNC_ACCOUNT_TYPE", "\"${applicationId}\""
             buildConfigField "String", "AUTHORITY", "\"${applicationId}.contentprovider.DogBeachesProvider\""
-            buildConfigField "String", "API_END_POINT", '"http://dev.doguser.stewpot.nz"'
+            buildConfigField "String", "API_END_POINT", '"http://dev.dogbeaches.stewpot.nz"'
             resValue "string", "account_type", "${applicationId}"
             resValue "string", "authority", "${applicationId}.contentprovider.DogBeachesProvider"
             resValue "string", "app_name", "D&B Dev"
@@ -44,7 +44,7 @@ android {
             applicationId appId + ".prod"
             buildConfigField "String", "SYNC_ACCOUNT_TYPE", "\"${applicationId}\""
             buildConfigField "String", "AUTHORITY", "\"${applicationId}.contentprovider.DogBeachesProvider\""
-            buildConfigField "String", "API_END_POINT", '"http://doguser.stewpot.nz"'
+            buildConfigField "String", "API_END_POINT", '"http://dogbeaches.stewpot.nz"'
             resValue "string", "account_type", "${applicationId}"
             resValue "string", "authority", "${applicationId}.contentprovider.DogBeachesProvider"
             resValue "string", "app_name", "Dogs & Beaches"

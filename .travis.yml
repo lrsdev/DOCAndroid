@@ -9,7 +9,7 @@ android:
     - extra-google-m2repository
 
 script:
-  - ./gradlew assembleDebug connectedCheck
+  - ./gradlew assembleDebug
 
 branches:
   only:
