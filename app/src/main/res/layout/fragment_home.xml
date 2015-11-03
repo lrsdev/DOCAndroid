@@ -27,7 +27,7 @@
             android:id="@+id/hotlineImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/hotline2"
+            android:src="@drawable/hotline3"
             android:layout_marginBottom="0dp"
             android:gravity="bottom|center_horizontal"
             android:layout_gravity="bottom"
