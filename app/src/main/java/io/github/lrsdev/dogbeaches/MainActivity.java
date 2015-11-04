@@ -1,5 +1,4 @@
 package io.github.lrsdev.dogbeaches;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
@@ -23,12 +22,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,10 +33,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 import io.github.lrsdev.dogbeaches.map.MapFragment;
-import io.github.lrsdev.dogbeaches.sync.SyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements ResultCallback
 {
@@ -48,13 +43,10 @@ public class MainActivity extends AppCompatActivity implements ResultCallback
     private DrawerLayout mDrawerLayout;
     private FragmentManager fm;
     private SharedPreferences prefs;
-    private ProgressDialog syncProgress;
-    private boolean mLocationServicesEnabled = false;
-    private static IntentFilter syncIntentFilter = new IntentFilter(SyncAdapter.FIRST_SYNC_FINISHED);
-    private BroadcastReceiver syncFinishedReceiver;
     public static final String AUTHORITY = DogBeachesContract.AUTHORITY;
     public static final String ACCOUNT_TYPE = BuildConfig.SYNC_ACCOUNT_TYPE;
     public static final String ACCOUNT = "Sync Account";
+    private boolean mLocationServicesEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -153,19 +145,9 @@ public class MainActivity extends AppCompatActivity implements ResultCallback
 
     private void performManualSync()
     {
-    /*
-       syncFinishedReceiver = new BroadcastReceiver()
-       {
-       @Override
-       public void onReceive(Context context, Intent intent)
-       {
-       }
-       };*/
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-
-        //registerReceiver(syncFinishedReceiver, new IntentFilter(SyncAdapter.FIRST_SYNC_FINISHED));
         ContentResolver.requestSync(null, AUTHORITY, bundle);
     }
 
@@ -274,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements ResultCallback
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode)
         {
             // Check for the integer request code originally supplied to startResolutionForResult().

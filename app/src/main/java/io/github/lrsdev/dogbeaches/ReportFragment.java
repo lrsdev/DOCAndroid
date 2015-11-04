@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -171,7 +172,7 @@ public class ReportFragment extends Fragment implements LoaderManager.LoaderCall
     {
         if (requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK)
         {
-            Toast.makeText(getActivity(), "Photo Taken", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Photo Taken", Toast.LENGTH_LONG).show();
             mPhotoButton.setText("Retake Photo");
         }
     }
