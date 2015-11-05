@@ -6,7 +6,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by samuel on 23/05/15.
+ * POJO representing a location. Used by RetroFit, represents a location object deserialised from
+ * a JSON object.
+ *
+ * @author Samuel Stewart
  */
 public class Location implements Serializable
 {

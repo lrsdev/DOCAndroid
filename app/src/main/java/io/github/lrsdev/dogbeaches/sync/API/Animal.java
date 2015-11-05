@@ -1,7 +1,10 @@
 package io.github.lrsdev.dogbeaches.sync.API;
 
 /**
- * Created by samuel on 14/07/15.
+ * POJO representing an Animal. Used by RetroFit, represents an animal object deserialised from
+ * a JSON object.
+ *
+ * @author Samuel Stewart
  */
 public class Animal
 {

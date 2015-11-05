@@ -22,9 +22,10 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 /**
- * Rest client Sync Adapter utilises to transfer data to and from the API.
+ * A singleton configuring a RetroFit REST adapter for consuming remote API.
+ *
+ * See http://square.github.io/retrofit/
  */
-
 public class RestClient
 {
     private static UserApi REST_CLIENT;
@@ -34,7 +35,8 @@ public class RestClient
     {
         // Custom deserializer to convert UTC time to device local time zone
         Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        /*
                 .registerTypeAdapter(Date.class, new JsonDeserializer<Date>()
                 {
                     @Override
@@ -52,6 +54,7 @@ public class RestClient
                     }
                 })
                 .create();
+                */
 
         // Increase the timeout time. Occasionally remote API was responding too slow after a report
         // upload and local data was not getting removed despite a successful upload, therefore
