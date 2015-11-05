@@ -11,7 +11,10 @@ import android.net.Uri;
 import io.github.lrsdev.dogbeaches.db.DBHelper;
 
 /**
- * Created by sam on 11/08/15.
+ * A content provider for the dogs on beaches application.
+ * Provides an abstraction layer over the SQLite database.
+ *
+ * @author Samuel Stewart
  */
 public class DogBeachesProvider extends ContentProvider
 {

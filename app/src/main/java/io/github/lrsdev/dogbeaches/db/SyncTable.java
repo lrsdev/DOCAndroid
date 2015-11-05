@@ -3,11 +3,18 @@ package io.github.lrsdev.dogbeaches.db;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- * Created by sam on 20/08/15.
+ * A helper class for creating and upgrading the local SQLite sync table.
+ *
+ * Stores synchronisation metadata.
+ *
+ * @author Samuel Stewart
  */
 public class SyncTable
 {
     public static final String TABLE_NAME = "sync_metadata";
+    /**
+     * A date string representing the last successful remote synchronisation time.
+     */
     public static final String LAST_SYNC = "last_sync";
 
     private static final String TABLE_CREATE = "create table " + TABLE_NAME + "(" +

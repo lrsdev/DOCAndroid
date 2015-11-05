@@ -1,7 +1,9 @@
 package io.github.lrsdev.dogbeaches.db;
 
 /**
- * Created by sam on 28/08/15.
+ * An interface defining name and column constants for the local report SQLite table.
+ *
+ * @author Samuel Stewart
  */
 public interface IReportTableConstants
 {
@@ -15,6 +17,9 @@ public interface IReportTableConstants
     public static final String COLUMN_LONGITUDE = "longitude";
     public static final String COLUMN_CREATED_AT = "timestamp";
 
+    /**
+     * A complete projection for querying the report table.
+     */
     public static final String[] PROJECTION_ALL = {COLUMN_ID, COLUMN_LOCATION_ID, COLUMN_ANIMAL_ID,
             COLUMN_LOCATION_ID, COLUMN_BLURB, COLUMN_IMAGE, COLUMN_LATITUDE,
             COLUMN_LONGITUDE, COLUMN_CREATED_AT};

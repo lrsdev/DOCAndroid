@@ -3,7 +3,12 @@ package io.github.lrsdev.dogbeaches.db;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- * Created by sam on 14/08/15.
+ * A helper class for creating and upgrading the local SQLite animal table.
+ *
+ * The table reflects current location information from the web service.
+ * The table is updated by the synchronisation adapter.
+ *
+ * @author Samuel Stewart
  */
 public class AnimalTable implements IAnimalTableConstants
 {
@@ -23,6 +28,7 @@ public class AnimalTable implements IAnimalTableConstants
 
     public static void onUpgrade(SQLiteDatabase db, int newVersion, int oldVersion)
     {
+        // MIGRATION CODE NEEDS TO BE WRITTEN IF UPGRADING A LIVE DATASET.
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }

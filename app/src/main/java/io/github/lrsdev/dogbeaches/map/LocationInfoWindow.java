@@ -18,12 +18,20 @@ import io.github.lrsdev.dogbeaches.LocationActivity;
 import io.github.lrsdev.dogbeaches.R;
 
 /**
- * Created by sam on 26/08/15.
+ * A custom information window for the MapBox SDK.
+ *
+ * @author Samuel Stewart
  */
 public class LocationInfoWindow extends InfoWindow
 {
     private String imageLocation;
 
+    /**
+     * LocationInfoWindow constructor
+     * @param mapView A reference to a MapBox mapView
+     * @param id A location id corresponding to the location which was pressed on the map
+     * @param imageLocation local filepath of the location's image to display in info window
+     */
     public LocationInfoWindow(MapView mapView, final Integer id, String imageLocation)
     {
         super(R.layout.location_info_window, mapView);
@@ -51,6 +59,10 @@ public class LocationInfoWindow extends InfoWindow
         super(view, mapView);
     }
 
+    /**
+     * Assigns location image and title to expanded views.
+     * @param overlayItem
+     */
     @Override
     public void onOpen(Marker overlayItem)
     {

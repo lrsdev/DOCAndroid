@@ -8,15 +8,20 @@ import io.github.lrsdev.dogbeaches.db.IAnimalTableConstants;
 import io.github.lrsdev.dogbeaches.db.ILocationTableConstants;
 
 /**
- * Created by sam on 15/08/15.
+ * Class defining the application's content provider contract.
+ *
+ * Defines authority constant.
+ *
+ * @author Samuel Stewart
  */
 public class DogBeachesContract
 {
     public static final String AUTHORITY = BuildConfig.AUTHORITY;
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     /**
-     * Items table constants
+     * Static nested class defining content provider uri and types for the location table.
+     *
+     * @author Samuel Stewart
      */
     public static final class Locations implements ILocationTableConstants
     {
@@ -27,6 +32,11 @@ public class DogBeachesContract
                 "/location";
     }
 
+    /**
+     * Static nested class defining content provider uri and types for the animal table.
+     *
+     * @author Samuel Stewart
+     */
     public static final class Animals implements IAnimalTableConstants
     {
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + TABLE_NAME);

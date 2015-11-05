@@ -1,7 +1,9 @@
 package io.github.lrsdev.dogbeaches.db;
 
 /**
- * Created by sam on 28/08/15.
+ * An interface defining name and column constants for the local SQLite location table.
+ *
+ * @author Samuel Stewart
  */
 public interface ILocationTableConstants
 {
@@ -17,6 +19,9 @@ public interface ILocationTableConstants
     public static final String COLUMN_LATITUDE = "latitude";
     public static final String COLUMN_LONGITUDE = "longitude";
 
+    /**
+     * A complete projection for querying the table.
+     */
     public static final String[] PROJECTION_ALL = {COLUMN_ID, COLUMN_NAME, COLUMN_CATEGORY,
             COLUMN_ANIMAL_BLURB, COLUMN_DOG_STATUS, COLUMN_DOG_GUIDELINES,
             COLUMN_IMAGE, COLUMN_IMAGE_URL, COLUMN_LATITUDE, COLUMN_LONGITUDE};

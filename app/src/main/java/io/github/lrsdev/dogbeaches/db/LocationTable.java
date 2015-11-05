@@ -3,7 +3,12 @@ package io.github.lrsdev.dogbeaches.db;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- * Created by sam on 14/08/15.
+ * A helper class for creating and upgrading the local SQLite location table.
+ *
+ * The table reflects current location information from the web service.
+ * The table is updated by the synchronisation adapter.
+ *
+ * @author Samuel Stewart
  */
 public class LocationTable implements ILocationTableConstants
 {

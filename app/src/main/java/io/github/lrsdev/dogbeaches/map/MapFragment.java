@@ -34,6 +34,9 @@ import io.github.lrsdev.dogbeaches.R;
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 
 
+/**
+ * A fragment which displays the map.
+ */
 public class MapFragment extends Fragment
 {
     private static final Integer OFFLINE_MAX_ZOOM = 11;
@@ -43,6 +46,11 @@ public class MapFragment extends Fragment
     private MapView mapView;
     private boolean displayingOffline;
     private Location mLastLocation;
+    /**
+     * A hashmap which stores references to markers as keys to their corresponding location id.
+     * The hashmap is used to retrieve the location id of a pressed marker when launching the
+     * location activity.
+     */
     private HashMap<Marker, Integer> markerMap;
     TileLayer mOfflineTileLayer;
 
@@ -87,9 +95,20 @@ public class MapFragment extends Fragment
         });
 
         mLastLocation = LocationManager.get(getActivity()).getLocation();
+        testConnectivity();
+        markerMap = new HashMap<>();
+        addLocationMarkers();
+        mapView.setMapViewListener(new MarkerClickListener());
+        return v;
+    }
+
+    /**
+     * Tests whether device is connected and sets map accordingly.
+     */
+    private void testConnectivity()
+    {
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnected();
 
@@ -101,14 +120,12 @@ public class MapFragment extends Fragment
         {
             setOfflineMap();
         }
-
-        markerMap = new HashMap<>();
-
-        addLocationMarkers();
-        mapView.setMapViewListener(new MarkerClickListener());
-        return v;
     }
 
+    /**
+     * Change mapView's display to the offline tile provider. Set scollable bounding box and
+     * maximum zoom levels.
+     */
     private void setOfflineMap()
     {
         mapView.setTileSource(mOfflineTileLayer);
@@ -132,6 +149,9 @@ public class MapFragment extends Fragment
         }
     }
 
+    /**
+     * Change mapView's display to the online tile provider.
+     */
     private void setOnlineMap()
     {
         if (mLastLocation == null)
@@ -148,6 +168,10 @@ public class MapFragment extends Fragment
         displayingOffline = false;
     }
 
+    /**
+     * Shows a modal alert window displaying message.
+     * @param message a string to display
+     */
     private void showAlert(String message)
     {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
@@ -168,6 +192,11 @@ public class MapFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
     }
 
+    /**
+     * Queries the local database for a location cursor. Iterate and initialise location markers
+     * in correct location with correct dog status icon. Adds marker to makerMap as a key to the
+     * corresponding location id value.
+     */
     public void addLocationMarkers()
     {
         Cursor c = getActivity().getContentResolver().query(DogBeachesContract.Locations.CONTENT_URI,
@@ -187,6 +216,9 @@ public class MapFragment extends Fragment
                             c.getDouble(longIndex)));
             m.setMarker(Helpers.getDogIconDrawable(c.getString(statusIndex), getActivity()));
             m.setAnchor(new PointF(0.5f, 0.5f));
+
+            // Sets a custom info window.
+
             //m.setToolTip(new LocationInfoWindow(mapView, c.getInt(idIndex), c.getString(imageIndex)));
             mapView.addMarker(m);
             markerMap.put(m, c.getInt(idIndex));
@@ -200,6 +232,9 @@ public class MapFragment extends Fragment
         getActivity().setTitle("Location Map");
     }
 
+    /**
+     * A listener for map marker touch events.
+     */
     private class MarkerClickListener implements MapViewListener
     {
         @Override
@@ -214,6 +249,12 @@ public class MapFragment extends Fragment
 
         }
 
+        /**
+         * Creates an intent for the location activity. Adds the location id of the clicked
+         * marker to the extras bundle. Starts the activity.
+         * @param mapView
+         * @param marker
+         */
         @Override
         public void onTapMarker(MapView mapView, Marker marker)
         {

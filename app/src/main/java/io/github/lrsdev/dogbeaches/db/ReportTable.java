@@ -3,9 +3,13 @@ package io.github.lrsdev.dogbeaches.db;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- * Report storage
+ * A helper class for creating and upgrading the local SQLite report table.
+ *
+ * Stores user generated wildlife reports. Reports are removed once synchronisation successfully
+ * executes.
+ *
+ * @author Samuel Stewart
  */
-
 public class ReportTable implements IReportTableConstants
 {
 
