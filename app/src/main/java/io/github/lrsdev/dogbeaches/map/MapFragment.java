@@ -42,6 +42,7 @@ public class MapFragment extends Fragment
     private static final Integer OFFLINE_MAX_ZOOM = 11;
     private static final Integer OFFLINE_MIN_ZOOM = 11;
     private static final LatLng DUNEDIN_LATLNG = new LatLng(-45.874372, 170.504186);
+    private static final String MAP_DB_NAME = "otago.mbtiles";
     private Button mapButton;
     private MapView mapView;
     private boolean displayingOffline;
@@ -75,9 +76,23 @@ public class MapFragment extends Fragment
     {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         mapView = (MapView) v.findViewById(R.id.map_view);
-        mapView.setUserLocationEnabled(true);
-        mOfflineTileLayer = new MBTilesLayer(getActivity().getDatabasePath("otago.mbtiles"));
         mapButton = (Button) v.findViewById(R.id.map_fragment_button);
+        mOfflineTileLayer = new MBTilesLayer(getActivity().getDatabasePath(MAP_DB_NAME));
+        mLastLocation = LocationManager.get(getActivity()).getLocation();
+        setupMap();
+        testConnectivity();
+        markerMap = new HashMap<>();
+        addLocationMarkers();
+        mapView.setMapViewListener(new MarkerClickListener());
+        return v;
+    }
+
+    /**
+     * Setup map attributes and touch event handler.
+     */
+    private void setupMap()
+    {
+        mapView.setUserLocationEnabled(true);
         mapButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -93,13 +108,6 @@ public class MapFragment extends Fragment
                 }
             }
         });
-
-        mLastLocation = LocationManager.get(getActivity()).getLocation();
-        testConnectivity();
-        markerMap = new HashMap<>();
-        addLocationMarkers();
-        mapView.setMapViewListener(new MarkerClickListener());
-        return v;
     }
 
     /**
