@@ -20,7 +20,7 @@ This application was developed in conjunction with the New Zealand [Department o
 * Functions without network connectivity, synchronises periodically when the network is available.
 
 ## Synchronisation
-The application provides a synchronisation adapter with a stub authenticator so we can make use of Android's synchronisation framework. The sync adapter accesses the applications database via a content provider, and communicates with the remote API using the RetroFit API client. On the applications first run, it will setup automatic synchronisation which can be turned on and off in Android'ss accounts section under settings. On each sync, reports are synchronised to server first then a sync request is sent to the remote API with the timestamp of the last synchronisation, the remote server returns a json object with all changes since the supplied timestamp.
+The application provides a synchronisation adapter with a stub authenticator so we can make use of Android's synchronisation framework. The sync adapter accesses the applications database via a content provider, and communicates with the [remote API](https://github.com/lrsdev/dog-rails) using the RetroFit API client. On first run, it will setup automatic synchronisation which can be turned on and off in Android'ss accounts section under settings. On each sync, reports are synchronised to server first then a sync request is sent to the remote API with the timestamp of the last synchronisation, the remote server returns a json object with all changes since the supplied timestamp.
 
 ## Building 
 ### Assets
