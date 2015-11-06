@@ -1,9 +1,12 @@
-# Dogs on Beaches Android Application
+Table of Contents
+=================
+* [Introduction](#introduction)
+* [Features](#features)
 
+## Introduction
 Dogs on Beaches is a platform which provides near real-time information regarding dog regulations pertaining to our local beaches. Marine wildlife has long suffered at the jaws of roaming dogs, often resulting in serious injury or death. This application is intended to supplement traditional information methods such as signage with a dynamically updatable real time platform intended to encourage public participation, increase awareness of the dangers dogs pose to our marine widlife, and ultimately drive down these attacks.
 
 This application was developed in conjunction with the New Zealand [Department of Conservation](http://www.doc.govt.nz) as part of a third year student development project at [Otago Polytechnic](http://www.op.ac.nz) in Dunedin, New Zealand.
-
 
 ## Features
 * A map indicating beaches, marker icon represents the beaches 'dog' status (on lead, off lead, no dogs)
