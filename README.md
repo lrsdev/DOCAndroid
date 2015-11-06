@@ -39,23 +39,23 @@ For example, to get production data:
 ##### Map Tiles
 The application expects a 'otago.mbtiles' file to be present in the databases directory. Mbtiles map files can be created with TileMile or MOBAC. Once the mbtiles is obtained, it should be added to the databases directory pulled from the emulator.
 
-##### Zipping
+#### Packaging
 Zip the databases (including the mbtiles map file) into assets.zip. Add this file to the relevant build config's assets directory. The zip file structure should look like:
-
-| databases
-   - docdog.db
-   - docdog.db-journal
-   - otago.mbtiles
-| files
-|   - images
-|     - animals
-        - 1.jpg
-        - 2.jpg
-|     - locations
-        - 1.jpg
-        - 2.jpg
-
+```
+|databases
+|  docdog.db
+|  docdog.db-journal
+|  otago.mbtiles
+|files
+|  images
+|     animals
+|        1.jpg
+|        2.jpg
+|     locations
+|        1.jpg
+|        2.jpg
+```
 The .jpg's filename is the location's id in the remote database.
 
 ### Build Variants
-The application has two gradle flavours, dev and prod. Which gives the application four build variants. devRelease, devDebug, prodRelease, prodDebug. Variants can be installed side by side. The prod variants differ from the dev variants only by which API endpoint they communicate with and the prepackaged assets. This allows us to easily test new features and change data around on the development api without affecting the production versions.
+The application has two gradle flavours, dev and prod. Which gives the application four build variants. devRelease, devDebug, prodRelease, prodDebug. Variants can be installed side by side. The prod variants differ from the dev variants only by which API endpoint they communicate with and the prepackaged assets.
