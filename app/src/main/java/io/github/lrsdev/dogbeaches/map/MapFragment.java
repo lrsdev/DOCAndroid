@@ -41,6 +41,7 @@ public class MapFragment extends Fragment
 {
     private static final Integer OFFLINE_MAX_ZOOM = 13;
     private static final Integer OFFLINE_MIN_ZOOM = 13;
+    private static final Integer ONLINE_MAX_ZOOM = 16;
     private static final LatLng DUNEDIN_LATLNG = new LatLng(-45.874372, 170.504186);
     private static final String MAP_DB_NAME = "otago.mbtiles";
     private Button mapButton;
@@ -53,7 +54,6 @@ public class MapFragment extends Fragment
      * location activity.
      */
     private HashMap<Marker, Integer> markerMap;
-    TileLayer mOfflineTileLayer;
 
     public static MapFragment newInstance()
     {
@@ -77,13 +77,9 @@ public class MapFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         mapView = (MapView) v.findViewById(R.id.map_view);
         mapButton = (Button) v.findViewById(R.id.map_fragment_button);
-        mOfflineTileLayer = new MBTilesLayer(getActivity().getDatabasePath(MAP_DB_NAME));
         mLastLocation = LocationManager.get(getActivity()).getLocation();
         setupMap();
         testConnectivity();
-        markerMap = new HashMap<>();
-        addLocationMarkers();
-        mapView.setMapViewListener(new MarkerClickListener());
         return v;
     }
 
@@ -108,6 +104,10 @@ public class MapFragment extends Fragment
                 }
             }
         });
+        markerMap = new HashMap<>();
+        addLocationMarkers();
+        mapView.setMapViewListener(new MarkerClickListener());
+        mapView.invalidate();
     }
 
     /**
@@ -136,16 +136,17 @@ public class MapFragment extends Fragment
      */
     private void setOfflineMap()
     {
-        mapView.setTileSource(mOfflineTileLayer);
+        MBTilesLayer layer = new MBTilesLayer(getActivity().getDatabasePath(MAP_DB_NAME));
+        mapView.setTileSource(layer);
         mapView.setMaxZoomLevel(OFFLINE_MAX_ZOOM);
         mapView.setMinZoomLevel(OFFLINE_MIN_ZOOM);
         mapView.setZoom(OFFLINE_MIN_ZOOM);
-        mapView.setScrollableAreaLimit(mOfflineTileLayer.getBoundingBox());
+        mapView.setScrollableAreaLimit(layer.getBoundingBox());
         mapButton.setText(R.string.map_change_online);
         displayingOffline = true;
 
         if (mLastLocation != null &&
-                mOfflineTileLayer.getBoundingBox().contains(new LatLng(mLastLocation.getLatitude(),
+                layer.getBoundingBox().contains(new LatLng(mLastLocation.getLatitude(),
                         mLastLocation.getLongitude())))
         {
             mapView.goToUserLocation(true);
@@ -162,6 +163,11 @@ public class MapFragment extends Fragment
      */
     private void setOnlineMap()
     {
+        mapView.setTileSource(new MapboxTileLayer(getResources().getString(R.string.mapbox_map_id)));
+        mapView.setMaxZoomLevel(ONLINE_MAX_ZOOM);
+        mapButton.setText(R.string.map_change_offline);
+        displayingOffline = false;
+
         if (mLastLocation == null)
         {
             mapView.setCenter(DUNEDIN_LATLNG);
@@ -171,9 +177,6 @@ public class MapFragment extends Fragment
         {
             mapView.goToUserLocation(true);
         }
-        mapView.setTileSource(new MapboxTileLayer(getResources().getString(R.string.mapbox_map_id)));
-        mapButton.setText(R.string.map_change_offline);
-        displayingOffline = false;
     }
 
     /**
