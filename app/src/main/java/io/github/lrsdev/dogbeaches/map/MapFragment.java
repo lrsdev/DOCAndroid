@@ -39,8 +39,8 @@ import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
  */
 public class MapFragment extends Fragment
 {
-    private static final Integer OFFLINE_MAX_ZOOM = 11;
-    private static final Integer OFFLINE_MIN_ZOOM = 11;
+    private static final Integer OFFLINE_MAX_ZOOM = 13;
+    private static final Integer OFFLINE_MIN_ZOOM = 13;
     private static final LatLng DUNEDIN_LATLNG = new LatLng(-45.874372, 170.504186);
     private static final String MAP_DB_NAME = "otago.mbtiles";
     private Button mapButton;
