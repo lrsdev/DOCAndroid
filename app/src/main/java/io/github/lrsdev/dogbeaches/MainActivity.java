@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements ResultCallback
         {
             firstRun();
         }
+        performManualSync();
         setContentView(R.layout.activity_main);
 
         fm = getSupportFragmentManager();
@@ -84,18 +85,12 @@ public class MainActivity extends AppCompatActivity implements ResultCallback
     public void onResume()
     {
         super.onResume();
-      /*
-         if (!prefs.getBoolean("first_sync_completed", false))
-         {
-         performManualSync();
-         }*/
     }
 
     private void firstRun()
     {
         unzipAssets();
         setupAutoSync();
-        performManualSync();
         prefs.edit().putBoolean("first_run", false).apply();
     }
 

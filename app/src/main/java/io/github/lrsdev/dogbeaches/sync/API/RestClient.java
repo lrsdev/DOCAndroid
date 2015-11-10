@@ -73,6 +73,10 @@ public class RestClient
         REST_CLIENT = restAdapter.create(UserApi.class);
     }
 
+    /**
+     * Returns an instance of a RetroFit REST Client
+     * @return Retrofit Rest Client
+     */
     public static UserApi get()
     {
         if (REST_CLIENT == null)

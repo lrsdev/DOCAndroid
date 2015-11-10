@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by samuel on 28/05/15.
+ * POJO representing a sighting. Used by RetroFit, represents a sighting object deserialised from
+ * a JSON object after retrieval, or waiting serialisation for synchronisation to the remote.
+ *
+ * @author Samuel Stewart
  */
 public class Sighting implements Serializable
 {

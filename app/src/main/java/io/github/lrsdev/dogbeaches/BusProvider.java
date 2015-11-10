@@ -4,7 +4,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.otto.Bus;
 
 /**
- * Created by sam on 16/09/15.
+ * A SquareUp otto event bus. Allows components to easily post, and subscribe to events.
+ *
+ * Not currently used.
+ * See: http://square.github.io/otto/
+ *
+ * @author Samuel Stewart
  */
 public class BusProvider
 {

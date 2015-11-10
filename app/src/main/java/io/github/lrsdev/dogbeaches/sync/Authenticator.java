@@ -8,8 +8,10 @@ import android.content.Context;
 import android.os.Bundle;
 
 /**
- * A stubbed out authenticator to use with the sync adapter. Authentication is not required to
+ * Stubbed out authenticator to use with the sync adapter. Authentication is not required to
  * consume the public API, the sync adapter requires it anyway.
+ *
+ * @author Samuel Stewart
  */
 public class Authenticator extends AbstractAccountAuthenticator
 {

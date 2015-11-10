@@ -7,6 +7,8 @@ import android.os.IBinder;
 /**
  * Authenticator requires a service in order for the sync adapter framework to access it.
  * Allows sync adapter framework to call the authenticator's methods.
+ *
+ * @author Samuel Stewart
  */
 public class AuthenticatorService extends Service
 {

@@ -3,7 +3,10 @@ package io.github.lrsdev.dogbeaches.sync.API;
 import java.util.ArrayList;
 
 /**
- * Created by sam on 16/08/15.
+ * POJO representing a synchronisation object. Used by RetroFit, represents a sync object deserialised from
+ * a JSON object after retrieval from the remote.
+ *
+ * @author Samuel Stewart
  */
 public class Sync
 {

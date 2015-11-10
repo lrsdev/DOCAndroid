@@ -5,7 +5,11 @@ import android.app.Application;
 import com.squareup.otto.Bus;
 
 /**
- * Created by sam on 16/09/15.
+ * Dogs on Beaches application class.
+ *
+ * Overriden to initialise singletons.
+ *
+ * @author Samuel Stewart
  */
 public class DogBeachesApplication extends Application
 {
@@ -19,7 +23,7 @@ public class DogBeachesApplication extends Application
         initSingletons();
     }
 
-    // Create instances of eventbus and locationclient singletons so they persist while application
+    // Create instances of eventbus and locationmanager singletons so they persist while application
     // is running.
     private void initSingletons()
     {

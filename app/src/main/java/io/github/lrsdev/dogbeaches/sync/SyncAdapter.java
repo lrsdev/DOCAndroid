@@ -45,7 +45,14 @@ import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
 /**
- * Created by sam on 16/08/15.
+ * Synchronisation adapter for synchronises locations and animals from the server to the device
+ * and synchronising user reports from the device to the server.
+ *
+ * For a detailed overview, see the wiki at https://github.com/lrsdev/dog-android
+ *
+ * @author Samuel Stewart
+ *
+ * TODO: Refactor
  */
 public class SyncAdapter extends AbstractThreadedSyncAdapter
 {
@@ -153,7 +160,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             }
         }
 
-        // Send a broadcast to let application know sync is finished (used on first run).
+        // Send a broadcast to let subscribers know sync is finished. Apply a shared preference
+        // to indicate the first synchronisation is complete.
         SharedPreferences prefs = getContext().getSharedPreferences(BuildConfig.APPLICATION_ID, Activity.MODE_PRIVATE);
         if (!prefs.getBoolean("first_sync_completed", false))
         {

@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.IBinder;
 
 /**
- * Created by sam on 16/08/15.
+ * Synchronisation Adapter Service
+ *
  * Reference the following document for information
  * http://developer.android.com/training/sync-adapters/creating-sync-adapter.html
+ *
+ * @author Samuel Stewart
  */
 public class SyncService extends Service
 {

@@ -16,6 +16,13 @@ import java.io.File;
 
 import io.github.lrsdev.dogbeaches.contentprovider.DogBeachesContract;
 
+/**
+ * Animal Activity
+ *
+ * Displays an image, blurb, external link and guidelines pertaining to a specific animal.
+ *
+ * @author Samuel Stewart
+ */
 public class AnimalActivity extends AppCompatActivity
 {
     public static final String KEY_ANIMAL_ID = "dogbeaches.animalid";
@@ -33,6 +40,10 @@ public class AnimalActivity extends AppCompatActivity
     private int mUrlIndex;
     Cursor mCursor;
 
+    /**
+     * Expands views, queries content provider for cursor and sets view content appropriately.
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
